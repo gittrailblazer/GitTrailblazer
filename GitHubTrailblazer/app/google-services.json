@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "868273226493",
+    "firebase_url": "https://github-trailblazer.firebaseio.com",
+    "project_id": "github-trailblazer",
+    "storage_bucket": "github-trailblazer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:868273226493:android:e013ea5294ba412dacb494",
+        "android_client_info": {
+          "package_name": "com.example.githubtrailblazer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "868273226493-bsppn4djud2nmnm1bjssh71l9p5sr922.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.githubtrailblazer",
+            "certificate_hash": "3c3765b1b59b694ed431cea566099439c1e3a0e3"
+          }
+        },
+        {
+          "client_id": "868273226493-48lgtbcaok5pqp13i7oisdfjdrme496r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgVD1rxp-M0A4FWLfp0YRmuqxDy0skOj8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "868273226493-48lgtbcaok5pqp13i7oisdfjdrme496r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
