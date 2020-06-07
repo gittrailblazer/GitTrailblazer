@@ -40,10 +40,10 @@ public class RegisterActivity extends AppCompatActivity
     private TextView mLogin;
     private ProgressBar mProgressBar;
 
-    // define and instantiate Firebase variables
-    private FirebaseAuth fAuth;           //= FirebaseAuth.getInstance();;
-    private FirebaseFirestore fStore;     //= FirebaseFirestore.getInstance();;
-    private CollectionReference usersRef; //= fStore.collection("Users");;
+    // define Firebase variables
+    private FirebaseAuth fAuth;
+    private FirebaseFirestore fStore;
+    private CollectionReference usersRef;
 
     // unique id of current user
     private String userID;
