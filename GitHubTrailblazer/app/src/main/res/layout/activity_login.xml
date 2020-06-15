@@ -8,15 +8,33 @@
     android:background="@drawable/stars"
     tools:context=".LoginActivity">
 
+
+
+    <Button
+        android:id="@+id/login_continue_with_git_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/button_3"
+        android:padding="15dp"
+        android:textAllCaps="true"
+        android:textSize="18sp"
+        android:text="Log in with GitHub"
+        android:textColor="@android:color/white"
+        />
+
     <TextView
-        android:id="@+id/login_login_tv"
+        android:id="@+id/login_login_with_email_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
         android:layout_marginTop="15dp"
-        android:text="Login"
-        android:textSize="30sp"
+        android:layout_below="@+id/login_continue_with_git_btn"
+        android:text="or"
+        android:textSize="16sp"
         android:textColor="@android:color/white"
         />
 
@@ -24,7 +42,7 @@
         android:id="@+id/login_email_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/login_login_tv"
+        android:layout_below="@id/login_login_with_email_tv"
         android:background="@drawable/button_2"
         android:padding="15dp"
         android:layout_marginLeft="15dp"
@@ -96,5 +114,7 @@
         android:layout_marginTop="10dp"
         android:visibility="invisible"
         />
+
+
 
 </RelativeLayout>
