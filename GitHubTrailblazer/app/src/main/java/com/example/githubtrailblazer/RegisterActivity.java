@@ -78,6 +78,7 @@ public class RegisterActivity extends AppCompatActivity
             public void onClick(@NonNull View widget)
             {
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                finish();
                 startActivity(intent);
             }
 
@@ -177,6 +178,7 @@ public class RegisterActivity extends AppCompatActivity
                             // send user to main activity
                             Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                             mProgressBar.setVisibility(View.INVISIBLE);
+                            finish();
                             startActivity(intent);
                         }
                     }

@@ -29,6 +29,7 @@ public class InitialActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 Intent intent = new Intent(InitialActivity.this, RegisterActivity.class);
+                finish();
                 startActivity(intent);
             }
         });
@@ -40,6 +41,7 @@ public class InitialActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 Intent intent = new Intent(InitialActivity.this, LoginActivity.class);
+                finish();
                 startActivity(intent);
             }
         });

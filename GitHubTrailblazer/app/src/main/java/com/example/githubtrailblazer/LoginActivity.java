@@ -62,8 +62,10 @@ public class LoginActivity extends AppCompatActivity
                 if(fFireBaseUser != null)
                 {
                     Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
+                }
+                else
+                {
+                    Toast.makeText(LoginActivity.this, "Logout successful", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -78,6 +80,7 @@ public class LoginActivity extends AppCompatActivity
             public void onClick(@NonNull View widget)
             {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                finish();
                 startActivity(intent);
             }
 
@@ -137,6 +140,7 @@ public class LoginActivity extends AppCompatActivity
                         {
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             mProgressBar.setVisibility(View.INVISIBLE);
+                            finish();
                             startActivity(intent);
                         }
                     }
