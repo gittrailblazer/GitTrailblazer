@@ -65,8 +65,9 @@ public class InitialActivity extends AppCompatActivity
                                     //authResult.getCredential().getAccessToken().
 
                                     // send user to main activity after successfully signing in with GitHub
-                                    Toast.makeText(InitialActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(InitialActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(InitialActivity.this, MainActivity.class);
+                                    finish();
                                     startActivity(intent);
 
                                 }
@@ -95,8 +96,9 @@ public class InitialActivity extends AppCompatActivity
                                 // authResult.getCredential().getAccessToken().
 
                                 // send user to main activity after successfully signing in with GitHub
-                                Toast.makeText(InitialActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(InitialActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(InitialActivity.this, MainActivity.class);
+                                finish();
                                 startActivity(intent);
                             }
                         })

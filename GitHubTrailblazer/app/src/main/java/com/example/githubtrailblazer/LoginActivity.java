@@ -68,11 +68,11 @@ public class LoginActivity extends AppCompatActivity
 
                 if(fFireBaseUser != null)
                 {
-                    Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
-                    Toast.makeText(LoginActivity.this, "Logout successful", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this, "Logout successful", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -100,8 +100,9 @@ public class LoginActivity extends AppCompatActivity
                                     //authResult.getCredential().getAccessToken().
 
                                     // send user to main activity after successfully signing in with GitHub
-                                    Toast.makeText(LoginActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(LoginActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    finish();
                                     startActivity(intent);
 
                                 }
@@ -130,8 +131,9 @@ public class LoginActivity extends AppCompatActivity
                                     // authResult.getCredential().getAccessToken().
 
                                     // send user to main activity after successfully signing in with GitHub
-                                    Toast.makeText(LoginActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(LoginActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    finish();
                                     startActivity(intent);
                                 }
                             })
