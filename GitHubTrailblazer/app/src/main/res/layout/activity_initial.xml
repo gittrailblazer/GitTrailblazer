@@ -32,6 +32,22 @@
         />
 
     <Button
+        android:id="@+id/initial_github_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/initial_register_btn"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/button_3"
+        android:padding="20dp"
+        android:textAllCaps="true"
+        android:textSize="18sp"
+        android:text="Continue with GitHub"
+        android:textColor="@android:color/white"
+        />
+
+    <Button
         android:id="@+id/initial_register_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,12 +55,12 @@
         android:layout_marginBottom="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:background="@drawable/button_2"
+        android:background="@drawable/button_1"
         android:padding="20dp"
         android:textAllCaps="true"
         android:textSize="18sp"
         android:text="Create Account"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         />
 
     <Button
@@ -56,12 +72,12 @@
         android:layout_marginBottom="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:background="@drawable/button_1"
+        android:background="@drawable/button_2"
         android:padding="20dp"
         android:textAllCaps="true"
         android:textSize="18sp"
         android:text="Login"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         />
 
 
