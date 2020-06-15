@@ -20,22 +20,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.OAuthProvider;
 
 public class LoginActivity extends AppCompatActivity
 {
     // define UI variables
     private EditText mEmail, mPassword;
-    private Button mLoginBtn;
+    private Button mGitHubBtn, mLoginBtn;
     private TextView mRegisterHere;
     private ProgressBar mProgressBar;
 
     // define Firebase variables
-    private FirebaseAuth fAuth;
-    private FirebaseAuth.AuthStateListener fAuthStateListener;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+    OAuthProvider.Builder provider;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -46,18 +51,20 @@ public class LoginActivity extends AppCompatActivity
         // assign UI variables to UI elements
         mEmail        = findViewById(R.id.login_email_et);
         mPassword     = findViewById(R.id.login_password_et);
+        mGitHubBtn    = findViewById(R.id.login_continue_with_git_btn);
         mLoginBtn     = findViewById(R.id.login_login_btn);
         mRegisterHere = findViewById(R.id.login_registerHere_tv);
         mProgressBar  = findViewById(R.id.login_progressBar_pb);
 
         // instantiate Firebase variables
-        fAuth              = FirebaseAuth.getInstance();
-        fAuthStateListener = new FirebaseAuth.AuthStateListener()
+        mAuth = FirebaseAuth.getInstance();
+        provider = OAuthProvider.newBuilder("github.com");
+        mAuthStateListener = new FirebaseAuth.AuthStateListener()
         {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth)
             {
-                FirebaseUser fFireBaseUser = fAuth.getCurrentUser();
+                FirebaseUser fFireBaseUser = mAuth.getCurrentUser();
 
                 if(fFireBaseUser != null)
                 {
@@ -69,6 +76,76 @@ public class LoginActivity extends AppCompatActivity
                 }
             }
         };
+
+        // on-click listener for registering a user with GitHub credentials
+        mGitHubBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Task<AuthResult> pendingResultTask = mAuth.getPendingAuthResult();
+                if (pendingResultTask != null)
+                {
+                    // There's something already here! Finish the sign-in for your user.
+                    pendingResultTask
+                            .addOnSuccessListener(new OnSuccessListener<AuthResult>()
+                            {
+                                @Override
+                                public void onSuccess(AuthResult authResult)
+                                {
+                                    // User is signed in.
+                                    // IdP data available in
+                                    //authResult.getAdditionalUserInfo().getProfile().
+                                    // The OAuth access token can also be retrieved:
+                                    //authResult.getCredential().getAccessToken().
+
+                                    // send user to main activity after successfully signing in with GitHub
+                                    Toast.makeText(LoginActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+
+                                }
+                            }).addOnFailureListener(new OnFailureListener()
+                    {
+                        @Override
+                        public void onFailure(@NonNull Exception e)
+                        {
+                            Toast.makeText(LoginActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                else
+                {
+                    mAuth
+                            .startActivityForSignInWithProvider(/* activity= */ LoginActivity.this, provider.build())
+                            .addOnSuccessListener( new OnSuccessListener<AuthResult>()
+                            {
+                                @Override
+                                public void onSuccess(AuthResult authResult)
+                                {
+                                    // User is signed in.
+                                    // IdP data available in
+                                    //authResult.getAdditionalUserInfo().getProfile();
+                                    // The OAuth access token can also be retrieved:
+                                    // authResult.getCredential().getAccessToken().
+
+                                    // send user to main activity after successfully signing in with GitHub
+                                    Toast.makeText(LoginActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                }
+                            })
+                            .addOnFailureListener( new OnFailureListener()
+                            {
+                                @Override
+                                public void onFailure(@NonNull Exception e)
+                                {
+                                    Toast.makeText(LoginActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
+            }
+        });
 
         // make clickable text for sending user to login activity
         String text = "Don't have an account? Register here!";
@@ -125,7 +202,7 @@ public class LoginActivity extends AppCompatActivity
                 }
 
                 // sign in with email and password
-                fAuth.signInWithEmailAndPassword(email, password)
+                mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>()
                 {
                     @Override
@@ -153,6 +230,6 @@ public class LoginActivity extends AppCompatActivity
     protected void onStart()
     {
         super.onStart();
-        fAuth.addAuthStateListener(fAuthStateListener);
+        mAuth.addAuthStateListener(mAuthStateListener);
     }
 }
