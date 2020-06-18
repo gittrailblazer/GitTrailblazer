@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:background="@drawable/bg_card" android:padding="@dimen/app_project_margin_md">
+        android:layout_marginStart="@dimen/app_project_margin_sm" android:layout_marginEnd="@dimen/app_project_margin_sm"
+        android:layout_marginTop="@dimen/app_project_margin_xs" android:layout_marginBottom="@dimen/app_project_margin_xs"-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAligned="false">
+        <ImageView
+                android:layout_width="40dp" android:layout_height="40dp"
+                android:src="@drawable/default_profile" android:id="@+id/projectCard__profilePic"/>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:layout_marginStart="@dimen/app_project_margin_md"
+                android:layout_weight="1" >
+            <TextView
+                    android:id="@+id/projectCard__name" android:text="@string/app_project_name_default"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:maxLines="1" android:ellipsize="end" />
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:baselineAligned="false">
+                <ImageView
+                        android:id="@+id/projectCard__langCirc" android:background="@drawable/bg_lang_circ"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"/>
+                <TextView
+                        android:id="@+id/projectCard__lang" android:text="@string/app_project_lang_default"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/app_project_margin_xs"/>
+            </LinearLayout>
+        </LinearLayout>
+        <ImageButton
+                android:layout_width="@dimen/app_project_iconEllipsis_w"
+                android:layout_height="@dimen/app_project_iconEllipsis_h"
+                app:srcCompat="@drawable/ellipsis_v_solid" android:layout_gravity="end"
+                android:id="@+id/projectCard__btnActions" android:background="@android:color/transparent"/>
+    </LinearLayout>
+    <TextView
+            android:id="@+id/projectCard__desc" android:text="@string/app_project_desc_default"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/app_project_margin_md" android:layout_marginBottom="@dimen/app_project_margin_md"
+            android:maxLines="3" android:ellipsize="end" />
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:baselineAligned="false">
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:gravity="center">
+            <ImageButton
+                    android:layout_width="@dimen/app_project_iconSquare" android:layout_height="@dimen/app_project_iconSquare"
+                    app:srcCompat="@drawable/arrow_alt_circle_up"
+                    android:id="@+id/projectCard__btnUpvote" android:background="@android:color/transparent"/>
+            <TextView
+                    android:id="@+id/projectCard__rating" android:text="@string/app_project_rating_default" android:textSize="@dimen/app_project_value"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/app_project_margin_sm" android:layout_marginEnd="@dimen/app_project_margin_sm" />
+            <ImageButton
+                    android:layout_width="@dimen/app_project_iconSquare" android:layout_height="@dimen/app_project_iconSquare"
+                    app:srcCompat="@drawable/arrow_alt_circle_down"
+                    android:id="@+id/projectCard__btnDownvote" android:background="@android:color/transparent"/>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:gravity="center">
+            <ImageButton
+                    android:layout_width="@dimen/app_project_iconComment_w" android:layout_height="@dimen/app_project_iconComment_h"
+                    app:srcCompat="@drawable/comment_alt_solid"
+                    android:id="@+id/projectCard__btnComment" android:background="@android:color/transparent"/>
+            <TextView
+                    android:id="@+id/projectCard__comments" android:text="@string/app_project_comments_default" android:textSize="@dimen/app_project_value"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/app_project_margin_sm" />
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:gravity="center">
+            <ImageButton
+                    android:layout_width="@dimen/app_project_iconStar_w" android:layout_height="@dimen/app_project_iconStar_h"
+                    app:srcCompat="@drawable/star_solid"
+                    android:id="@+id/projectCard__btnStar" android:background="@android:color/transparent"/>
+            <TextView
+                    android:id="@+id/projectCard__stars" android:text="@string/app_project_stars_default" android:textSize="@dimen/app_project_value"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/app_project_margin_sm" />
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:gravity="center">
+            <ImageButton
+                    android:layout_width="@dimen/app_project_iconSitemap_w" android:layout_height="@dimen/app_project_iconSitemap_h"
+                    app:srcCompat="@drawable/sitemap_solid"
+                    android:id="@+id/projectCard__btnFork" android:background="@android:color/transparent"/>
+            <TextView
+                    android:id="@+id/projectCard__forks" android:text="@string/app_project_forks_default" android:textSize="@dimen/app_project_value"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/app_project_margin_sm" />
+        </LinearLayout>
+    </LinearLayout>
+</merge>

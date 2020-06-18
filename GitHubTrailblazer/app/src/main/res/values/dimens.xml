@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="app_project_iconSquare">15dp</dimen>
+    <dimen name="app_project_iconComment_w">14dp</dimen>
+    <dimen name="app_project_iconComment_h">14dp</dimen>
+    <dimen name="app_project_iconSitemap_w">15dp</dimen>
+    <dimen name="app_project_iconSitemap_h">12dp</dimen>
+    <dimen name="app_project_iconEllipsis_w">5.625dp</dimen>
+    <dimen name="app_project_iconEllipsis_h">15dp</dimen>
+    <dimen name="app_project_iconStar_w">15dp</dimen>
+    <dimen name="app_project_iconStar_h">13.333dp</dimen>
+    <dimen name="app_project_value">15sp</dimen>
+    <dimen name="app_project_margin_xs">3dp</dimen>
+    <dimen name="app_project_margin_sm">5dp</dimen>
+    <dimen name="app_project_margin_md">10dp</dimen>
+    <dimen name="app_project_iconLang">12dp</dimen>
+</resources>
