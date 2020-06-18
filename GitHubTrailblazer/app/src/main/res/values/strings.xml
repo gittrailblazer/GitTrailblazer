@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">GitHubTrailblazer</string>
+    <string name="app_project_name_default">Project</string>
+    <string name="app_project_lang_default">Language</string>
+    <string name="app_project_desc_default">Missing or no description.</string>
+    <string name="app_project_rating_default">0</string>
+    <string name="app_project_comments_default">0</string>
+    <string name="app_project_stars_default">0</string>
+    <string name="app_project_forks_default">0</string>
 </resources>
