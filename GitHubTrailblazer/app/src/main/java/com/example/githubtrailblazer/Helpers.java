@@ -14,7 +14,7 @@ public class Helpers {
      * Get raw JSON, map to corresponding class instance(s)
      * @param context - the context
      * @param rawJsonId - the raw JSON resource id
-     * @param c - the class
+     * @param t - the type
      * @return the resulting object
      */
     public static Object fromRawJSON(Context context, int rawJsonId, Type t) {
