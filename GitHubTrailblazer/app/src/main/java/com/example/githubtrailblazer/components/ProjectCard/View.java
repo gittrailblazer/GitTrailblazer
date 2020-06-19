@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.widget.*;
@@ -33,15 +34,16 @@ public class View extends LinearLayout {
     };
     private final HashMap<Integer, ImageButton> refs_btn = new HashMap<>();
     private final ImageView profilePic;
+    private final ImageView languageColor;
     private String profilePicUrl = "";
 
     // colors
-    int colorUnselected;
-    int colorStarSelected;
-    int colorCommentSelected;
-    int colorUpvoteSelected;
-    int colorDownvoteSelected;
-    int colorForkSelected;
+    private int colorUnselected;
+    private int colorStarSelected;
+    private int colorCommentSelected;
+    private int colorUpvoteSelected;
+    private int colorDownvoteSelected;
+    private int colorForkSelected;
 
     /**
      * DownloadProfileTask class
@@ -129,6 +131,7 @@ public class View extends LinearLayout {
 
         // profile photo ref
         profilePic = view.findViewById(R.id.projectCard__profilePic);
+        languageColor = view.findViewById(R.id.projectCard__langCirc);
     }
 
     /**
@@ -151,6 +154,7 @@ public class View extends LinearLayout {
         refs_btn.get(R.id.projectCard__btnComment).setImageTintList(data.isCommented ? ColorStateList.valueOf(colorCommentSelected) : ColorStateList.valueOf(colorUnselected));
         refs_btn.get(R.id.projectCard__btnStar).setImageTintList(data.isStarred ? ColorStateList.valueOf(colorStarSelected) : ColorStateList.valueOf(colorUnselected));
         refs_btn.get(R.id.projectCard__btnFork).setImageTintList(data.isForked ? ColorStateList.valueOf(colorForkSelected) : ColorStateList.valueOf(colorUnselected));
+        languageColor.getBackground().setColorFilter(model.getGitHubColor(data.language), PorterDuff.Mode.SRC_ATOP);
 
         // onReady callback
         if (!profilePicUrl.equals(data.profilePicUrl)) {

@@ -1,6 +1,14 @@
 package com.example.githubtrailblazer.components.ProjectCard;
 
+import android.content.Context;
+import android.graphics.Color;
+import com.example.githubtrailblazer.Helpers;
+import com.example.githubtrailblazer.R;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -9,6 +17,15 @@ import java.util.Iterator;
 public class Model {
     ArrayList<View> views = new ArrayList<>();
     ProjectCard.Data data;
+    static HashMap<String, String> ghColors;
+
+    Model(Context context) {
+        // init singleton color map for project cards
+        if (Model.ghColors == null) {
+            Type mapType = new TypeToken<HashMap<String, String>>(){}.getType();
+            ghColors = (HashMap<String, String>) Helpers.fromRawJSON(context, R.raw.github_lang_colors, mapType);
+        }
+    }
 
     /**
      * Add a view
@@ -105,6 +122,16 @@ public class Model {
             updateViews();
         }
         return this;
+    }
+
+    /**
+     * Map language to GitHub color
+     * @param language - the language
+     * @return the GitHub color
+     */
+    int getGitHubColor(String language) {
+        String hex = ghColors.get(language);
+        return hex == null ? R.color.colorPrimary : Color.parseColor(hex);
     }
 
     /**

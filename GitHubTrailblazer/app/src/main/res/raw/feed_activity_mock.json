@@ -71,7 +71,7 @@
   },
   {
     "name":  "some-user-5/some-random-project-5",
-    "language":  "C++",
+    "language":  "SomeRandomLang",
     "description":  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse aliquet ipsum eu lacus porttitor cursus. Proin eget nibh tellus. Etiam enim odio, tincidunt eget bibendum quis, vehicula et odio. Donec luctus blandit arcu at vulputate. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nulla ante dui, hendrerit ut odio non, ornare auctor orci. Morbi lacinia velit ac eros placerat dignissim. Donec volutpat, elit quis aliquet sagittis, massa dolor ultricies risus, et mollis arcu turpis non turpis. Nunc tincidunt dui non lorem malesuada pharetra.",
     "profilePicUrl":  "",
     "rating":  143,

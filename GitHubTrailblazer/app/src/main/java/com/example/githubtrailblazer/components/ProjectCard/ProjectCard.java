@@ -7,7 +7,7 @@ import android.content.Context;
  */
 public class ProjectCard {
     View view;
-    Model model = new Model();
+    Model model;
 
     /**
      * ProjectCard.Data class
@@ -70,6 +70,7 @@ public class ProjectCard {
      * @param context - the context
      */
     public ProjectCard(Context context, int index, Data data, IOnReadyCB onReadyCB) {
+        model = new Model(context);
         view = new View(context, index, model, onReadyCB);
         model.setData(data);
     }
