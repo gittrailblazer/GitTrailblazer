@@ -1,0 +1,44 @@
+# Adapted from https://github.com/mayankrastogi/github-graphql-search
+query searchRepos {
+    search(type: REPOSITORY, query: "topic:browser-fingerprinting", first: 10) {
+        pageInfo {
+            hasNextPage
+            endCursor
+        }
+        nodes {
+            ... on Repository {
+                name
+                nameWithOwner
+                description
+                watchers {
+                    totalCount
+                }
+                stargazers {
+                    totalCount
+                }
+                forkCount
+                collaborators {
+                    edges {
+                        node {
+                            id
+                        }
+                    }
+                }
+                languages(first: 2) {
+                    nodes {
+                        name
+                    }
+                }
+                repositoryTopics(first: 5) {
+                    nodes {
+                        topic {
+                            name
+                        }
+                    }
+                }
+                url
+            }
+        }
+    }
+}
+
