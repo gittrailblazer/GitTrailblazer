@@ -1,5 +1,14 @@
+plugins {
+    id("com.apollographql.apollo").version("2.2.0")
+}
+
+repositories {
+    jcenter()
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+
 android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -10,7 +19,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.githubtrailblazer"
-        minSdkVersion 23
+        minSdkVersion 26
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -29,6 +38,19 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation("com.apollographql.apollo:apollo-runtime:2.2.0")
+
+    // Following lines are from https://github.com/apollographql/apollo-android; I left the comments
+    // to signal that we are unsure if we want these additional dependencies.
+    // optional: if you want to use the normalized cache
+    implementation("com.apollographql.apollo:apollo-normalized-cache-sqlite:2.2.0")
+    // optional: for coroutines support
+    implementation("com.apollographql.apollo:apollo-coroutines-support:2.2.0")
+    // optional: for RxJava3 support
+    implementation("com.apollographql.apollo:apollo-rx3-support:2.2.0")
+    // optional: if you just want the generated models and parser write your own HTTP code/cache code
+    implementation("com.apollographql.apollo:apollo-api:2.2.0")
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
