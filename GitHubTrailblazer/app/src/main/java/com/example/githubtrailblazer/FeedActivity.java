@@ -1,9 +1,10 @@
 package com.example.githubtrailblazer;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.LinearLayout;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.githubtrailblazer.components.ProjectCard.ProjectCard;
 import com.example.githubtrailblazer.components.ProjectCard.View;
 import com.google.gson.Gson;
@@ -16,6 +17,7 @@ import java.io.*;
 public class FeedActivity extends AppCompatActivity {
     /**
      * Handle feed activity creation
+     *
      * @param savedInstanceState - the saved instance state bundle
      */
     @Override
