@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/secondary4">
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical">
+        <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Popular" android:id="@+id/button"
+                android:background="@color/primary1"
+                android:drawableLeft="@drawable/fire_solid"
+                android:paddingVertical="5dp"
+                android:paddingHorizontal="10dp"
+                android:drawablePadding="5dp"
+                android:textColor="@color/secondary5"/>
+        <HorizontalScrollView
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp">
+            <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/feed__tags">
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
+    <ScrollView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/feed__list">
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

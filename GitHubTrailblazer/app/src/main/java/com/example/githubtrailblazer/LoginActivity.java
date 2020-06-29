@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity
 
                                     // send user to main activity after successfully signing in with GitHub
                                     //Toast.makeText(LoginActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    Intent intent = new Intent(LoginActivity.this, DrawerActivity.class);
                                     finish();
                                     startActivity(intent);
 
@@ -132,7 +132,7 @@ public class LoginActivity extends AppCompatActivity
 
                                     // send user to main activity after successfully signing in with GitHub
                                     //Toast.makeText(LoginActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    Intent intent = new Intent(LoginActivity.this, DrawerActivity.class);
                                     finish();
                                     startActivity(intent);
                                 }
@@ -217,7 +217,7 @@ public class LoginActivity extends AppCompatActivity
                         }
                         else
                         {
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, DrawerActivity.class);
                             mProgressBar.setVisibility(View.INVISIBLE);
                             finish();
                             startActivity(intent);

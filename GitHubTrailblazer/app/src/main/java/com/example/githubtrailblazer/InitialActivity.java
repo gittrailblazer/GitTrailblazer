@@ -66,7 +66,7 @@ public class InitialActivity extends AppCompatActivity
 
                                     // send user to main activity after successfully signing in with GitHub
                                     //Toast.makeText(InitialActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(InitialActivity.this, MainActivity.class);
+                                    Intent intent = new Intent(InitialActivity.this, DrawerActivity.class);
                                     finish();
                                     startActivity(intent);
 
@@ -97,7 +97,7 @@ public class InitialActivity extends AppCompatActivity
 
                                 // send user to main activity after successfully signing in with GitHub
                                 //Toast.makeText(InitialActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(InitialActivity.this, MainActivity.class);
+                                Intent intent = new Intent(InitialActivity.this, DrawerActivity.class);
                                 finish();
                                 startActivity(intent);
                             }

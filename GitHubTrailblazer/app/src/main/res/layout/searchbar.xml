@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge  xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:id="@+id/searchbar_container"
+            android:background="@drawable/bg_search"
+            android:layout_marginVertical="10dp"
+            >
+        <EditText
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:drawableLeft="@drawable/ic_search_black_24dp"
+                android:paddingHorizontal="5dp"
+                android:textColor="@color/secondary1"
+                android:inputType="text"
+                android:maxLines="1"
+                android:id="@+id/searchbar"
+                android:scrollHorizontally="true"
+                android:ellipsize="end"
+                android:background="@android:color/transparent"
+                android:imeOptions="actionGo"/>
+    </LinearLayout>
+</merge>

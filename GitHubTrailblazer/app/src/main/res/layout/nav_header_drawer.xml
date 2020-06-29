@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary1"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="20dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+        <ImageView
+                android:layout_width="40dp" android:layout_height="40dp"
+                android:src="@drawable/default_profile"
+                android:contentDescription="@string/nav_header_desc"
+                android:id="@+id/sideNav__profilePic"
+                android:layout_weight="0"/>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/app_sideNav_margin_lg"
+                android:layout_marginRight="@dimen/app_sideNav_margin_lg"
+                android:gravity="center_vertical"
+                android:layout_weight="1">
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="\@alipianu"
+                    android:textSize="20sp"
+                    android:textColor="@color/secondary5"
+                    android:id="@+id/sideNav__txtAccount"
+                    android:ellipsize="end"
+                    android:maxLines="1"/>
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Alexander George Lipianu"
+                    android:id="@+id/sideNav__txtDisplayName"
+                    android:textColor="@color/secondary4"
+                    android:textSize="15sp"
+                    android:ellipsize="end"
+                    android:maxLines="1"/>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="vertical" android:gravity="center_vertical"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_weight="0">
+            <ImageButton
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/github_brands" android:layout_gravity="end"
+                    android:id="@+id/sideNav__btnGithub" android:background="@android:color/transparent"
+                    android:paddingBottom="@dimen/app_sideNav_margin_sm"/>
+            <ImageButton
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/cog_solid" android:layout_gravity="end"
+                    android:id="@+id/sideNav__btnSettings" android:background="@android:color/transparent"
+                    android:paddingTop="@dimen/app_sideNav_margin_sm"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
