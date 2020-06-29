@@ -52,7 +52,6 @@ dependencies {
     // optional: if you just want the generated models and parser write your own HTTP code/cache code
     implementation("com.apollographql.apollo:apollo-api:2.2.0")
 
-    implementation 'com.google.android:flexbox:2.0.1'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     //noinspection GradleCompatible
