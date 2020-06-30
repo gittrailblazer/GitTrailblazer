@@ -176,7 +176,7 @@ public class RegisterActivity extends AppCompatActivity
                             fStore.collection("Users").add(user);
 
                             // send user to main activity
-                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                            Intent intent = new Intent(RegisterActivity.this, DrawerActivity.class);
                             mProgressBar.setVisibility(View.INVISIBLE);
                             finish();
                             startActivity(intent);

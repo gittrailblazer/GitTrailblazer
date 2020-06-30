@@ -131,7 +131,7 @@ public class Model {
      */
     int getGitHubColor(String language) {
         String hex = ghColors.get(language);
-        return hex == null ? R.color.colorPrimary : Color.parseColor(hex);
+        return hex == null ? R.color.primary1 : Color.parseColor(hex);
     }
 
     /**

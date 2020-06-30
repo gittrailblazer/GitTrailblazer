@@ -7,4 +7,9 @@
     <string name="app_project_comments_default">0</string>
     <string name="app_project_stars_default">0</string>
     <string name="app_project_forks_default">0</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="menu_explore">Explore</string>
+    <string name="menu_saved">Saved Repositories</string>
+    <string name="menu_myrepos">My Repositories</string>
+    <string name="menu_settings">Settings</string>
 </resources>
