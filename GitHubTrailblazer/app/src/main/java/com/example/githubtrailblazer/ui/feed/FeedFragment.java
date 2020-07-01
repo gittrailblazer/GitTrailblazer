@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
-import com.example.githubtrailblazer.GitHubConnector;
+import com.example.githubtrailblazer.ghapi.GitHubConnector;
 import com.example.githubtrailblazer.Helpers;
 import com.example.githubtrailblazer.R;
 import com.example.githubtrailblazer.SearchReposQuery;
@@ -125,8 +125,8 @@ public class FeedFragment extends Fragment {
             });
         }
 
-        // sample GraphQL query from /issues/10
-        queryHelloWorld();
+//        // sample GraphQL query from /issues/10
+//        queryHelloWorld();
 
         return view;
     }
