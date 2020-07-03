@@ -21,7 +21,7 @@ public class GHUserBasicData {
      * Query the GitHub API for the name, username, and avatar url of the user.
      */
     public void queryAPI(GHUserBasicDataCallback callback) {
-        GitHubConnector.initialize().query(
+        GitHubConnector.client.query(
                 NameUsernameAvatarQuery.builder().build())
                 .enqueue(new ApolloCall.Callback<NameUsernameAvatarQuery.Data>() {
                     @Override

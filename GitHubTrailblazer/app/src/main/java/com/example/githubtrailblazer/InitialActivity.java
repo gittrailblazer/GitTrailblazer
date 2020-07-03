@@ -9,13 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.githubtrailblazer.ghapi.GitHubConnector;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.OAuthProvider;
+import com.google.firebase.auth.*;
 
 public class InitialActivity extends AppCompatActivity
 {
@@ -60,9 +58,13 @@ public class InitialActivity extends AppCompatActivity
                                 {
                                     // User is signed in.
                                     // IdP data available in
-                                    //authResult.getAdditionalUserInfo().getProfile().
+                                    //authResult.getAdditionalUserInfo().getProfile();
                                     // The OAuth access token can also be retrieved:
-                                    //authResult.getCredential().getAccessToken().
+                                    // authResult.getCredential().getAccessToken().
+
+                                    // initialize connector with oauth access token
+                                    String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
+                                    GitHubConnector.initialize(accessToken);
 
                                     // send user to main activity after successfully signing in with GitHub
                                     //Toast.makeText(InitialActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
@@ -94,6 +96,10 @@ public class InitialActivity extends AppCompatActivity
                                 //authResult.getAdditionalUserInfo().getProfile();
                                 // The OAuth access token can also be retrieved:
                                 // authResult.getCredential().getAccessToken().
+
+                                // initialize connector with oauth access token
+                                String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
+                                GitHubConnector.initialize(accessToken);
 
                                 // send user to main activity after successfully signing in with GitHub
                                 //Toast.makeText(InitialActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();

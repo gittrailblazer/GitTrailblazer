@@ -19,14 +19,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.githubtrailblazer.ghapi.GitHubConnector;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.OAuthProvider;
+import com.google.firebase.auth.*;
 
 public class LoginActivity extends AppCompatActivity
 {
@@ -95,16 +93,19 @@ public class LoginActivity extends AppCompatActivity
                                 {
                                     // User is signed in.
                                     // IdP data available in
-                                    //authResult.getAdditionalUserInfo().getProfile().
+                                    //authResult.getAdditionalUserInfo().getProfile();
                                     // The OAuth access token can also be retrieved:
-                                    //authResult.getCredential().getAccessToken().
+                                    // authResult.getCredential().getAccessToken().
+
+                                    // initialize connector with oauth access token
+                                    String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
+                                    GitHubConnector.initialize(accessToken);
 
                                     // send user to main activity after successfully signing in with GitHub
-                                    //Toast.makeText(LoginActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(InitialActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(LoginActivity.this, DrawerActivity.class);
                                     finish();
                                     startActivity(intent);
-
                                 }
                             }).addOnFailureListener(new OnFailureListener()
                     {
@@ -130,8 +131,12 @@ public class LoginActivity extends AppCompatActivity
                                     // The OAuth access token can also be retrieved:
                                     // authResult.getCredential().getAccessToken().
 
+                                    // initialize connector with oauth access token
+                                    String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
+                                    GitHubConnector.initialize(accessToken);
+
                                     // send user to main activity after successfully signing in with GitHub
-                                    //Toast.makeText(LoginActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(InitialActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(LoginActivity.this, DrawerActivity.class);
                                     finish();
                                     startActivity(intent);
