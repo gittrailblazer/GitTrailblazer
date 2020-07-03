@@ -7,23 +7,22 @@ import okhttp3.Request;
 
 public class GitHubConnector {
     private static final String ENDPOINT_URL = "https://api.github.com/graphql";
-    private static String authHeader = "Bearer 08971b743da22c51068e53342483f2a39c25f153";
+    public static ApolloClient client;
 
-    public static ApolloClient initialize() {
+    public static void initialize(String accessToken) {
         // This is a singleton HTTP client.
         // We use this to handle our requests.
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
                     Request original = chain.request();
                     Request.Builder builder = original.newBuilder().method(original.method(), original.body());
-                    builder.header("Authorization", authHeader);
+                    builder.header("Authorization", "Bearer " + accessToken);
                     builder.header("content-type", "application/json");
                     return chain.proceed(builder.build());
                 })
                 .build();
 
-        return ApolloClient.builder()
+        client = ApolloClient.builder()
                 .serverUrl(ENDPOINT_URL)
                 .okHttpClient(okHttpClient)
                 .build();

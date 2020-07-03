@@ -156,7 +156,7 @@ public class FeedFragment extends Fragment {
      * Make a hello world query and log the output.
      */
     private void queryHelloWorld() {
-        GitHubConnector.initialize().query(
+        GitHubConnector.client.query(
                 SearchReposQuery.builder().searchString("hello world").build())
                 .enqueue(new ApolloCall.Callback<SearchReposQuery.Data>() {
                     @Override
