@@ -58,9 +58,9 @@ public class InitialActivity extends AppCompatActivity
                                 {
                                     // User is signed in.
                                     // IdP data available in
-                                    //authResult.getAdditionalUserInfo().getProfile();
+                                    // authResult.getAdditionalUserInfo().getProfile();
                                     // The OAuth access token can also be retrieved:
-                                    // authResult.getCredential().getAccessToken().
+                                    // authResult.getCredential().getAccessToken();
 
                                     // initialize connector with oauth access token
                                     String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
@@ -93,9 +93,9 @@ public class InitialActivity extends AppCompatActivity
                             {
                                 // User is signed in.
                                 // IdP data available in
-                                //authResult.getAdditionalUserInfo().getProfile();
+                                // authResult.getAdditionalUserInfo().getProfile();
                                 // The OAuth access token can also be retrieved:
-                                // authResult.getCredential().getAccessToken().
+                                // authResult.getCredential().getAccessToken();
 
                                 // initialize connector with oauth access token
                                 String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
