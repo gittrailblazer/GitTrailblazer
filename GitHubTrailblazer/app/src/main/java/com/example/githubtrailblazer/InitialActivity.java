@@ -31,7 +31,7 @@ public class InitialActivity extends AppCompatActivity
         setContentView(R.layout.activity_initial);
 
         // assign UI variables to UI elements
-        mGitHubBtn = findViewById(R.id.initial_github_btn);
+        mGitHubBtn = findViewById(R.id.github_login_btn);
         mRegisterBtn = findViewById(R.id.initial_register_btn);
         mLoginBtn = findViewById(R.id.initial_login_btn);
 
