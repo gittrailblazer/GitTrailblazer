@@ -1,4 +1,4 @@
-package com.example.githubtrailblazer;
+package com.example.githubtrailblazer.ghapi;
 
 import com.apollographql.apollo.ApolloClient;
 
@@ -7,7 +7,7 @@ import okhttp3.Request;
 
 public class GitHubConnector {
     private static final String ENDPOINT_URL = "https://api.github.com/graphql";
-    private static String authHeader = "Bearer fde64c268709df3ac2c35f543bbb8fd4fc684e09";
+    private static String authHeader = "Bearer 08971b743da22c51068e53342483f2a39c25f153";
 
     public static ApolloClient initialize() {
         // This is a singleton HTTP client.
