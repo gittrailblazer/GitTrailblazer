@@ -10,7 +10,7 @@
 
 
     <TextView
-        android:id="@+id/initial_app_name_tv"
+        android:id="@+id/title_git_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -19,21 +19,19 @@
         android:text="Git"
         android:textStyle="bold"
         android:textSize="60sp"
-        android:textColor="@android:color/white"
-        />
+        android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/initial_app_name_2_tv"
+        android:id="@+id/title_trailblazer_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/initial_app_name_tv"
+        android:layout_below="@+id/title_git_txt"
         android:layout_marginTop="0dp"
         android:layout_marginLeft="65dp"
         android:text="Trailblazer"
         android:textStyle="bold"
         android:textSize="60sp"
-        android:textColor="@android:color/white"
-        />
+        android:textColor="@android:color/white" />
 
     <Button
         android:id="@+id/github_login_btn"
@@ -53,45 +51,35 @@
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark" />
 
-
     <Button
-        android:id="@+id/initial_register_btn"
+        android:id="@+id/email_login_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/initial_login_btn"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_below="@+id/github_login_btn"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_gravity="center"
         android:background="@drawable/button_1"
-        android:padding="20dp"
+        android:drawableRight="@drawable/email_logo_small"
+        android:padding="13dp"
+        android:gravity="center"
         android:textAllCaps="true"
         android:textSize="18sp"
-        android:text="Create Account"
-        android:textColor="@android:color/black"
-        />
+        android:text="Sign in with Email"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark" />
 
-    <Button
-        android:id="@+id/initial_login_btn"
+    <TextView
+        android:id="@+id/create_account_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/button_2"
-        android:padding="20dp"
-        android:textAllCaps="true"
+        android:layout_below="@+id/email_login_btn"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="> Create Account"
+        android:textStyle="bold"
         android:textSize="18sp"
-        android:text="Login"
-        android:textColor="@android:color/white"
-        />
-
-
-
-
-
-
-    
+        android:textColor="@android:color/white" />
 </RelativeLayout>
 
