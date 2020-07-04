@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.githubtrailblazer.ghapi.GitHubConnector;
@@ -19,6 +21,7 @@ public class InitialActivity extends AppCompatActivity
 {
     // define UI variables
     private Button mGitHubBtn, mEmailBtn;
+    private TextView mCreateAccount;
 
     // define Firebase authentication variables
     FirebaseAuth mAuth;
@@ -33,6 +36,7 @@ public class InitialActivity extends AppCompatActivity
         // assign UI variables to UI elements
         mGitHubBtn = findViewById(R.id.github_login_btn);
         mEmailBtn = findViewById(R.id.email_login_btn);
+        mCreateAccount = findViewById(R.id.text_view_create_account);
 
         // instantiate Firebase authentication variables
         mAuth = FirebaseAuth.getInstance();
@@ -127,7 +131,19 @@ public class InitialActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        // on-click listener for sending user to register activity
+        mCreateAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(InitialActivity.this, RegisterActivity.class);
+                finish();
+                startActivity(intent);
+            }
+        });
     }
+
+
 
     @Override
     public void onStart()
