@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.*;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class InitialActivity extends AppCompatActivity
 {
@@ -66,6 +67,9 @@ public class InitialActivity extends AppCompatActivity
                                     String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
                                     GitHubConnector.initialize(accessToken);
 
+                                    User user = new User(accessToken);
+                                    FirebaseFirestore.getInstance().collection("Users").add(user);
+
                                     // send user to main activity after successfully signing in with GitHub
                                     //Toast.makeText(InitialActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(InitialActivity.this, DrawerActivity.class);
@@ -100,6 +104,9 @@ public class InitialActivity extends AppCompatActivity
                                 // initialize connector with oauth access token
                                 String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
                                 GitHubConnector.initialize(accessToken);
+
+                                User user = new User(accessToken);
+                                FirebaseFirestore.getInstance().collection("Users").add(user);
 
                                 // send user to main activity after successfully signing in with GitHub
                                 //Toast.makeText(InitialActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();

@@ -2,6 +2,7 @@ package com.example.githubtrailblazer;
 
 public class User {
     private String fullName, email;
+    private String GithubToken;
 
     public User ()
     {
@@ -12,6 +13,11 @@ public class User {
     {
         this.fullName = fullName;
         this.email = email;
+    }
+
+    public User(String GithubToken)
+    {
+        this.GithubToken = GithubToken;
     }
 
     public String getFullName()
@@ -34,12 +40,24 @@ public class User {
         this.email = email;
     }
 
+    public String getGithubToken() { return  GithubToken; }
+
+    public void setGithubToken(String newToken) { this.GithubToken = newToken; }
+
     @Override
     public String toString()
     {
-        return "User{" +
-                "fullName='" + fullName + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        if(fullName != null) {
+            return "User{" +
+                    "fullName='" + fullName + '\'' +
+                    ", email='" + email + '\'' +
+                    '}';
+        }
+        else
+        {
+            return "User{" +
+                    "GithubToken='" + GithubToken + '\'' +
+                    '}';
+        }
     }
 }
