@@ -113,7 +113,7 @@
         android:textColor="@color/secondary5" />
 
     <ProgressBar
-        android:id="@+id/login_progressBar_pb"
+        android:id="@+id/progress_bar_sign_in"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

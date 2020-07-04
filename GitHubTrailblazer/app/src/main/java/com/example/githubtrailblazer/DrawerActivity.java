@@ -59,26 +59,34 @@ public class DrawerActivity extends AppCompatActivity {
         View hView = navigationView.getHeaderView(0);
         hView.setPadding(0, getStatusBarHeight(this), 0, 0);
 
-        // get user details from the GitHub API and update drawer
-        GHUserBasicData basicData = new GHUserBasicData();
-        basicData.queryAPI(new GHUserBasicData.GHUserBasicDataCallback() {
-            @Override
-            public void setData(String name, String username, String avatarUrl) {
-                ((TextView) hView.findViewById(R.id.sideNav__txtAccount)).setText(username);
-                ((TextView) hView.findViewById(R.id.sideNav__txtDisplayName)).setText(name);
-                ImageView profilePicView = (ImageView) hView.findViewById(R.id.sideNav__profilePic);
-                // Fetch the profile pic and update the imageView asynchronously.
-                Handler uiHandler = new Handler(Looper.getMainLooper());
-                uiHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Picasso.get()
-                                .load(avatarUrl)
-                                .into(profilePicView);
-                    }
-                });
-            }
-        });
+        // if user signed in with Email
+        if(LoginActivity.emailFlag) {
+            // TO DO: Display user's full name, email, and default image
+        }
+        // if user signed in with GitHub
+        else {
+            // get user details from the GitHub API and update drawer
+            GHUserBasicData basicData = new GHUserBasicData();
+            basicData.queryAPI(new GHUserBasicData.GHUserBasicDataCallback() {
+                @Override
+                public void setData(String name, String username, String avatarUrl) {
+                    ((TextView) hView.findViewById(R.id.sideNav__txtAccount)).setText(username);
+                    ((TextView) hView.findViewById(R.id.sideNav__txtDisplayName)).setText(name);
+                    ImageView profilePicView = (ImageView) hView.findViewById(R.id.sideNav__profilePic);
+                    // Fetch the profile pic and update the imageView asynchronously.
+                    Handler uiHandler = new Handler(Looper.getMainLooper());
+                    uiHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Picasso.get()
+                                    .load(avatarUrl)
+                                    .into(profilePicView);
+                        }
+                    });
+                }
+            });
+        }
+
 
         // add onclick listener of settings, mimic nav menu item
         hView.findViewById(R.id.sideNav__btnSettings).setOnClickListener(new View.OnClickListener() {
