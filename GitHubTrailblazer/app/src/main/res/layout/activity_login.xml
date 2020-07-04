@@ -5,113 +5,124 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/stars"
+    android:background="?attr/colorPrimary"
     tools:context=".LoginActivity">
 
-
-
-    <Button
-        android:id="@+id/login_continue_with_git_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/button_3"
-        android:padding="15dp"
-        android:textAllCaps="true"
-        android:textSize="18sp"
-        android:text="Log in with GitHub"
-        android:textColor="@android:color/white"
-        />
-
     <TextView
-        android:id="@+id/login_login_with_email_tv"
+        android:id="@+id/title_git_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/login_continue_with_git_btn"
-        android:text="or"
-        android:textSize="16sp"
-        android:textColor="@android:color/white"
-        />
-
-    <EditText
-        android:id="@+id/login_email_et"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/login_login_with_email_tv"
-        android:background="@drawable/button_2"
-        android:padding="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp"
-        android:hint="Email"
-        android:inputType="text"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white"
-        android:textSize="18sp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginLeft="@dimen/_25sdp"
+        android:text="Git"
         android:textStyle="bold"
-        />
-
-    <EditText
-        android:id="@+id/login_password_et"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/login_email_et"
-        android:background="@drawable/button_2"
-        android:padding="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        />
-
-    <Button
-        android:id="@+id/login_login_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/login_password_et"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/button_1"
-        android:padding="15dp"
-        android:textAllCaps="true"
-        android:textSize="18sp"
-        android:text="Login"
-        android:textColor="@android:color/black"
-        />
+        android:textSize="@dimen/_50ssp"
+        android:textColor="@color/secondary5" />
 
     <TextView
-        android:id="@+id/login_registerHere_tv"
+        android:id="@+id/title_trailblazer_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_git_txt"
+        android:layout_marginLeft="@dimen/_50sdp"
+        android:text="Trailblazer"
+        android:textStyle="bold"
+        android:textSize="@dimen/_50ssp"
+        android:textColor="@color/secondary5" />
+
+    <EditText
+        android:id="@+id/edit_text_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/login_login_btn"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginLeft="@dimen/_30sdp"
+        android:layout_marginRight="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_below="@+id/title_trailblazer_txt"
+        android:hint=" Email"
+        android:textSize="@dimen/_15sdp"
+        android:textColorHint="@color/secondary6"
+        android:textColor="@color/secondary5"
+        android:drawableStart="@drawable/ic_baseline_email_24"
+        android:drawableLeft="@drawable/ic_baseline_email_24"
+        android:drawablePadding="@dimen/_5sdp"
+        android:backgroundTint="@color/secondary6"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/edit_text_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_30sdp"
+        android:layout_marginRight="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_below="@+id/edit_text_email"
+        android:hint=" Password"
+        android:textSize="@dimen/_15sdp"
+        android:textColorHint="@color/secondary6"
+        android:textColor="@color/secondary5"
+        android:drawableStart="@drawable/ic_baseline_vpn_key_24"
+        android:drawableLeft="@drawable/ic_baseline_vpn_key_24"
+        android:drawablePadding="@dimen/_5sdp"
+        android:backgroundTint="@color/secondary6"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/text_view_forgot_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_text_password"
+        android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="Don't have an account? Register here!"
-        android:textSize="18sp"
-        android:textColor="@android:color/white"
-        />
+        android:text="> Forgot my password"
+        android:textStyle="bold"
+        android:textSize="@dimen/_15sdp"
+        android:textColor="@color/secondary5" />
+
+    <Button
+        android:id="@+id/btn_sign_in"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_view_forgot_password"
+        android:layout_marginLeft="@dimen/_30sdp"
+        android:layout_marginRight="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_gravity="center"
+        android:background="@drawable/button_1"
+        android:padding="@dimen/_10sdp"
+        android:gravity="center"
+        android:textAllCaps="false"
+        android:textSize="@dimen/_18ssp"
+        android:text="Sign In"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark" />
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_sign_in"
+        android:layout_marginLeft="@dimen/_30sdp"
+        android:layout_marginRight="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_gravity="center"
+        android:background="@drawable/button_2"
+        android:padding="@dimen/_10sdp"
+        android:gravity="center"
+        android:textAllCaps="false"
+        android:textSize="@dimen/_18ssp"
+        android:text="Cancel"
+        android:textAlignment="center"
+        android:textColor="@color/secondary5" />
 
     <ProgressBar
-        android:id="@+id/login_progressBar_pb"
+        android:id="@+id/progress_bar_sign_in"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/login_registerHere_tv"
+        android:layout_below="@+id/btn_cancel"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/_25sdp"
         android:visibility="invisible"
         />
 

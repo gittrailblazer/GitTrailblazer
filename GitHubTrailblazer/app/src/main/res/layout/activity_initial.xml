@@ -5,86 +5,82 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/stars"
+    android:background="?attr/colorPrimary"
+
     tools:context=".InitialActivity">
 
 
     <TextView
-        android:id="@+id/initial_app_name_tv"
+        android:id="@+id/title_git_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="50dp"
-        android:text="GitHub Trailblazer"
-        android:textSize="30sp"
-        android:textColor="@android:color/white"
-        />
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginLeft="@dimen/_25sdp"
+        android:text="Git"
+        android:textStyle="bold"
+        android:textSize="@dimen/_50ssp"
+        android:textColor="@android:color/white" />
 
-    <ImageView
-        android:id="@+id/initial_app_logo_iv"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_below="@+id/initial_app_name_tv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/github_logo"
-        />
+    <TextView
+        android:id="@+id/title_trailblazer_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_git_txt"
+        android:layout_marginLeft="@dimen/_50sdp"
+        android:text="Trailblazer"
+        android:textStyle="bold"
+        android:textSize="@dimen/_50ssp"
+        android:textColor="@android:color/white" />
 
     <Button
-        android:id="@+id/initial_github_btn"
+        android:id="@+id/github_login_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/initial_register_btn"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/button_3"
-        android:padding="20dp"
-        android:textAllCaps="true"
-        android:textSize="18sp"
-        android:text="Continue with GitHub"
-        android:textColor="@android:color/white"
-        />
-
-    <Button
-        android:id="@+id/initial_register_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/initial_login_btn"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/_40sdp"
+        android:layout_marginRight="@dimen/_40sdp"
+        android:layout_gravity="center"
         android:background="@drawable/button_1"
-        android:padding="20dp"
-        android:textAllCaps="true"
-        android:textSize="18sp"
-        android:text="Create Account"
-        android:textColor="@android:color/black"
-        />
+        android:drawableRight="@drawable/github_logo_small"
+        android:padding="@dimen/_5sdp"
+        android:gravity="center"
+        android:textAllCaps="false"
+        android:textSize="@dimen/_16ssp"
+        android:text="Sign in with GitHub"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark" />
 
     <Button
-        android:id="@+id/initial_login_btn"
+        android:id="@+id/email_login_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/button_2"
-        android:padding="20dp"
-        android:textAllCaps="true"
-        android:textSize="18sp"
-        android:text="Login"
+        android:layout_below="@+id/github_login_btn"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginLeft="@dimen/_40sdp"
+        android:layout_marginRight="@dimen/_40sdp"
+        android:layout_gravity="center"
+        android:background="@drawable/button_1"
+        android:drawableRight="@drawable/email_logo_small"
+        android:padding="@dimen/_8sdp"
+        android:gravity="center"
+        android:textAllCaps="false"
+        android:textSize="@dimen/_16ssp"
+        android:text="Sign in with Email"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark" />
+
+    <TextView
+        android:id="@+id/text_view_create_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/email_login_btn"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:gravity="center"
+        android:text="> Create Account"
+        android:textStyle="bold"
+        android:textSize="@dimen/_16ssp"
         android:textColor="@android:color/white"
-        />
-
-
-
-
-
-
-    
+        android:clickable="true" />
 </RelativeLayout>
 
