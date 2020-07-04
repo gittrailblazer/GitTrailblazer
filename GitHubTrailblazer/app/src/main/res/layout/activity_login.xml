@@ -18,7 +18,7 @@
         android:text="Git"
         android:textStyle="bold"
         android:textSize="60sp"
-        android:textColor="@android:color/white" />
+        android:textColor="@color/secondary5" />
 
     <TextView
         android:id="@+id/title_trailblazer_txt"
@@ -30,7 +30,7 @@
         android:text="Trailblazer"
         android:textStyle="bold"
         android:textSize="60sp"
-        android:textColor="@android:color/white" />
+        android:textColor="@color/secondary5" />
 
     <EditText
         android:id="@+id/edit_text_email"
@@ -42,6 +42,7 @@
         android:layout_below="@+id/title_trailblazer_txt"
         android:hint=" Email"
         android:textColorHint="@color/secondary6"
+        android:textColor="@color/secondary5"
         android:drawableStart="@drawable/ic_baseline_email_24"
         android:drawableLeft="@drawable/ic_baseline_email_24"
         android:drawablePadding="5dp"
@@ -58,11 +59,12 @@
         android:layout_below="@+id/edit_text_email"
         android:hint=" Password"
         android:textColorHint="@color/secondary6"
+        android:textColor="@color/secondary5"
         android:drawableStart="@drawable/ic_baseline_vpn_key_24"
         android:drawableLeft="@drawable/ic_baseline_vpn_key_24"
         android:drawablePadding="5dp"
         android:backgroundTint="@color/secondary6"
-        android:inputType="textEmailAddress" />
+        android:inputType="textPassword" />
 
     <TextView
         android:id="@+id/text_view_forgot_password"
@@ -74,7 +76,7 @@
         android:text="> Forgot my password"
         android:textStyle="bold"
         android:textSize="18sp"
-        android:textColor="@android:color/white" />
+        android:textColor="@color/secondary5" />
 
     <Button
         android:id="@+id/btn_sign_in"
