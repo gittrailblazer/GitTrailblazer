@@ -5,16 +5,24 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
 import com.example.githubtrailblazer.ghapi.GitHubConnector;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.*;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.jetbrains.annotations.NotNull;
 
 public class InitialActivity extends AppCompatActivity
 {
@@ -67,8 +75,7 @@ public class InitialActivity extends AppCompatActivity
                                     String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
                                     GitHubConnector.initialize(accessToken);
 
-                                    User user = new User(accessToken);
-                                    FirebaseFirestore.getInstance().collection("Users").add(user);
+                                    addGithubUser();
 
                                     // send user to main activity after successfully signing in with GitHub
                                     //Toast.makeText(InitialActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
@@ -105,8 +112,7 @@ public class InitialActivity extends AppCompatActivity
                                 String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
                                 GitHubConnector.initialize(accessToken);
 
-                                User user = new User(accessToken);
-                                FirebaseFirestore.getInstance().collection("Users").add(user);
+                                addGithubUser();
 
                                 // send user to main activity after successfully signing in with GitHub
                                 //Toast.makeText(InitialActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
@@ -175,5 +181,39 @@ public class InitialActivity extends AppCompatActivity
         {
             //Toast.makeText(this, "Not logged in", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void addGithubUser()
+    {
+        GitHubConnector.client.query(
+                UserIDQuery.builder().build())
+                .enqueue(new ApolloCall.Callback<UserIDQuery.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<UserIDQuery.Data> response) {
+                        UserIDQuery.Data data = response.getData();
+                        if (data != null) {
+                            String userID = data.viewer().id();
+                            String username = data.viewer().login();
+                            FirebaseFirestore.getInstance().collection("Users").whereEqualTo("githubID", userID)
+                                    .limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if(task.isSuccessful() && task.getResult().size() == 0)
+                                    {
+                                        User user = new User(userID, username, true);
+                                        FirebaseFirestore.getInstance().collection("Users").add(user);
+                                    }
+                                }
+                            });
+                        } else {
+                            Log.d("GH_API_QUERY", "Failed query: data is NULL");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+                        Log.d("GH_API_QUERY", "Failed query: " + e.getMessage(), e);
+                    }
+                });
     }
 }
