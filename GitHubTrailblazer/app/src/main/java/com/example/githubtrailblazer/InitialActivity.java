@@ -5,9 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apollographql.apollo.ApolloCall;
@@ -27,7 +30,8 @@ import org.jetbrains.annotations.NotNull;
 public class InitialActivity extends AppCompatActivity
 {
     // define UI variables
-    private Button mGitHubBtn, mRegisterBtn, mLoginBtn;
+    private Button mGitHubBtn, mEmailBtn;
+    private TextView mCreateAccount;
 
     // define Firebase authentication variables
     FirebaseAuth mAuth;
@@ -40,14 +44,13 @@ public class InitialActivity extends AppCompatActivity
         setContentView(R.layout.activity_initial);
 
         // assign UI variables to UI elements
-        mGitHubBtn = findViewById(R.id.initial_github_btn);
-        mRegisterBtn = findViewById(R.id.initial_register_btn);
-        mLoginBtn = findViewById(R.id.initial_login_btn);
+        mGitHubBtn = findViewById(R.id.github_login_btn);
+        mEmailBtn = findViewById(R.id.email_login_btn);
+        mCreateAccount = findViewById(R.id.text_view_create_account);
 
         // instantiate Firebase authentication variables
         mAuth = FirebaseAuth.getInstance();
         provider = OAuthProvider.newBuilder("github.com");
-
 
         // on-click listener for registering a user with GitHub credentials
         mGitHubBtn.setOnClickListener(new View.OnClickListener()
@@ -133,30 +136,28 @@ public class InitialActivity extends AppCompatActivity
             }
         });
 
-        // on-click listener for sending user to registration activity
-        mRegisterBtn.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(InitialActivity.this, RegisterActivity.class);
-                finish();
-                startActivity(intent);
-            }
-        });
-
         // on-click listener for sending user to login activity
-        mLoginBtn.setOnClickListener(new View.OnClickListener()
-        {
+        mEmailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Intent intent = new Intent(InitialActivity.this, LoginActivity.class);
                 finish();
                 startActivity(intent);
             }
         });
+
+        // on-click listener for sending user to register activity
+        mCreateAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(InitialActivity.this, RegisterActivity.class);
+                finish();
+                startActivity(intent);
+            }
+        });
     }
+
+
 
     @Override
     public void onStart()

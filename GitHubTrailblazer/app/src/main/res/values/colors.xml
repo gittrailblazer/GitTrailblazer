@@ -10,6 +10,7 @@
     <color name="secondary3">#979797</color>
     <color name="secondary4">#EEEEEE</color>
     <color name="secondary5">#FFFFFF</color>
+    <color name="secondary6">#CFCFCF</color>
 
     <color name="projectUpvote">#2FB024</color>
     <color name="projectDownvote">#EC0202</color>

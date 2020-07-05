@@ -30,14 +30,19 @@ public class LoginActivity extends AppCompatActivity
 {
     // define UI variables
     private EditText mEmail, mPassword;
-    private Button mGitHubBtn, mLoginBtn;
-    private TextView mRegisterHere;
+    private Button mSignInBtn, mCancelButton;
+    private TextView mForgotPassword;
     private ProgressBar mProgressBar;
+
+    // flag for email sign in
+    public static boolean emailFlag;
 
     // define Firebase variables
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     OAuthProvider.Builder provider;
+
+
 
 
     @Override
@@ -47,12 +52,14 @@ public class LoginActivity extends AppCompatActivity
         setContentView(R.layout.activity_login);
 
         // assign UI variables to UI elements
-        mEmail        = findViewById(R.id.login_email_et);
-        mPassword     = findViewById(R.id.login_password_et);
-        mGitHubBtn    = findViewById(R.id.login_continue_with_git_btn);
-        mLoginBtn     = findViewById(R.id.login_login_btn);
-        mRegisterHere = findViewById(R.id.login_registerHere_tv);
-        mProgressBar  = findViewById(R.id.login_progressBar_pb);
+        mEmail        = findViewById(R.id.edit_text_email);
+        mPassword     = findViewById(R.id.edit_text_password);
+        mSignInBtn    = findViewById(R.id.btn_sign_in);
+        mCancelButton = findViewById(R.id.btn_cancel);
+        mProgressBar  = findViewById(R.id.progress_bar_sign_in);
+
+        // set email sign in flag to false
+        emailFlag = false;
 
         // instantiate Firebase variables
         mAuth = FirebaseAuth.getInstance();
@@ -75,114 +82,10 @@ public class LoginActivity extends AppCompatActivity
             }
         };
 
-        // on-click listener for registering a user with GitHub credentials
-        mGitHubBtn.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Task<AuthResult> pendingResultTask = mAuth.getPendingAuthResult();
-                if (pendingResultTask != null)
-                {
-                    // There's something already here! Finish the sign-in for your user.
-                    pendingResultTask
-                            .addOnSuccessListener(new OnSuccessListener<AuthResult>()
-                            {
-                                @Override
-                                public void onSuccess(AuthResult authResult)
-                                {
-                                    // User is signed in.
-                                    // IdP data available in
-                                    // authResult.getAdditionalUserInfo().getProfile();
-                                    // The OAuth access token can also be retrieved:
-                                    // authResult.getCredential().getAccessToken();
 
-                                    // initialize connector with oauth access token
-                                    String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
-                                    GitHubConnector.initialize(accessToken);
-
-                                    // send user to main activity after successfully signing in with GitHub
-                                    //Toast.makeText(LoginActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(LoginActivity.this, DrawerActivity.class);
-                                    finish();
-                                    startActivity(intent);
-                                }
-                            }).addOnFailureListener(new OnFailureListener()
-                    {
-                        @Override
-                        public void onFailure(@NonNull Exception e)
-                        {
-                            Toast.makeText(LoginActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                else
-                {
-                    mAuth
-                            .startActivityForSignInWithProvider(/* activity= */ LoginActivity.this, provider.build())
-                            .addOnSuccessListener( new OnSuccessListener<AuthResult>()
-                            {
-                                @Override
-                                public void onSuccess(AuthResult authResult)
-                                {
-                                    // User is signed in.
-                                    // IdP data available in
-                                    // authResult.getAdditionalUserInfo().getProfile();
-                                    // The OAuth access token can also be retrieved:
-                                    // authResult.getCredential().getAccessToken();
-
-                                    // initialize connector with oauth access token
-                                    String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
-                                    GitHubConnector.initialize(accessToken);
-
-                                    // send user to main activity after successfully signing in with GitHub
-                                    //Toast.makeText(LoginActivity.this, "Sign in Success!", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(LoginActivity.this, DrawerActivity.class);
-                                    finish();
-                                    startActivity(intent);
-                                }
-                            })
-                            .addOnFailureListener( new OnFailureListener()
-                            {
-                                @Override
-                                public void onFailure(@NonNull Exception e)
-                                {
-                                    Toast.makeText(LoginActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                }
-            }
-        });
-
-        // make clickable text for sending user to login activity
-        String text = "Don't have an account? Register here!";
-        SpannableString spanStr = new SpannableString(text);
-        ClickableSpan clickableSpanLogin = new ClickableSpan()
-        {
-            // send user to register activity when 'Register here!' is clicked
-            @Override
-            public void onClick(@NonNull View widget)
-            {
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                finish();
-                startActivity(intent);
-            }
-
-            // change color of 'Register here!' to light gray and remove the underline
-            @Override
-            public void updateDrawState(@NonNull TextPaint ds)
-            {
-                super.updateDrawState(ds);
-                ds.setColor(Color.LTGRAY);
-                ds.setUnderlineText(false);
-            }
-        };
-        spanStr.setSpan(clickableSpanLogin, 23, 37, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mRegisterHere.setText(spanStr);
-        mRegisterHere.setMovementMethod(LinkMovementMethod.getInstance()); // need this line for click to work
 
         // on-click listener for logging user in and sending user to main activity
-        mLoginBtn.setOnClickListener(new View.OnClickListener()
+        mSignInBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -222,6 +125,8 @@ public class LoginActivity extends AppCompatActivity
                         }
                         else
                         {
+                            // set emailFlag to true (needed for Drawer Activity)
+                            emailFlag = true;
                             Intent intent = new Intent(LoginActivity.this, DrawerActivity.class);
                             mProgressBar.setVisibility(View.INVISIBLE);
                             finish();
@@ -231,6 +136,17 @@ public class LoginActivity extends AppCompatActivity
                 });
             }
         });
+
+        mCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, InitialActivity.class);
+                finish();
+                startActivity(intent);
+            }
+        });
+
+        // TO DO: 'Forgot my password' functionality
     }
 
     @Override

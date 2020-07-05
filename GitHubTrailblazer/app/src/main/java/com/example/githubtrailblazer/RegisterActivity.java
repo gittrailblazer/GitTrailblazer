@@ -36,8 +36,7 @@ public class RegisterActivity extends AppCompatActivity
 {
     // define UI variables
     private EditText mFullName, mEmail, mPassword, mConfirmPassword;
-    private Button mSubmitBtn;
-    private TextView mLogin;
+    private Button mCreateAccountBtn, mCancelBtn;
     private ProgressBar mProgressBar;
 
     // define Firebase variables
@@ -55,48 +54,21 @@ public class RegisterActivity extends AppCompatActivity
         setContentView(R.layout.activity_register);
 
         // assign UI variables to UI elements
-        mFullName        = findViewById(R.id.register_fullname_et);
-        mEmail           = findViewById(R.id.register_email_et);
-        mPassword        = findViewById(R.id.register_password_et);
-        mConfirmPassword = findViewById(R.id.register_confirm_password_et);
-        mSubmitBtn       = findViewById(R.id.register_register_btn);
-        mLogin           = findViewById(R.id.register_login_tv);
-        mProgressBar     = findViewById(R.id.register_progressBar_pb);
+        mFullName         = findViewById(R.id.reg_edit_text_full_name);
+        mEmail            = findViewById(R.id.reg_edit_text_email);
+        mPassword         = findViewById(R.id.reg_edit_text_password);
+        mConfirmPassword  = findViewById(R.id.reg_edit_text_confirm_password);
+        mCreateAccountBtn = findViewById(R.id.reg_btn_create_account);
+        mCancelBtn        = findViewById(R.id.reg_btn_cancel);
+        mProgressBar      = findViewById(R.id.reg_progress_bar_create_account);
 
         // instantiate Firebase variables
         fAuth    = FirebaseAuth.getInstance();
         fStore   = FirebaseFirestore.getInstance();
         usersRef = fStore.collection("Users");
 
-        // make clickable text for sending user to login activity
-        String text = "Already have an account? Login!";
-        SpannableString spanStr = new SpannableString(text);
-        ClickableSpan clickableSpanLogin = new ClickableSpan()
-        {
-            // send user to login activity when Login! is clicked
-            @Override
-            public void onClick(@NonNull View widget)
-            {
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                finish();
-                startActivity(intent);
-            }
-
-            // change color of Login! to light gray and remove the underline
-            @Override
-            public void updateDrawState(@NonNull TextPaint ds)
-            {
-                super.updateDrawState(ds);
-                ds.setColor(Color.LTGRAY);
-                ds.setUnderlineText(false);
-            }
-        };
-        spanStr.setSpan(clickableSpanLogin, 25, 31, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mLogin.setText(spanStr);
-        mLogin.setMovementMethod(LinkMovementMethod.getInstance()); // need this line for click to work
-
         // on-click listener for sending user to main activity
-        mSubmitBtn.setOnClickListener(new View.OnClickListener()
+        mCreateAccountBtn.setOnClickListener(new View.OnClickListener()
         {
             // when the user clicks the submit button
             @Override
@@ -106,8 +78,8 @@ public class RegisterActivity extends AppCompatActivity
                 mProgressBar.setVisibility(View.VISIBLE);
 
                 // convert all required fields to Strings
-                final String fullName        = mFullName.getText().toString().trim();
-                final String email           = mEmail.getText().toString();
+                final String fullName  = mFullName.getText().toString().trim();
+                final String email     = mEmail.getText().toString();
                 String password        = mPassword.getText().toString();
                 String confirmPassword = mConfirmPassword.getText().toString();
 
@@ -175,6 +147,9 @@ public class RegisterActivity extends AppCompatActivity
                             User user = new User(fullName, email);
                             fStore.collection("Users").add(user);
 
+                            // set emailFlag to true (needed for Drawer Activity)
+                            LoginActivity.emailFlag = true;
+
                             // send user to main activity
                             Intent intent = new Intent(RegisterActivity.this, DrawerActivity.class);
                             mProgressBar.setVisibility(View.INVISIBLE);
@@ -183,6 +158,15 @@ public class RegisterActivity extends AppCompatActivity
                         }
                     }
                 });
+            }
+        });
+
+        mCancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegisterActivity.this, InitialActivity.class);
+                finish();
+                startActivity(intent);
             }
         });
     }

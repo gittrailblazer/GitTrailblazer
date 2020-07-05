@@ -40,9 +40,19 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getContext(), LoginActivity.class);
-                getActivity().finish();
-                startActivity(intent);
+
+                // if user was signed in with Email
+                if(LoginActivity.emailFlag) {
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    getActivity().finish();
+                    startActivity(intent);
+                }
+                // if user was signed in with GitHub
+                else {
+                    Intent intent = new Intent(getContext(), InitialActivity.class);
+                    getActivity().finish();
+                    startActivity(intent);
+                }
             }
         });
 
