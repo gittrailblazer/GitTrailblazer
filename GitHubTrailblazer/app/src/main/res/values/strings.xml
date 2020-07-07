@@ -12,4 +12,13 @@
     <string name="menu_saved">Saved Repositories</string>
     <string name="menu_myrepos">My Repositories</string>
     <string name="menu_settings">Settings</string>
+    <string-array name="feed_filter_array">
+        <item>Best Match</item>
+        <item>Most Stars</item>
+        <item>Fewest Stars</item>
+        <item>Most Forks</item>
+        <item>Fewest Forks</item>
+        <item>Recently Updated</item>
+        <item>Least Recently Updated</item>
+    </string-array>
 </resources>
