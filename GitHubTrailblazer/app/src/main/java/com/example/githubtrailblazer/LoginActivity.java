@@ -127,7 +127,12 @@ public class LoginActivity extends AppCompatActivity
                         {
                             // set emailFlag to true (needed for Drawer Activity)
                             emailFlag = true;
-                            Intent intent = new Intent(LoginActivity.this, DrawerActivity.class);
+                            Intent intent;
+                            if (false) {
+                                intent = new Intent(LoginActivity.this, DrawerActivity.class);
+                            } else {
+                                intent = new Intent(LoginActivity.this, QuestionaireActivity.class);
+                            }
                             mProgressBar.setVisibility(View.INVISIBLE);
                             finish();
                             startActivity(intent);

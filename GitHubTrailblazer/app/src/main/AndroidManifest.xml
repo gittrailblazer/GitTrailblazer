@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".DrawerActivity" />
-        <activity android:name=".QuestionaireActivity"></activity>
+        <activity android:name=".QuestionaireActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".InitialActivity">
