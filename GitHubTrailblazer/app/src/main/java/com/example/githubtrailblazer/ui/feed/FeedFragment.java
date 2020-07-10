@@ -10,12 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
@@ -24,10 +28,13 @@ import com.example.githubtrailblazer.Helpers;
 import com.example.githubtrailblazer.R;
 import com.example.githubtrailblazer.SearchReposQuery;
 import com.example.githubtrailblazer.components.ProjectCard.ProjectCard;
+import com.example.githubtrailblazer.ghapi.SortByOptions;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 /**
@@ -36,12 +43,14 @@ import java.util.regex.Pattern;
 public class FeedFragment extends Fragment {
     private final String separatorPattern = "\\s|,";
     private ArrayList<String> tagList = new ArrayList<>();
+    private SortByOptions filterSetting = SortByOptions.Best_Match;
 
     // UI element refs
     private LinearLayout searchbarContainer;
     private EditText searchbar;
     private LinearLayout tags;
     private LinearLayout feed;
+    private Spinner feedFilterSpinner;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -98,6 +107,28 @@ public class FeedFragment extends Fragment {
                     handled = true;
                 }
                 return handled;
+            }
+        });
+
+        // initialize the spinner
+        feedFilterSpinner = view.findViewById(R.id.feed_filter_spinner);
+        assert context != null;
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
+                R.array.feed_filter_array, R.layout.spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        feedFilterSpinner.setAdapter(adapter);
+
+        // handle spinner selects
+        feedFilterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                Optional<SortByOptions> setting = SortByOptions.fromString(parent.getItemAtPosition(pos).toString());
+                assert setting.isPresent();
+                filterSetting = setting.get();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
 

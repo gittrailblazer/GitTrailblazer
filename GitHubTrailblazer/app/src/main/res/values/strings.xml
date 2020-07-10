@@ -12,6 +12,15 @@
     <string name="menu_saved">Saved Repositories</string>
     <string name="menu_myrepos">My Repositories</string>
     <string name="menu_settings">Settings</string>
+    <string-array name="feed_filter_array">
+        <item>Best Match</item>
+        <item>Most Stars</item>
+        <item>Fewest Stars</item>
+        <item>Most Forks</item>
+        <item>Fewest Forks</item>
+        <item>Recently Updated</item>
+        <item>Least Recently Updated</item>
+    </string-array>
     <string name="open_source_libs">Git Trailblazer is build using open-source software:\n
         <a href="https://github.com/apollographql/apollo-android">Apollo Android</a> (<a href="https://raw.githubusercontent.com/apollographql/apollo-android/master/LICENSE">license</a>)\n
         <a href="https://fontawesome.com/">Font Awesome</a> (<a href="https://fontawesome.com/license/free">license</a>)\n
