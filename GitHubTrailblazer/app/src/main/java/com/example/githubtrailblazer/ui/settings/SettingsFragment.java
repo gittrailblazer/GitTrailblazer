@@ -2,11 +2,14 @@ package com.example.githubtrailblazer.ui.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
@@ -21,6 +24,7 @@ public class SettingsFragment extends Fragment {
     // define UI variables
     private Button mLogoutBtn;
     private Button mDeleAccountBtn;
+    private TextView mLibsTextView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -34,6 +38,7 @@ public class SettingsFragment extends Fragment {
         // assign UI variables to UI elements
         mLogoutBtn = root.findViewById(R.id.main_logout_btn);
         mDeleAccountBtn = root.findViewById(R.id.main_deleAccount_btn);
+        mLibsTextView = root.findViewById(R.id.libs_textview);
 
         // on-click listener for logging user out and sending them to login activity
         mLogoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +72,9 @@ public class SettingsFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        // enable clicking on links in libs_textview
+        mLibsTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
         return root;
     }
