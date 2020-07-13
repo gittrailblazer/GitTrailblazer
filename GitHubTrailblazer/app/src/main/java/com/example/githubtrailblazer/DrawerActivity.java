@@ -13,6 +13,8 @@ import android.widget.TextView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.githubtrailblazer.connector.Connector;
+import com.example.githubtrailblazer.connector.UserDetailsData;
 import com.example.githubtrailblazer.ui.settings.SettingsFragment;
 
 import android.view.View;
@@ -31,7 +33,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 
-import com.example.githubtrailblazer.ghapi.GHUserBasicData;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -57,7 +58,6 @@ public class DrawerActivity extends AppCompatActivity {
 
         // add status bar height as padding to drawer header
         View hView = navigationView.getHeaderView(0);
-        hView.setPadding(0, getStatusBarHeight(this), 0, 0);
 
         // if user signed in with Email
         if(LoginActivity.emailFlag) {
@@ -66,25 +66,30 @@ public class DrawerActivity extends AppCompatActivity {
         // if user signed in with GitHub
         else {
             // get user details from the GitHub API and update drawer
-            GHUserBasicData basicData = new GHUserBasicData();
-            basicData.queryAPI(new GHUserBasicData.GHUserBasicDataCallback() {
-                @Override
-                public void setData(String name, String username, String avatarUrl) {
-                    ((TextView) hView.findViewById(R.id.sideNav__txtAccount)).setText(username);
-                    ((TextView) hView.findViewById(R.id.sideNav__txtDisplayName)).setText(name);
-                    ImageView profilePicView = (ImageView) hView.findViewById(R.id.sideNav__profilePic);
-                    // Fetch the profile pic and update the imageView asynchronously.
-                    Handler uiHandler = new Handler(Looper.getMainLooper());
-                    uiHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Picasso.get()
-                                    .load(avatarUrl)
+            new Connector
+                .Query(Connector.QueryType.USER_DETAILS)
+                .exec(new Connector.ISuccessCallback() {
+                    @Override
+                    public void handle(Object result) {
+                        UserDetailsData data = (UserDetailsData) result;
+
+                        // update non-async fields
+                        ((TextView) hView.findViewById(R.id.sideNav__txtAccount)).setText(data.username);
+                        ((TextView) hView.findViewById(R.id.sideNav__txtDisplayName)).setText(data.name);
+                        ImageView profilePicView = hView.findViewById(R.id.sideNav__profilePic);
+
+                        // Fetch the profile pic and update the imageView asynchronously.
+                        Handler uiHandler = new Handler(Looper.getMainLooper());
+                        uiHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Picasso.get()
+                                    .load(data.avatarUrl)
                                     .into(profilePicView);
-                        }
-                    });
-                }
-            });
+                            }
+                        });
+                    }
+                });
         }
 
 

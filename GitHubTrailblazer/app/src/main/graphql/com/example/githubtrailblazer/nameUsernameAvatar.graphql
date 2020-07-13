@@ -1,7 +1,0 @@
-query nameUsernameAvatar {
-    viewer {
-        login
-        avatarUrl
-        name
-    }
-}

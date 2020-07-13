@@ -4,18 +4,13 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary1"
+        android:paddingBottom="20dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="20dp"
+        android:background="@drawable/bg_header"
         android:orientation="horizontal"
         android:gravity="center">
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="20dp"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="20dp"
-                android:orientation="horizontal"
-                android:gravity="center">
         <ImageView
                 android:layout_width="40dp" android:layout_height="40dp"
                 android:src="@drawable/default_profile"
@@ -63,5 +58,4 @@
                     android:id="@+id/sideNav__btnSettings" android:background="@android:color/transparent"
                     android:paddingTop="@dimen/app_sideNav_margin_sm"/>
         </LinearLayout>
-    </LinearLayout>
 </LinearLayout>

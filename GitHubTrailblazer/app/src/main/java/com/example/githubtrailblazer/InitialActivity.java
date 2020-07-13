@@ -16,7 +16,8 @@ import android.widget.Toast;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
-import com.example.githubtrailblazer.ghapi.GitHubConnector;
+import com.example.githubtrailblazer.connector.Connector;
+import com.example.githubtrailblazer.connector.UserDetailsData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -76,7 +77,7 @@ public class InitialActivity extends AppCompatActivity
 
                                     // initialize connector with oauth access token
                                     String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
-                                    GitHubConnector.initialize(accessToken);
+                                    Connector.initialize(accessToken);
 
                                     addGithubUser();
 
@@ -113,7 +114,7 @@ public class InitialActivity extends AppCompatActivity
 
                                 // initialize connector with oauth access token
                                 String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
-                                GitHubConnector.initialize(accessToken);
+                                Connector.initialize(accessToken);
 
                                 addGithubUser();
 
@@ -186,35 +187,28 @@ public class InitialActivity extends AppCompatActivity
 
     private void addGithubUser()
     {
-        GitHubConnector.client.query(
-                UserIDQuery.builder().build())
-                .enqueue(new ApolloCall.Callback<UserIDQuery.Data>() {
-                    @Override
-                    public void onResponse(@NotNull Response<UserIDQuery.Data> response) {
-                        UserIDQuery.Data data = response.getData();
-                        if (data != null) {
-                            String userID = data.viewer().id();
-                            String username = data.viewer().login();
-                            FirebaseFirestore.getInstance().collection("Users").whereEqualTo("githubID", userID)
-                                    .limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if(task.isSuccessful() && task.getResult().size() == 0)
-                                    {
-                                        User user = new User(userID, username, true);
-                                        FirebaseFirestore.getInstance().collection("Users").add(user);
-                                    }
-                                }
-                            });
-                        } else {
-                            Log.d("GH_API_QUERY", "Failed query: data is NULL");
+        new Connector.Query(Connector.QueryType.USER_DETAILS)
+            .exec(new Connector.ISuccessCallback() {
+                @Override
+                public void handle(Object result) {
+                    UserDetailsData data = (UserDetailsData) result;
+                    FirebaseFirestore.getInstance().collection("Users").whereEqualTo("githubID", data.id)
+                            .limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if(task.isSuccessful() && task.getResult().size() == 0)
+                            {
+                                User user = new User(data.id, data.username, true);
+                                FirebaseFirestore.getInstance().collection("Users").add(user);
+                            }
                         }
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
-                        Log.d("GH_API_QUERY", "Failed query: " + e.getMessage(), e);
-                    }
-                });
+                    });
+                }
+            }, new Connector.IErrorCallback() {
+                @Override
+                public void error(String message) {
+                    Log.d("GH_API_QUERY", "Failed query: " + message);
+                }
+            });
     }
 }
