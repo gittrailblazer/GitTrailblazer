@@ -1,5 +1,7 @@
 package com.example.githubtrailblazer.components.ProjectCard;
 
+import android.content.Intent;
+
 import com.example.githubtrailblazer.R;
 
 /**
@@ -34,6 +36,9 @@ public class Controller implements View.OnClickListener {
                 break;
             case R.id.projectCard__btnFork:
                 model.fork();
+                break;
+            case R.id.projectCard__btnActions:
+                model.showActionsList(v);
                 break;
         }
     }
