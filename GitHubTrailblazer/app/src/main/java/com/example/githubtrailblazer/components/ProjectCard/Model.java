@@ -171,16 +171,16 @@ public class Model implements PopupMenu.OnMenuItemClickListener {
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actions_item_save:
-                // TO DO: save repo when 'Save' item is selected
+                // TODO: save repo when 'Save' item is selected
                 return true;
             case R.id.actions_item_share:
                 // share repo details via Android Sharesheet when 'Share' item is selected
                 shareRepo(views.get(0));
                 return true;
             case R.id.actions_item_openInGithub:
-                // TO DO: open repo in GitHub when 'Open in GitHub' item is selected
+                // TODO: open repo in GitHub when 'Open in GitHub' item is selected
             case R.id.actions_item_stopSeeingThis:
-                // TO DO: remove repo from feed when 'Stop seeing this' item is selected
+                // TODO: remove repo from feed when 'Stop seeing this' item is selected
             default:
                 return false;
         }
