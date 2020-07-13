@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/actions_item_save"
+        android:title="Save" />
+    <item android:id="@+id/actions_item_share"
+        android:title="Share" />
+    <item android:id="@+id/actions_item_openInGithub"
+        android:title="Open in GitHub" />
+    <item android:id="@+id/actions_item_stopSeeingThis"
+        android:title="Stop seeing this" />
+</menu>
