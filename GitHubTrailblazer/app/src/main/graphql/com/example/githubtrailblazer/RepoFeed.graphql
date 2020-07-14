@@ -1,0 +1,31 @@
+# Adapted from https://github.com/mayankrastogi/github-graphql-search
+query repoFeed($searchString: String!) {
+    search(type: REPOSITORY, query: $searchString, first: 10) {
+        # If we want to do go page-by-page then this becomes useful.
+        pageInfo {
+            hasNextPage
+            endCursor
+        }
+        nodes {
+            ... on Repository {
+                owner
+                {
+                    avatarUrl
+                }
+                nameWithOwner
+                description
+                forkCount
+                stargazers
+                {
+                    totalCount
+                }
+                viewerHasStarred
+                primaryLanguage
+                {
+                    name
+                }
+                url
+            }
+        }
+    }
+}

@@ -109,7 +109,7 @@ public class View extends LinearLayout {
         LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         android.view.View view = li.inflate(R.layout.project_card, this, true);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
         int margin = (int) context.getResources().getDimension(R.dimen.app_project_margin_sm);

@@ -32,16 +32,34 @@
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>
-    <ScrollView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/feed_swipeToRefresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        <LinearLayout
+        <ScrollView
                 xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/feed__list">
-        </LinearLayout>
-    </ScrollView>
+                android:layout_height="match_parent">
+            <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal">
+                <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/feed__list">
+                </LinearLayout>
+                <com.example.githubtrailblazer.components.LoadingSpinner
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:src="@drawable/redo_alt_solid"
+                        android:contentDescription="Loading"
+                        android:id="@+id/feed__loading"
+                        android:layout_marginVertical="10dp"/>
+            </LinearLayout>
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>
