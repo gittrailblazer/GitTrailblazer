@@ -2,6 +2,7 @@ package com.example.githubtrailblazer;
 
 public class User {
     private String fullName, email;
+    private String GithubID, GithubName;
 
     public User ()
     {
@@ -12,6 +13,12 @@ public class User {
     {
         this.fullName = fullName;
         this.email = email;
+    }
+
+    public User(String GithubID, String login, boolean b)   // this boolean is only used to identify two constructors
+    {
+        this.GithubID = GithubID;
+        GithubName = login;
     }
 
     public String getFullName()
@@ -34,12 +41,29 @@ public class User {
         this.email = email;
     }
 
+    public String getGithubID() { return GithubID; }
+
+    public void setGithubID(String newID) { this.GithubID = newID; }
+
+    public String getGithubName() { return GithubName; }
+
+    public void setGithubName(String name) { this.GithubName = name; }
+
     @Override
     public String toString()
     {
-        return "User{" +
-                "fullName='" + fullName + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        if(fullName != null) {
+            return "User{" +
+                    "fullName='" + fullName + '\'' +
+                    ", email='" + email + '\'' +
+                    '}';
+        }
+        else
+        {
+            return "User{" +
+                    "GithubID='" + GithubID + '\'' +
+                    ", GithubName='" + GithubName + '\'' +
+                    '}';
+        }
     }
 }

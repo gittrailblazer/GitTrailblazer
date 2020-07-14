@@ -1,46 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/secondary4">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimary">
 
     <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello World!"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-    />
+        android:id="@+id/title_git_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/_25sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="Git"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/_50ssp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/title_trailblazer_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_git_txt"
+        android:layout_marginLeft="@dimen/_50sdp"
+        android:text="Trailblazer"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/_50ssp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/title_settings_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_trailblazer_txt"
+        android:layout_marginLeft="@dimen/_80sdp"
+        android:text="Settings"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/_30ssp"
+        android:textStyle="bold" />
 
     <Button
-            android:id="@+id/main_logout_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Logout"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:layout_constraintVertical_bias="0.15"
-    />
+        android:id="@+id/main_logout_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/_40sdp"
+        android:layout_marginRight="@dimen/_40sdp"
+        android:background="@drawable/button_1"
+        android:drawableRight="@drawable/ic_sign_out"
+        android:gravity="center"
+        android:padding="@dimen/_8sdp"
+        android:text="Logout"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/_16ssp" />
 
     <Button
-            android:id="@+id/main_deleAccount_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="133dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="136dp"
-            android:layout_marginBottom="189dp"
-            android:text="Delete Account"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/main_logout_btn" />
+        android:id="@+id/main_deleAccount_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_logout_btn"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginRight="@dimen/_40sdp"
+        android:background="@drawable/button_1"
+        android:drawableRight="@drawable/ic_times"
+        android:gravity="center"
+        android:padding="@dimen/_8sdp"
+        android:text="Delete Account"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/_16ssp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_logout_btn"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_80sdp"
+        android:layout_marginRight="@dimen/_40sdp"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:id="@+id/libs_scrollview"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:scrollbars="vertical">
+
+            <TextView
+                android:id="@+id/libs_textview"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/open_source_libs"
+                android:textColor="@android:color/white" />
+        </ScrollView>
+    </LinearLayout>
+
+
+</RelativeLayout>
+

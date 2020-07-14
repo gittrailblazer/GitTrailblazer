@@ -6,7 +6,6 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         tools:openDrawer="end">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -22,7 +21,7 @@
             <androidx.appcompat.widget.Toolbar
                     android:id="@+id/drawer_toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
+                    android:layout_height="50dp"
                     android:background="?attr/colorPrimary"
                     app:popupTheme="@style/AppTheme.PopupOverlay">
                 <LinearLayout

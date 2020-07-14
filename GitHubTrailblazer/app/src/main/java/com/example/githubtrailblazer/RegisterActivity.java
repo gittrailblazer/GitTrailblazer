@@ -151,7 +151,7 @@ public class RegisterActivity extends AppCompatActivity
                             LoginActivity.emailFlag = true;
 
                             // send user to main activity
-                            Intent intent = new Intent(RegisterActivity.this, DrawerActivity.class);
+                            Intent intent = new Intent(RegisterActivity.this, QuestionaireActivity.class);
                             mProgressBar.setVisibility(View.INVISIBLE);
                             finish();
                             startActivity(intent);

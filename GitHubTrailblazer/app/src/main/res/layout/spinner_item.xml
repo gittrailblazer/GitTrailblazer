@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary1"
+    android:drawableStart="@drawable/ic_sort_solid"
+    android:gravity="start"
+    android:layout_gravity="start"
+    android:textAlignment="textStart"
+    android:drawablePadding="5dp"
+    android:paddingHorizontal="10dp"
+    android:paddingVertical="5dp"
+    android:textColor="@color/secondary5" />
