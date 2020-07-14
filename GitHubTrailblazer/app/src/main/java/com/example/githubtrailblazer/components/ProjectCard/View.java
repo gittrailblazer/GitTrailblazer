@@ -98,7 +98,7 @@ public class View extends LinearLayout {
         this.model = model.addView(this);
 
         // init colors
-        colorUnselected = ContextCompat.getColor(context, R.color.secondary6);
+        colorUnselected = ContextCompat.getColor(context, R.color.secondary3);
         colorStarSelected = ContextCompat.getColor(context, R.color.projectStar);
         colorCommentSelected = ContextCompat.getColor(context, R.color.projectComment);
         colorUpvoteSelected = ContextCompat.getColor(context, R.color.projectUpvote);
