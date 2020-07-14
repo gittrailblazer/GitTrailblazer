@@ -18,6 +18,7 @@
         <activity android:name=".QuestionaireActivity"></activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity" />
+        <activity android:name=".RepoDetailActivity"/>
         <activity android:name=".InitialActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

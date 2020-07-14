@@ -2,6 +2,8 @@ package com.example.githubtrailblazer.components.ProjectCard;
 
 import android.content.Context;
 
+import java.io.Serializable;
+
 /**
  * ProjectCard class
  */
@@ -12,7 +14,7 @@ public class ProjectCard {
     /**
      * ProjectCard.Data class
      */
-    public static class Data {
+    public static class Data implements Serializable {
         public String name;
         public String language;
         public String description;

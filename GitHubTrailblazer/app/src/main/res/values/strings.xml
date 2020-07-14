@@ -7,9 +7,14 @@
     <string name="app_project_comments_default">0</string>
     <string name="app_project_stars_default">0</string>
     <string name="app_project_forks_default">0</string>
+    <string name="app_project_user_default">User</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="menu_explore">Explore</string>
     <string name="menu_saved">Saved Repositories</string>
     <string name="menu_myrepos">My Repositories</string>
     <string name="menu_settings">Settings</string>
+    <string name="app_project_link_default">some-random-project.github.io</string>
+    <string name="repo_detail_user_name_default">Krusher99</string>
+    <string name="repo_detail_description_default">some random project description some random project description some random project description some random project description.</string>
+    <string name="repo_detail_project_default">some-random-project</string>
 </resources>
