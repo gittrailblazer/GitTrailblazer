@@ -241,96 +241,118 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0" />
 
-                                <ImageButton
-                                    android:id="@+id/repodetail_upvote_btn"
-                                    android:layout_width="@dimen/app_repodetail_icon"
-                                    android:layout_height="@dimen/app_repodetail_icon"
-                                    android:background="@android:color/transparent"
-                                    android:src="@drawable/arrow_alt_circle_up"
-                                    android:textColor="#FFFFFF" />
-
                                 <Space
                                     android:layout_width="@dimen/app_repodetail_icon_space"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0" />
 
-                                <TextView
-                                    android:id="@+id/repodetail_upvotes_txt"
+                                <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
                                     android:layout_weight="0"
-                                    android:text="3.3k"
-                                    android:textColor="@android:color/secondary_text_light"
-                                    android:textStyle="bold" />
+                                    android:orientation="horizontal">
+
+                                    <ImageButton
+                                        android:id="@+id/repodetail_upvote_btn"
+                                        android:layout_width="@dimen/app_repodetail_icon"
+                                        android:layout_height="@dimen/app_repodetail_icon"
+                                        android:background="@android:color/transparent"
+                                        android:src="@drawable/arrow_alt_circle_up"
+                                        android:textColor="#FFFFFF" />
+
+                                    <TextView
+                                        android:id="@+id/repodetail_upvotes_txt"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_weight="0"
+                                        android:text="3.3k"
+                                        android:textColor="@android:color/secondary_text_light"
+                                        android:textStyle="bold" />
+
+                                    <ImageButton
+                                        android:id="@+id/repodetail_downvote_btn"
+                                        android:layout_width="@dimen/app_repodetail_icon"
+                                        android:layout_height="@dimen/app_repodetail_icon"
+                                        android:background="@android:color/transparent"
+                                        android:src="@drawable/arrow_alt_circle_down" />
+                                </LinearLayout>
 
                                 <Space
                                     android:layout_width="@dimen/app_repodetail_icon_space"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0" />
-
-                                <ImageButton
-                                    android:id="@+id/repodetail_downvote_btn"
-                                    android:layout_width="@dimen/app_repodetail_icon"
-                                    android:layout_height="@dimen/app_repodetail_icon"
-                                    android:background="@android:color/transparent"
-                                    android:src="@drawable/arrow_alt_circle_down" />
 
                                 <Space
                                     android:layout_width="90dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0" />
 
-                                <ImageButton
-                                    android:id="@+id/repodetail_comment_btn"
-                                    android:layout_width="@dimen/app_repodetail_icon"
-                                    android:layout_height="@dimen/app_repodetail_icon"
+                                <LinearLayout
+                                    android:layout_width="50dp"
+                                    android:layout_height="match_parent"
                                     android:layout_weight="0"
-                                    android:background="@android:color/transparent"
-                                    android:src="@drawable/comment_alt_solid" />
+                                    android:orientation="horizontal">
+
+                                    <ImageButton
+                                        android:id="@+id/repodetail_comment_btn"
+                                        android:layout_width="@dimen/app_repodetail_icon"
+                                        android:layout_height="@dimen/app_repodetail_icon"
+                                        android:layout_weight="0"
+                                        android:background="@android:color/transparent"
+                                        android:src="@drawable/comment_alt_solid" />
+
+                                    <TextView
+                                        android:id="@+id/repodetail_comment_txt"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        android:layout_weight="0"
+                                        android:text="500"
+                                        android:textColor="@android:color/secondary_text_light"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
 
                                 <Space
                                     android:layout_width="@dimen/app_repodetail_icon_space"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0" />
-
-                                <TextView
-                                    android:id="@+id/repodetail_comment_txt"
-                                    android:layout_width="30dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_weight="0"
-                                    android:text="500"
-                                    android:textColor="@android:color/secondary_text_light"
-                                    android:textStyle="bold" />
 
                                 <Space
                                     android:layout_width="90dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0" />
 
-                                <ImageButton
-                                    android:id="@+id/repodetail_star_btn"
-                                    android:layout_width="@dimen/app_repodetail_icon"
-                                    android:layout_height="@dimen/app_repodetail_icon"
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
                                     android:layout_weight="0"
-                                    android:background="@android:color/transparent"
-                                    android:src="@drawable/star_solid" />
+                                    android:orientation="horizontal">
+
+                                    <ImageButton
+                                        android:id="@+id/repodetail_star_btn"
+                                        android:layout_width="@dimen/app_repodetail_icon"
+                                        android:layout_height="@dimen/app_repodetail_icon"
+                                        android:layout_weight="0"
+                                        android:background="@android:color/transparent"
+                                        android:src="@drawable/star_solid" />
+
+                                    <TextView
+                                        android:id="@+id/repodetail_star_txt"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        android:layout_weight="0"
+                                        android:text="500"
+                                        android:textColor="@android:color/secondary_text_light"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
 
                                 <Space
                                     android:layout_width="@dimen/app_repodetail_icon_space"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0" />
 
-                                <TextView
-                                    android:id="@+id/repodetail_star_txt"
-                                    android:layout_width="30dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_weight="0"
-                                    android:text="500"
-                                    android:textColor="@android:color/secondary_text_light"
-                                    android:textStyle="bold" />
                             </LinearLayout>
 
                             <Space
@@ -338,11 +360,6 @@
                                 android:layout_height="10dp"
                                 android:background="@color/secondary5" />
 
-                            <View
-                                android:id="@+id/view"
-                                android:layout_width="match_parent"
-                                android:layout_height="10dp"
-                                android:background="@color/secondary5" />
                         </LinearLayout>
 
                     </LinearLayout>
