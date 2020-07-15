@@ -32,6 +32,11 @@ public class RepoDetailActivity extends AppCompatActivity {
     private int colorDownvoteSelected;
     private int colorForkSelected;
 
+    private TextView usernameTextView;
+    private TextView reponameTextView;
+    private TextView descriptionTextView;
+    private TextView languageTextView;
+
     private TextView upvoteTextView;
     private TextView commentTextView;
     private TextView starTextView;
@@ -61,6 +66,15 @@ public class RepoDetailActivity extends AppCompatActivity {
         colorForkSelected = ContextCompat.getColor(this, R.color.projectFork);
 
         // Assign UI elements
+        usernameTextView = findViewById(R.id.repodetail_user_id);
+        reponameTextView = findViewById(R.id.repodetail_name_txt);
+        descriptionTextView = findViewById(R.id.repodetail_description_txt);
+        languageTextView = findViewById(R.id.repodetail_lang_txt);
+
+        reponameTextView.setText(data.name);
+        descriptionTextView.setText(data.description);
+        languageTextView.setText(data.language);
+
         upvoteTextView = findViewById(R.id.repodetail_upvotes_txt);
         commentTextView = findViewById(R.id.repodetail_comment_txt);
         starTextView = findViewById(R.id.repodetail_star_txt);
