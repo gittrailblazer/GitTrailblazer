@@ -1,6 +1,7 @@
 package com.example.githubtrailblazer.components.ProjectCard;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.widget.*;
 import androidx.core.content.ContextCompat;
 import com.example.githubtrailblazer.R;
+import com.example.githubtrailblazer.RepoDetailActivity;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -132,6 +134,15 @@ public class View extends LinearLayout {
         // profile photo ref
         profilePic = view.findViewById(R.id.projectCard__profilePic);
         languageColor = view.findViewById(R.id.projectCard__langCirc);
+
+        this.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+                Intent myIntent = new Intent(context, RepoDetailActivity.class);
+                myIntent.putExtra("data", model.data);
+                context.startActivity(myIntent);
+            }
+        });
     }
 
     /**

@@ -49,7 +49,7 @@ public class DrawerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_drawer);
 
         // setup toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.drawer_toolbar);
         setSupportActionBar(toolbar);
 
         // drawer & navigation view refs
