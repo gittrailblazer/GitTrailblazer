@@ -1,5 +1,6 @@
 package com.example.githubtrailblazer.connector;
 
+import android.util.Log;
 import com.apollographql.apollo.ApolloClient;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -11,8 +12,21 @@ import java.util.HashMap;
  */
 public class Connector {
     private static final String ENDPOINT_URL = "https://api.github.com/graphql";
-    private static HashMap<QueryType, Class> queryTypeMap;
-    static ApolloClient client;
+    private static HashMap<QueryType, Class> queryTypeMap = new HashMap(){{
+        put(QueryType.USER_DETAILS, UserDetailsData.class);
+        put(QueryType.REPO_FEED, RepoFeedData.class);
+    }};
+    static ApolloClient client = ApolloClient.builder()
+            .serverUrl(ENDPOINT_URL)
+            .okHttpClient(new OkHttpClient.Builder()
+                    .addInterceptor(chain -> {
+                        Request original = chain.request();
+                        Request.Builder builder = original.newBuilder().method(original.method(), original.body());
+                        builder.header("content-type", "application/json");
+                        return chain.proceed(builder.build());
+                    })
+                    .build())
+            .build();
 
     /**
      * STEPS: How to retrieve and access API data
@@ -20,7 +34,7 @@ public class Connector {
      *    constructor should perform query, set properties based off of apollo response data, and invoke success
      *    callback (if provided) passing the instance of itself as the argument
      * 2) Add an enum option corresponding to the new ***Data class in Connector.QueryType enums
-     * 3) In Connector.initialize(...), map the new enum to the new ***Data class
+     * 3) Map the new enum to the new ***Data class in Connector.queryTypeMap
      * 4) new Connector.Query(<query-id-enum>, <...query-arguments>)
      *             .exec(new Connector.ISuccessCallback() {
      *                 @Override
@@ -63,13 +77,6 @@ public class Connector {
      * @param accessToken - the oauth access token
      */
     public static void initialize(String accessToken) {
-        // initialize query type map if undefined
-        if (queryTypeMap == null) {
-            queryTypeMap = new HashMap<>();
-            queryTypeMap.put(QueryType.USER_DETAILS, UserDetailsData.class);
-            queryTypeMap.put(QueryType.REPO_FEED, RepoFeedData.class);
-        }
-
         // This is a singleton HTTP client.
         // We use this to handle our requests.
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
