@@ -3,4 +3,13 @@
     <declare-styleable name="BoundedHorizontalScrollView">
         <attr name="bounded_width_ratio" format="float" />
     </declare-styleable>
+    <declare-styleable name="Notification">
+        <attr name="type" format="enum">
+            <enum name="like" value="0"/>
+            <enum name="comment" value="1"/>
+        </attr>
+        <attr name="username" format="string"/>
+        <attr name="comment" format="string"/>
+        <attr name="repository" format="string"/>
+    </declare-styleable>
 </resources>

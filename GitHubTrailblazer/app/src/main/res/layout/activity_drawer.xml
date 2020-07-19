@@ -6,7 +6,7 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:openDrawer="end">
+        tools:openDrawer="right">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
@@ -64,5 +64,64 @@
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_drawer"
             app:menu="@menu/activity_drawer_drawer"/>
+
+    <com.google.android.material.navigation.NavigationView
+            android:id="@+id/notifications"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:fitsSystemWindows="true">
+        <LinearLayout
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:orientation="vertical">
+            <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_notifications_header"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/secondary5"
+                        android:textSize="20sp"
+                        android:text="Notifications"/>
+                <TextView
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:textColor="@color/secondary5" android:text="3" android:textSize="12sp"
+                        android:layout_marginBottom="10dp" android:background="@drawable/bg_notification_count"
+                        android:paddingHorizontal="4dp" android:textStyle="bold"/>
+            </LinearLayout>
+            <ScrollView android:layout_width="match_parent" android:layout_height="wrap_content">
+                <LinearLayout
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                    <com.example.githubtrailblazer.components.Notification
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:type="like"
+                            app:username="bobjoel420"
+                            app:repository="abcdefg/some-random-project123"
+                            android:orientation="horizontal"
+                            android:background="@drawable/bg_notification"
+                            android:paddingVertical="10dp"
+                            android:paddingHorizontal="10dp"/>
+                    <com.example.githubtrailblazer.components.Notification
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:type="comment"
+                            app:username="bobjoel420"
+                            app:repository="abcdefg/some-random-project"
+                            app:comment="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ..."
+                            android:orientation="horizontal"
+                            android:background="@drawable/bg_notification"
+                            android:paddingVertical="10dp"
+                            android:paddingHorizontal="10dp"/>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>
