@@ -76,3 +76,15 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
+apollo {
+
+    service("github") {
+        sourceFolder.set("com/example/githubtrailblazer/github")
+        rootPackageName.set("com.example.githubtrailblazer.github")
+    }
+
+    service("gitlab") {
+        sourceFolder.set("com/example/githubtrailblazer/gitlab")
+        rootPackageName.set("com.example.githubtrailblazer.gitlab")
+    }
+}

@@ -1,5 +1,5 @@
 # Adapted from https://github.com/mayankrastogi/github-graphql-search
-query repoFeed($searchString: String!) {
+query ghRepoFeed($searchString: String!) {
     search(type: REPOSITORY, query: $searchString, first: 10) {
         # If we want to do go page-by-page then this becomes useful.
         pageInfo {

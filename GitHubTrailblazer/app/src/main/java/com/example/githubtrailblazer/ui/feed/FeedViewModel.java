@@ -119,7 +119,8 @@ public class FeedViewModel extends ViewModel {
                 isEmpty = false;
             }
 
-            sb.append("topic:");
+// TODO: Fix this!! Issue #59
+//            sb.append("topic:");
             sb.append(topic);
         }
 
