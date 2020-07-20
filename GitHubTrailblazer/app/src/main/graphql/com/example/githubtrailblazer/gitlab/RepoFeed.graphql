@@ -1,0 +1,21 @@
+query glRepoFeed($searchString: String!) {
+    projects(membership:false, search:$searchString, first:10) {
+        # If we want to do go page-by-page then this becomes useful.
+        pageInfo {
+            hasNextPage
+            endCursor
+        }
+        nodes {
+            name
+            avatarUrl
+            fullPath
+            description
+            forksCount
+            starCount
+            tagList
+            webUrl
+            lastActivityAt
+            path
+        }
+    }
+}

@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class InitialActivity extends AppCompatActivity
 {
+    private static String gitlabPersonalAccessToken;
     // define UI variables
     private Button mGitHubBtn, mEmailBtn;
     private TextView mCreateAccount;
@@ -52,6 +53,9 @@ public class InitialActivity extends AppCompatActivity
         // instantiate Firebase authentication variables
         mAuth = FirebaseAuth.getInstance();
         provider = OAuthProvider.newBuilder("github.com");
+
+        // TODO: Get this from Firebase
+        gitlabPersonalAccessToken = "LpuWHYx7gQjidpynpyxF";
 
         // on-click listener for registering a user with GitHub credentials
         mGitHubBtn.setOnClickListener(new View.OnClickListener()
@@ -77,7 +81,7 @@ public class InitialActivity extends AppCompatActivity
 
                                     // initialize connector with oauth access token
                                     String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
-                                    Connector.initialize(accessToken);
+                                    Connector.initialize(accessToken, gitlabPersonalAccessToken);
 
                                     addGithubUser();
 
@@ -114,7 +118,7 @@ public class InitialActivity extends AppCompatActivity
 
                                 // initialize connector with oauth access token
                                 String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
-                                Connector.initialize(accessToken);
+                                Connector.initialize(accessToken, gitlabPersonalAccessToken);
 
                                 addGithubUser();
 
