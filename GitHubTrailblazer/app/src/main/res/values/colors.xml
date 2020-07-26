@@ -17,6 +17,8 @@
     <color name="secondary7">#808080</color>
     <color name="secondary8">#494949</color>
 
+    <color name="accent1">#FEBD15</color>
+
     <color name="projectUpvote">#2FB024</color>
     <color name="projectDownvote">#EC0202</color>
     <color name="projectComment">#4C6DC3</color>

@@ -6,7 +6,7 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:openDrawer="end">
+        tools:openDrawer="right">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
@@ -25,11 +25,20 @@
                     android:background="?attr/colorPrimary"
                     app:popupTheme="@style/AppTheme.PopupOverlay">
                 <LinearLayout
+                    android:id="@+id/bell_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:orientation="horizontal"
+                    android:layout_weight="0">
+                </LinearLayout>
+                <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                         android:gravity="center"
-                        android:id="@+id/toolbar_container">
+                        android:id="@+id/toolbar_container"
+                        android:layout_weight="1">
                         <!-- Dynamically add whatever you need in the toolbar here, within the specific view -->
                 </LinearLayout>
             </androidx.appcompat.widget.Toolbar>
@@ -64,5 +73,42 @@
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_drawer"
             app:menu="@menu/activity_drawer_drawer"/>
+
+    <com.google.android.material.navigation.NavigationView
+            android:id="@+id/notifications"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:fitsSystemWindows="true">
+        <LinearLayout
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:orientation="vertical">
+            <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_notifications_header"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/secondary5"
+                        android:textSize="20sp"
+                        android:text="Notifications"/>
+            </LinearLayout>
+            <RelativeLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/notification_recycler"
+                    android:scrollbars="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

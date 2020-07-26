@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +15,37 @@ import android.widget.*;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.githubtrailblazer.Helpers;
 import com.example.githubtrailblazer.components.LoadingSpinner;
 import com.example.githubtrailblazer.R;
 import com.example.githubtrailblazer.components.ProjectCard.ProjectCard;
 import com.example.githubtrailblazer.connector.RepoFeedData;
+import com.example.githubtrailblazer.ui.feed.notification.NotificationEntry;
+import com.example.githubtrailblazer.ui.feed.notification.NotificationViewHolder;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.firebase.ui.database.SnapshotParser;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Optional;
 import java.util.regex.Pattern;
+
+import static android.content.ContentValues.TAG;
+
 
 /**
  * FeedFragment class
@@ -44,12 +65,67 @@ public class FeedFragment extends Fragment {
     private SwipeRefreshLayout swipeToRefresh;
     private LoadingSpinner loading;
 
+    // Firebase ref
+    private DatabaseReference mDatabase;
+    private DatabaseReference userRef;
+
+    // Recycler refs
+    private RecyclerView recyclerView;
+    private FirebaseRecyclerAdapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        userRef = mDatabase.child("users").child(currentFirebaseUser.getUid());
+        fetch();
 
         // inflate fragment and get context
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
         Context context = getActivity();
+
+        // inflate bell
+        LinearLayout bellContainer = getActivity().findViewById(R.id.bell_container);
+        inflater.inflate(R.layout.bell_layout, bellContainer, true);
+        DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
+        TextView bell_counter = getActivity().findViewById(R.id.bell_count);
+
+        // Add Firestore sync functions for bell count
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() == null) {
+                    userRef.child("Notif_count").setValue(0);
+                    bell_counter.setVisibility(TextView.INVISIBLE);
+                } else {
+                    //do something if exists
+                    Long bell_count = ((Long) dataSnapshot.child("Notif_count").getValue());
+                    bell_counter.setText(Long.toString(bell_count));
+
+                    if (bell_counter.getVisibility() == TextView.INVISIBLE && !bell_counter.getText().equals("0"))
+                        bell_counter.setVisibility(TextView.VISIBLE);
+
+                    if (bell_counter.getVisibility() == TextView.VISIBLE && bell_counter.getText().equals("0"))
+                        bell_counter.setVisibility(TextView.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "loadPost:onCancelled", error.toException());
+            }
+        });
+        bellContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userRef.child("Notif_count").setValue(0);
+                bell_counter.setVisibility(TextView.INVISIBLE);
+                drawer.openDrawer(GravityCompat.END);
+            }
+        });
+
 
         // inflate search bar and get search-related refs
         LinearLayout toolbarContainer = getActivity().findViewById(R.id.toolbar_container);
@@ -232,6 +308,41 @@ public class FeedFragment extends Fragment {
         return view;
     }
 
+    private void fetch() {
+        recyclerView = getActivity().findViewById(R.id.notification_recycler);
+
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(recyclerView.getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        Query query = userRef.child("Notification");
+
+        FirebaseRecyclerOptions<NotificationEntry> options =
+                new FirebaseRecyclerOptions.Builder<NotificationEntry>()
+                        .setQuery(query, NotificationEntry.class)
+                        .build();
+
+        // specify an adapter
+        mAdapter = new FirebaseRecyclerAdapter<NotificationEntry, NotificationViewHolder>(options) {
+
+            @Override
+            public NotificationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                // Create a new instance of the ViewHolder, in this case we are using a custom
+                // layout called R.layout.message for each item
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.notification_row, parent, false);
+
+                return new NotificationViewHolder(view);
+            }
+
+            @Override
+            protected void onBindViewHolder(@NonNull NotificationViewHolder holder, int position, @NonNull NotificationEntry model) {
+                holder.setEntryView(model);
+            }
+
+        };
+        recyclerView.setAdapter(mAdapter);
+    }
+
     /**
      * Empty the feed in preparation to perform a new query
      */
@@ -283,5 +394,16 @@ public class FeedFragment extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAdapter.startListening();
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        mAdapter.stopListening();
     }
 }

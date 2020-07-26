@@ -65,6 +65,25 @@ public class Connector {
      */
 
     /**
+     * Service types
+     */
+    public enum Service {
+        GITHUB(0, "GitHub"), GITLAB(1, "GitLab");
+        int id;
+        String name;
+
+        Service(int id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        static Service get(int id) {
+            for (Service s : values()) if (s.id == id) return s;
+            throw new IllegalArgumentException();
+        }
+    }
+
+    /**
      * On query success callback
      */
     public interface ISuccessCallback {
