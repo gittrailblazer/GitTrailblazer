@@ -77,11 +77,6 @@ public class Notification extends LinearLayout {
     private void init(Context context) {
         if (username == null || username.isEmpty() || repository.isEmpty()) return;
 
-        //        int margin = (int) context.getResources().getDimension(R.dimen.app_project_margin_sm);
-//        layoutParams.setMargins(margin, margin, margin, 0);
-//        int padding = (int) context.getResources().getDimension(R.dimen.app_project_margin_md);
-//        detailsContainer.setPadding(padding, padding, padding, padding);
-
         LinearLayout detailsContainer = new LinearLayout(context);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -166,41 +161,6 @@ public class Notification extends LinearLayout {
             quoteRight.setImageResource(R.drawable.quote_right_solid);
             quoteRight.setPadding(0, 0, 0, quotePaddingPx);
             quoteContainer.addView(quoteRight);
-
-
-
-/*
-            ViewGroup.LayoutParams quoteRLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-
-
-            LinearLayout quoteContainer = new LinearLayout(context);
-            quoteContainer.setLayoutParams(layoutParams);
-            quoteContainer.setOrientation(HORIZONTAL);
-
-            LinearLayout.LayoutParams quoteLRLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            quoteLRLayoutParams.weight = 0;
-            LinearLayout.LayoutParams quoteLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            quoteLayoutParams.weight = 1;
-            quoteLayoutParams.gravity = Gravity.BOTTOM;
-
-            ImageView quoteLeft = new ImageView(context);
-            quoteLeft.setLayoutParams(quoteLRLayoutParams);
-            quoteLeft.setImageResource(R.drawable.quote_left_solid);
-            quoteContainer.addView(quoteLeft);
-
-            TextView quote = new TextView(context);
-            quote.setLayoutParams(quoteLayoutParams);
-            quote.setText(comment);
-            quote.setMaxLines(2);
-            quote.setEllipsize(TextUtils.TruncateAt.END);
-            quoteContainer.addView(quote);
-
-            ImageView quoteRight = new ImageView(context);
-            quoteRight.setLayoutParams(quoteLRLayoutParams);
-            quoteRight.setImageResource(R.drawable.quote_right_solid);
-            quoteContainer.addView(quoteRight);
-*/
             detailsContainer.addView(quoteContainer);
         }
 
