@@ -23,13 +23,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.example.githubtrailblazer.R;
 import com.example.githubtrailblazer.connector.Connector;
+import com.example.githubtrailblazer.ui.feed.notification.NotificationEntry;
+
 import org.w3c.dom.Text;
 
 public class Notification extends LinearLayout {
-    private final Type type;
-    private final String username;
-    private final String comment;
-    private final String repository;
+    private Type type;
+    private String username;
+    private String comment;
+    private String repository;
 
     public Notification(Context context) {
         super(context);
@@ -73,7 +75,7 @@ public class Notification extends LinearLayout {
     }
 
     private void init(Context context) {
-        if (username.isEmpty() || repository.isEmpty()) return;
+        if (username == null || username.isEmpty() || repository.isEmpty()) return;
 
         //        int margin = (int) context.getResources().getDimension(R.dimen.app_project_margin_sm);
 //        layoutParams.setMargins(margin, margin, margin, 0);
@@ -205,6 +207,14 @@ public class Notification extends LinearLayout {
         this.addView(detailsContainer);
     }
 
+    public void setEntry(Context context, NotificationEntry entry) {
+        type = entry.getType();
+        username = entry.getUsername();
+        comment = entry.getComment();
+        repository = entry.getRepository();
+        init(context);
+    }
+
     public enum Type {
         LIKE(0), COMMENT(1);
         int id;
@@ -213,9 +223,13 @@ public class Notification extends LinearLayout {
             this.id = id;
         }
 
-        static Type get(int id) {
+        public static Type get(int id) {
             for (Type t : values()) if (t.id == id) return t;
             throw new IllegalArgumentException();
+        }
+
+        public int getID() {
+            return id;
         }
     }
 }
