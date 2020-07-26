@@ -25,11 +25,20 @@
                     android:background="?attr/colorPrimary"
                     app:popupTheme="@style/AppTheme.PopupOverlay">
                 <LinearLayout
+                    android:id="@+id/bell_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:orientation="horizontal"
+                    android:layout_weight="0">
+                </LinearLayout>
+                <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                         android:gravity="center"
-                        android:id="@+id/toolbar_container">
+                        android:id="@+id/toolbar_container"
+                        android:layout_weight="1">
                         <!-- Dynamically add whatever you need in the toolbar here, within the specific view -->
                 </LinearLayout>
             </androidx.appcompat.widget.Toolbar>
@@ -88,39 +97,17 @@
                         android:textColor="@color/secondary5"
                         android:textSize="20sp"
                         android:text="Notifications"/>
-                <TextView
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:textColor="@color/secondary5" android:text="3" android:textSize="12sp"
-                        android:layout_marginBottom="10dp" android:background="@drawable/bg_notification_count"
-                        android:paddingHorizontal="4dp" android:textStyle="bold"/>
             </LinearLayout>
-            <ScrollView android:layout_width="match_parent" android:layout_height="wrap_content">
-                <LinearLayout
-                        android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                    <com.example.githubtrailblazer.components.Notification
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:type="like"
-                            app:username="bobjoel420"
-                            app:repository="abcdefg/some-random-project123"
-                            android:orientation="horizontal"
-                            android:background="@drawable/bg_notification"
-                            android:paddingVertical="10dp"
-                            android:paddingHorizontal="10dp"/>
-                    <com.example.githubtrailblazer.components.Notification
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:type="comment"
-                            app:username="bobjoel420"
-                            app:repository="abcdefg/some-random-project"
-                            app:comment="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ..."
-                            android:orientation="horizontal"
-                            android:background="@drawable/bg_notification"
-                            android:paddingVertical="10dp"
-                            android:paddingHorizontal="10dp"/>
-                </LinearLayout>
-            </ScrollView>
+            <RelativeLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/notification_recycler"
+                    android:scrollbars="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </RelativeLayout>
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>
 
