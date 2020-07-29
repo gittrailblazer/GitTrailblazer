@@ -3,7 +3,7 @@ package com.example.githubtrailblazer.connector;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
-import com.example.githubtrailblazer.UserDetailsQuery;
+import com.example.githubtrailblazer.github.UserDetailsQuery;
 import org.jetbrains.annotations.NotNull;
 
 public class UserDetailsData {
@@ -23,7 +23,7 @@ public class UserDetailsData {
      */
     public UserDetailsData(@NotNull Connector.QueryParams queryParams, Connector.ISuccessCallback successCallback, Connector.IErrorCallback errorCallback) {
         final UserDetailsData _instance = this;
-        Connector.client.query(UserDetailsQuery.builder().build())
+        Connector.ghclient.query(UserDetailsQuery.builder().build())
             .enqueue(new ApolloCall.Callback<UserDetailsQuery.Data>() {
                 @Override
                 public void onResponse(@NotNull Response<UserDetailsQuery.Data> response) {
@@ -45,4 +45,34 @@ public class UserDetailsData {
                 }
             });
     }
+
+//==================================================================================================
+//    GitLab version
+//
+// Requires import com.example.githubtrailblazer.gitlab.UserDetailsQuery;
+//==================================================================================================
+//    public UserDetailsData(@NotNull Connector.QueryParams queryParams, Connector.ISuccessCallback successCallback, Connector.IErrorCallback errorCallback) {
+//        final UserDetailsData _instance = this;
+//        Connector.glclient.query(UserDetailsQuery.builder().build())
+//                .enqueue(new ApolloCall.Callback<UserDetailsQuery.Data>() {
+//                    @Override
+//                    public void onResponse(@NotNull Response<UserDetailsQuery.Data> response) {
+//                        UserDetailsQuery.Data data = response.getData();
+//                        if (data != null) {
+//                            id = data.currentUser().id();
+//                            name = data.currentUser().name();
+//                            username = data.currentUser().username();
+//                            avatarUrl = data.currentUser().avatarUrl();
+//                            if (successCallback != null) successCallback.handle(_instance);
+//                        } else if (errorCallback != null) {
+//                            errorCallback.error("Failed query: data is NULL");
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(@NotNull ApolloException e) {
+//                        if (errorCallback != null) errorCallback.error("Failed query: " + e.getMessage());
+//                    }
+//                });
+//    }
 }
