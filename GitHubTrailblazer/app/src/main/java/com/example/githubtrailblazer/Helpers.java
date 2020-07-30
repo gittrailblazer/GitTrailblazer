@@ -4,11 +4,23 @@ import android.content.Context;
 import com.google.gson.Gson;
 import java.io.*;
 import java.lang.reflect.Type;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
 /**
  * Helpers class
  */
 public class Helpers {
+    public static int MILLION = (int) Math.pow(10, 6);
+    public static int THOUSAND = (int) Math.pow(10, 3);
+
+    public static String formatCount(Integer count) {
+        DecimalFormat df = new DecimalFormat("#.#");
+        df.setRoundingMode(RoundingMode.CEILING);
+        if (count > MILLION) return (df.format(count.doubleValue() / MILLION)) + "M";
+        if (count > THOUSAND) return (df.format(count.doubleValue() / THOUSAND)) + "K";
+        return count.toString();
+    }
 
     /**
      * Get raw JSON, map to corresponding class instance(s)

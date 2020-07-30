@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.githubtrailblazer.components.ProjectCard.ProjectCard;
+import com.example.githubtrailblazer.data.RepoCardData;
 
 /**
  * RepoDetailActivity class
@@ -24,7 +24,7 @@ public class RepoDetailActivity extends AppCompatActivity {
 
     private RepoDetailViewModel viewModel;
 
-    private ProjectCard.Data data;
+    private RepoCardData data;
     private int colorUnselected;
     private int colorStarSelected;
     private int colorCommentSelected;
@@ -53,9 +53,9 @@ public class RepoDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repodetail);
 
-        // Get the data passed from ProjectCard
+        // Get the data passed from RepoCard
         Intent intent = getIntent();
-        data = (ProjectCard.Data) intent.getSerializableExtra("data");
+        data = (RepoCardData) intent.getSerializableExtra("data");
 
         // init colors
         colorUnselected = ContextCompat.getColor(this, R.color.secondary6);

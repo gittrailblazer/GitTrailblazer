@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingVertical="10dp"
+              android:paddingRight="10dp"
+              android:paddingLeft="16dp"
+            android:background="@drawable/bg_issue_bug">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="horizontal"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                    android:paddingBottom="3dp">
+        <TextView
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="This Is A Bug Title"
+            android:layout_weight="1"/>
+        <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="#0" android:layout_weight="0"
+                android:paddingRight="10dp"/>
+        <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="0d" android:layout_weight="0"
+                android:paddingRight="10dp"/>
+        <ImageButton
+                android:layout_width="@dimen/app_project_iconEllipsis_w"
+                android:layout_height="@dimen/app_project_iconEllipsis_h"
+                android:src="@drawable/ellipsis_v_solid" android:layout_gravity="end"
+                android:id="@+id/projectCard__btnActions" android:background="@android:color/transparent"
+                android:layout_weight="0"/>
+    </LinearLayout>
+    <TextView
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="This is a sample issue description."
+            android:paddingBottom="3dp"/>
+    <TextView
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="user/repository"
+            android:background="@drawable/bg_issue_repo"
+            android:paddingLeft="10dp"/>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="horizontal"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="@drawable/bg_issue_repo"
+                  android:paddingLeft="10dp">
+        <ImageView
+                android:id="@+id/projectCard__langCirc" android:background="@drawable/bg_lang_circ"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"/>
+        <TextView
+                android:id="@+id/projectCard__lang" android:text="@string/app_project_lang_default"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/app_project_margin_xs"/>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:gravity="center">
+            <ImageButton
+                    android:layout_width="@dimen/app_project_iconSquare" android:layout_height="@dimen/app_project_iconSquare"
+                    android:src="@drawable/arrow_alt_circle_up"
+                    android:id="@+id/projectCard__btnUpvote" android:background="@android:color/transparent"/>
+            <TextView
+                    android:id="@+id/projectCard__rating" android:text="@string/app_project_rating_default" android:textSize="@dimen/app_project_value"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/app_project_margin_sm" android:layout_marginEnd="@dimen/app_project_margin_sm" />
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:gravity="center">
+            <ImageButton
+                    android:layout_width="@dimen/app_project_iconComment_w" android:layout_height="@dimen/app_project_iconComment_h"
+                    android:src="@drawable/comment_alt_solid"
+                    android:id="@+id/projectCard__btnComment" android:background="@android:color/transparent"/>
+            <TextView
+                    android:id="@+id/projectCard__comments" android:text="@string/app_project_comments_default" android:textSize="@dimen/app_project_value"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/app_project_margin_sm" />
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:gravity="center">
+            <ImageButton
+                    android:layout_width="@dimen/app_project_iconStar_w" android:layout_height="@dimen/app_project_iconStar_h"
+                    android:src="@drawable/star_solid"
+                    android:id="@+id/projectCard__btnStar" android:background="@android:color/transparent"/>
+            <TextView
+                    android:id="@+id/projectCard__stars" android:text="@string/app_project_stars_default" android:textSize="@dimen/app_project_value"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/app_project_margin_sm" />
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:gravity="center">
+            <ImageButton
+                    android:layout_width="@dimen/app_project_iconSitemap_w" android:layout_height="@dimen/app_project_iconSitemap_h"
+                    android:src="@drawable/sitemap_solid"
+                    android:id="@+id/projectCard__btnFork" android:background="@android:color/transparent"/>
+            <TextView
+                    android:id="@+id/projectCard__forks" android:text="@string/app_project_forks_default" android:textSize="@dimen/app_project_value"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/app_project_margin_sm" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

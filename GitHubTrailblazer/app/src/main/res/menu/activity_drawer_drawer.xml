@@ -6,12 +6,8 @@
     <group android:checkableBehavior="single">
         <item
                 android:id="@+id/nav_feed"
-                android:icon="@drawable/binoculars_solid"
+                android:icon="@drawable/binoculars_solid_optionstoggle_light"
                 android:title="@string/menu_explore"/>
-        <item
-                android:id="@+id/nav_saved"
-                android:icon="@drawable/save_solid"
-                android:title="@string/menu_saved"/>
         <item
                 android:id="@+id/nav_myrepos"
                 android:icon="@drawable/code_solid"

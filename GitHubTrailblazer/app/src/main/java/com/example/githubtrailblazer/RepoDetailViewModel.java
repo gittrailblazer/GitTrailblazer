@@ -3,7 +3,6 @@ package com.example.githubtrailblazer;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.githubtrailblazer.components.ProjectCard.Model;
 
 public class RepoDetailViewModel extends ViewModel {
     // Observable component that triggers UI updates when data

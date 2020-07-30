@@ -15,4 +15,9 @@
     <style parent="@android:style/Widget.Spinner" name="SpinnerAsEditText">
         <item name="android:background">@android:drawable/edit_text</item>
     </style>
+    <style name="PopupMenuStyle" parent="@android:style/Widget.PopupMenu">
+        <item name="android:listPreferredItemHeightSmall">35dp</item>
+        <item name="android:dropDownHorizontalOffset">-4dp</item>
+        <item name="android:dropDownVerticalOffset">4dp</item>
+    </style>
 </resources>

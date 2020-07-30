@@ -25,6 +25,10 @@ query ghRepoFeed($searchString: String!) {
                     name
                 }
                 url
+                forks(affiliations: ["OWNER"])
+                {
+                    totalCount
+                }
             }
         }
     }
