@@ -8,5 +8,4 @@ import androidx.lifecycle.ViewModel;
 
 public class IssuesViewModel extends ViewModel {
 
-
 }
