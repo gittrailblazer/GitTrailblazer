@@ -31,7 +31,7 @@ public class Connector {
             .build();
 
     static ApolloClient glclient = ApolloClient.builder()
-            .serverUrl(GH_ENDPOINT_URL)
+            .serverUrl(GL_ENDPOINT_URL)
             .okHttpClient(new OkHttpClient.Builder()
                     .addInterceptor(chain -> {
                         Request original = chain.request();
@@ -41,6 +41,7 @@ public class Connector {
                     })
                     .build())
             .build();
+
 
     /*
      * STEPS: How to retrieve and access API data
@@ -64,24 +65,40 @@ public class Connector {
      *             });
      */
 
+
     /**
-     * Service types
+     * Service type enum (for identifying service provider for feature flags / queries)
      */
     public enum Service {
-        GITHUB(0, "GitHub"), GITLAB(1, "GitLab");
-        int id;
-        String name;
+        GITHUB("GitHub", "gh"),
+        GITLAB("GitLab", "gl");
 
-        Service(int id, String name) {
-            this.id = id;
-            this.name = name;
+        private String fname;
+        private String sname;
+
+        Service(String fname, String sname) {
+            this.fname = fname;
+            this.sname = sname;
         }
 
-        static Service get(int id) {
-            for (Service s : values()) if (s.id == id) return s;
-            throw new IllegalArgumentException();
+        public String fullName() {
+            return fname;
+        }
+
+        public String shortName() {
+            return sname;
+        }
+
+        static public Service fromShortName(String shortName) {
+            switch (shortName) {
+                case "gl":
+                    return GITLAB;
+                default:
+                    return GITHUB;
+            }
         }
     }
+
 
     /**
      * On query success callback

@@ -8,7 +8,7 @@
     <color name="primary2">#1C2B4E</color>
 
     <color name="secondary1">#000000</color>
-    <color name="secondary2">#262626</color>
+    <color name="secondary2">#757575</color>
     <color name="secondary3">#979797</color>
 
     <color name="secondary4">#EEEEEE</color>
@@ -18,6 +18,8 @@
     <color name="secondary8">#494949</color>
 
     <color name="accent1">#FEBD15</color>
+    <color name="bug">#FE1515</color>
+    <color name="feature">#2FB024</color>
 
     <color name="projectUpvote">#2FB024</color>
     <color name="projectDownvote">#EC0202</color>

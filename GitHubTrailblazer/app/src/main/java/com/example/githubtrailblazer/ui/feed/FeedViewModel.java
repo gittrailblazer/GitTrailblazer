@@ -1,6 +1,7 @@
 package com.example.githubtrailblazer.ui.feed;
 
 import android.util.Log;
+import android.widget.Filter;
 import android.widget.TextView;
 import androidx.lifecycle.ViewModel;
 import com.example.githubtrailblazer.connector.Connector;
@@ -14,34 +15,27 @@ import java.util.*;
 public class FeedViewModel extends ViewModel {
     private IQueryResponseCB queryResponseCallback;
     private ITagAddedCB tagAddedCallback;
-    private ITagRemovedCB tagRemovedCallback;
-    private HashMap<String, Boolean> newTags = new HashMap<>();
-    private HashMap<String, Boolean> oldTags = new HashMap<>();
-    SortByOptions sortByOptions = SortByOptions.Best_Match;
+    private HashMap<String, Boolean> tagExistanceMap = new HashMap<>();
+    SortOption sortOption = SortOption.NEWEST;
+    FilterOption filterOption = FilterOption.EXPLORE;
 
     /**
-     * The query response sorting + ordering options
+     * The query response sort options
      */
-    public enum SortByOptions {
-        Best_Match("Best Match"),
-        Most_Stars("Most Stars"),
-        Fewest_Stars("Fewest Stars"),
-        Most_Forks("Most Forks"),
-        Fewest_Forks("Fewest Forks"),
-        Recently_Updated("Recently Updated"),
-        Least_Recently_Updated("Least Recently Updated");
+    public enum SortOption {
+        NEWEST,
+        MOST_STARS,
+        MOST_FORKS
+    }
 
-        private String text;
-
-        SortByOptions(String s) {
-            this.text = s;
-        }
-
-        public static Optional<SortByOptions> fromString(String text) {
-            return Arrays.stream(values())
-                    .filter(sbo -> sbo.text.equalsIgnoreCase(text))
-                    .findFirst();
-        }
+    /**
+     * The query response filter options
+     */
+    public enum FilterOption {
+        EXPLORE,
+        STARRED,
+        FOLLOWING,
+        CONTRIBUTED
     }
 
     /**
@@ -51,9 +45,8 @@ public class FeedViewModel extends ViewModel {
         /**
          * Execute the query response callback
          * @param data - the query data
-         * @param isNewQuery - if the query was a new query
          */
-        void exec(RepoFeedData data, boolean isNewQuery);
+        void exec(RepoFeedData data);
     }
 
     /**
@@ -68,22 +61,10 @@ public class FeedViewModel extends ViewModel {
     }
 
     /**
-     * Tag removed callback interface
+     * Execute a new query
+     * @return this instance
      */
-    interface ITagRemovedCB {
-        /**
-         * Execute the tag removed callback
-         * @param tagView - the view of the tag being removed
-         * @param isNewTag - if the tag was previously searched
-         */
-        void exec(TextView tagView, boolean isNewTag);
-    }
-
-    /**
-     * Refresh the feed by re-executing previous query
-     * @return
-     */
-    FeedViewModel execRefresh() {
+    FeedViewModel execQuery() {
         performQuery(true);
         return this;
     }
@@ -92,23 +73,22 @@ public class FeedViewModel extends ViewModel {
      * Execute a new query
      * @return this instance
      */
-    FeedViewModel execQuery() {
-        oldTags.putAll(newTags);
-        newTags.clear();
-        performQuery(true);
+    FeedViewModel loadMore() {
+        performQuery(false);
         return this;
     }
 
     /**
      * Perform feed query
-     * @param isNewQuery - if the query is new one
      */
     private void performQuery(boolean isNewQuery) {
+        // TODO: use isNewQuery to do pagination
+
         StringBuilder sb = new StringBuilder();
         boolean isEmpty = true;
 
         // build tag(s) portion of query
-        Iterator it = oldTags.entrySet().iterator();
+        Iterator it = tagExistanceMap.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
             String topic = (String)pair.getKey();
@@ -119,31 +99,22 @@ public class FeedViewModel extends ViewModel {
                 isEmpty = false;
             }
 
-// TODO: Fix this!! Issue #59
-//            sb.append("topic:");
+            // TODO: Fix this!! Issue #59
+            //            sb.append("topic:");
             sb.append(topic);
         }
 
         // build sort and ordering portion of query
-        if (sortByOptions != SortByOptions.Best_Match && !isEmpty) sb.append(" ");
-        switch (sortByOptions) {
-            case Recently_Updated:
+        if (!isEmpty) sb.append(" ");
+        switch (sortOption) {
+            case NEWEST:
                 sb.append("sort:updated");
                 break;
-            case Most_Stars:
+            case MOST_STARS:
                 sb.append("sort:stars");
                 break;
-            case Most_Forks:
+            case MOST_FORKS:
                 sb.append("sort:forks");
-                break;
-            case Fewest_Stars:
-                sb.append("sort:stars-asc");
-                break;
-            case Fewest_Forks:
-                sb.append("sort:forks-asc");
-                break;
-            case Least_Recently_Updated:
-                sb.append("sort:updated-asc");
                 break;
         }
 
@@ -153,7 +124,7 @@ public class FeedViewModel extends ViewModel {
                 @Override
                 public void handle(Object result) {
                     RepoFeedData data = (RepoFeedData) result;
-                    queryResponseCallback.exec(data, isNewQuery);
+                    queryResponseCallback.exec(data);
                 }
             }, new Connector.IErrorCallback() {
                 @Override
@@ -165,56 +136,53 @@ public class FeedViewModel extends ViewModel {
 
     /**
      * Remove a tag
-     * @param tagView - the tag view to be removed
-     * @param isNewTag - whether the tag hasn't been searched yet
-     * @return if it was successfully removed
+     * @param tag - the tag to be removed
      */
-    boolean removeTag(TextView tagView, boolean isNewTag) {
-        // get tag
-        String tag = tagView.getText().toString();
-
-        // try to delete it, returning false if did not actually exist
-        Boolean deleted = isNewTag ? newTags.remove(tag) : oldTags.remove(tag);
-        if (deleted == null) return false;
-
-        // exec callback
-        if (tagRemovedCallback != null) tagRemovedCallback.exec(tagView, isNewTag);
-        return true;
+    ViewModel removeTag(String tag) {
+        tagExistanceMap.remove(tag);
+        return this;
     }
 
     /**
-     * Add a new tag
-     * @param tag - the tag
-     * @return if it was successfully added
+     * Add new tags
+     * @param tags - the tags
      */
-    boolean addTag(String tag) {
-        // ensure tag is non-empty
-        if (tag.isEmpty()) return false;
+    FeedViewModel addTags(String[] tags) {
+        for (String tag : tags) {
+            tagExistanceMap.put(tag, true);
+            tagAddedCallback.exec(tag);
+        }
+        return this;
+    }
 
-        // ensure tag doesn't exist in new tags
-        Boolean match = oldTags.get(tag);
-        if (match != null) return false;
-
-        // ensure tag doesn't exits in old tags
-        match = newTags.get(tag);
-        if (match != null) return false;
-
-        // tag does not yet exist, add it
-        newTags.put(tag, true);
-
-        // exec callbacks
-        if (tagAddedCallback != null) tagAddedCallback.exec(tag);
-        return true;
+    /**
+     * Check if a tag already exists
+     * @param tag - the tag to check for
+     * @return if it exists
+     */
+    Boolean tagExists(String tag) {
+        return tagExistanceMap.get(tag);
     }
 
     /**
      * Set the sort by option
-     * @param sortByOptions - the sort by option
+     * @param sortOption - the sort by option
      * @return if a change occurred
      */
-    boolean setSortBy(SortByOptions sortByOptions) {
-        boolean isChanged = (sortByOptions != this.sortByOptions);
-        if (isChanged) this.sortByOptions = sortByOptions;
+    boolean setSort(SortOption sortOption) {
+        boolean isChanged = (sortOption != this.sortOption);
+        if (isChanged) this.sortOption = sortOption;
+        return isChanged;
+    }
+
+    /**
+     * Set the filter by option
+     * @param filterOption - the filter by option
+     * @return if a change occurred
+     */
+    boolean setFilter(FilterOption filterOption) {
+        boolean isChanged = (filterOption != this.filterOption);
+        if (isChanged) this.filterOption = filterOption;
         return isChanged;
     }
 
@@ -238,13 +206,4 @@ public class FeedViewModel extends ViewModel {
         return this;
     }
 
-    /**
-     * Set on tag removed callback
-     * @param callback - the callback
-     * @return this instance
-     */
-    FeedViewModel setOnTagRemovedCB(ITagRemovedCB callback) {
-        tagRemovedCallback = callback;
-        return this;
-    }
 }

@@ -1,13 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <vector
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:name="vector"
-    android:width="24dp"
-    android:height="24dp"
+    android:width="@dimen/app_optionstoggle_iconBinoculars_w"
+    android:height="@dimen/app_optionstoggle_iconBinoculars_h"
     android:viewportWidth="512"
     android:viewportHeight="512">
     <path
         android:name="path"
         android:pathData="M 416 48 C 416 39.16 408.84 32 400 32 L 336 32 C 327.16 32 320 39.16 320 48 L 320 96 L 416 96 L 416 48 Z M 63.91 159.99 C 61.4 253.84 3.46 274.22 0 404 L 0 448 C 0 465.67 14.33 480 32 480 L 128 480 C 145.67 480 160 465.67 160 448 L 160 288 L 192 288 L 192 128 L 95.84 128 C 78.21 128 64.39 142.37 63.91 159.99 Z M 448.09 159.99 C 447.61 142.37 433.79 128 416.16 128 L 320 128 L 320 288 L 352 288 L 352 448 C 352 465.67 366.33 480 384 480 L 480 480 C 497.67 480 512 465.67 512 448 L 512 404 C 508.54 274.22 450.6 253.84 448.09 159.99 Z M 176 32 L 112 32 C 103.16 32 96 39.16 96 48 L 96 96 L 192 96 L 192 48 C 192 39.16 184.84 32 176 32 Z M 224 288 L 288 288 L 288 128 L 224 128 L 224 288 Z"
-        android:fillColor="#FF000000"
+        android:fillColor="@color/secondary5"
         android:strokeWidth="1"/>
 </vector>

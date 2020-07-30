@@ -1,4 +1,4 @@
-package com.example.githubtrailblazer.components;
+package com.example.githubtrailblazer.components.searchbar;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import com.example.githubtrailblazer.R;
 
+/**
+ * SearchBarEditText class [used by SearchBar]
+ */
 public class BoundedHorizontalScrollView extends HorizontalScrollView {
     private final float boundedWidthRatio;
 

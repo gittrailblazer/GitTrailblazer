@@ -14,8 +14,8 @@
     <dimen name="app_project_margin_sm">5dp</dimen>
     <dimen name="app_project_margin_md">10dp</dimen>
     <dimen name="app_project_iconLang">12dp</dimen>
-    <dimen name="app_sideNav_iconGithub_w">19.374dp</dimen>
-    <dimen name="app_sideNav_iconGithub_h">20dp</dimen>
+    <dimen name="app_sideNav_iconGithub_w">17.437dp</dimen>
+    <dimen name="app_sideNav_iconGithub_h">18dp</dimen>
     <dimen name="app_sideNav_iconSquare">20dp</dimen>
     <dimen name="app_sideNav_margin_xs">3dp</dimen>
     <dimen name="app_sideNav_margin_sm">6dp</dimen>
@@ -26,6 +26,33 @@
     <dimen name="app_repodetail_icon_space">3dp</dimen>
     <dimen name="app_repodetail_avatar">35dp</dimen>
     <dimen name="app_repodetail_fork">25dp</dimen>
+    <dimen name="app_repocard_iconGitHub_w">15.5dp</dimen>
+    <dimen name="app_repocard_iconGitHub_h">16dp</dimen>
+    <dimen name="app_repocard_iconShare_w">18dp</dimen>
+    <dimen name="app_repocard_iconShare_h">16dp</dimen>
+    <dimen name="app_repocard_iconEyeSlash_w">20dp</dimen>
+    <dimen name="app_repocard_iconEyeSlash_h">16dp</dimen>
+    <dimen name="app_repocard_iconGlobe_w">15.5dp</dimen>
+    <dimen name="app_repocard_iconGlobe_h">16dp</dimen>
+
+    <dimen name="app_optionstoggle_iconStar_w">18dp</dimen>
+    <dimen name="app_optionstoggle_iconStar_h">16dp</dimen>
+    <dimen name="app_optionstoggle_iconSitemap_w">20dp</dimen>
+    <dimen name="app_optionstoggle_iconSitemap_h">16dp</dimen>
+    <dimen name="app_optionstoggle_iconCalendar_w">14dp</dimen>
+    <dimen name="app_optionstoggle_iconCalendar_h">16dp</dimen>
+    <dimen name="app_optionstoggle_iconBinoculars_w">16dp</dimen>
+    <dimen name="app_optionstoggle_iconBinoculars_h">16dp</dimen>
+    <dimen name="app_optionstoggle_iconUser_w">14dp</dimen>
+    <dimen name="app_optionstoggle_iconUser_h">16dp</dimen>
+    <dimen name="app_optionstoggle_iconUserFriends_w">20dp</dimen>
+    <dimen name="app_optionstoggle_iconUserFriends_h">16dp</dimen>
+
+    <dimen name="text_lg">18sp</dimen>
+    <dimen name="text_md">16sp</dimen>
+    <dimen name="text_sm">14sp</dimen>
+    <dimen name="text_xs">12sp</dimen>
+
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
