@@ -21,7 +21,9 @@ public class UserDetailsData {
      * @param successCallback - the success callback (may be NULL)
      * @param errorCallback - the error callback (may be NULL)
      */
-    public UserDetailsData(@NotNull Connector.QueryParams queryParams, Connector.ISuccessCallback successCallback, Connector.IErrorCallback errorCallback) {
+    public UserDetailsData(@NotNull Connector.QueryParams queryParams,
+                           Connector.ISuccessCallback successCallback,
+                           Connector.IErrorCallback errorCallback) {
         final UserDetailsData _instance = this;
         Connector.ghclient.query(UserDetailsQuery.builder().build())
             .enqueue(new ApolloCall.Callback<UserDetailsQuery.Data>() {
