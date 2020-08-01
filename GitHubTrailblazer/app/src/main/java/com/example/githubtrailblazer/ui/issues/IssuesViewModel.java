@@ -1,18 +1,17 @@
-package com.example.githubtrailblazer.ui.feed;
+package com.example.githubtrailblazer.ui.issues;
 
 import android.util.Log;
-import android.widget.Filter;
-import android.widget.TextView;
 import androidx.lifecycle.ViewModel;
 import com.example.githubtrailblazer.connector.Connector;
-import com.example.githubtrailblazer.connector.RepoFeedData;
+import com.example.githubtrailblazer.connector.IssueFeedData;
+import com.example.githubtrailblazer.data.IssueCardData;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
-/**
- * FeedViewModel class
- */
-public class FeedViewModel extends ViewModel {
+
+public class IssuesViewModel extends ViewModel {
     private IQueryResponseCB queryResponseCallback;
     private ITagAddedCB tagAddedCallback;
     private HashMap<String, Boolean> tagExistanceMap = new HashMap<>();
@@ -46,7 +45,7 @@ public class FeedViewModel extends ViewModel {
          * Execute the query response callback
          * @param data - the query data
          */
-        void exec(RepoFeedData data);
+        void exec(IssueFeedData data);
     }
 
     /**
@@ -64,7 +63,7 @@ public class FeedViewModel extends ViewModel {
      * Execute a new query
      * @return this instance
      */
-    FeedViewModel execQuery() {
+    IssuesViewModel execQuery() {
         performQuery(true);
         return this;
     }
@@ -73,7 +72,7 @@ public class FeedViewModel extends ViewModel {
      * Execute a new query
      * @return this instance
      */
-    FeedViewModel loadMore() {
+    IssuesViewModel loadMore() {
         performQuery(false);
         return this;
     }
@@ -119,19 +118,19 @@ public class FeedViewModel extends ViewModel {
         }
 
         // perform the query
-        new Connector.Query(Connector.QueryType.REPO_FEED, sb.toString())
-            .exec(new Connector.ISuccessCallback() {
-                @Override
-                public void handle(Object result) {
-                    RepoFeedData data = (RepoFeedData) result;
-                    queryResponseCallback.exec(data);
-                }
-            }, new Connector.IErrorCallback() {
-                @Override
-                public void error(String message) {
-                    Log.e("GH_API_QUERY", "Failed query: " + message);
-                }
-            });
+        new Connector.Query(Connector.QueryType.ISSUE_FEED, sb.toString())
+                .exec(new Connector.ISuccessCallback() {
+                    @Override
+                    public void handle(Object result) {
+                        IssueFeedData data = (IssueFeedData) result;
+                        queryResponseCallback.exec(data);
+                    }
+                }, new Connector.IErrorCallback() {
+                    @Override
+                    public void error(String message) {
+                        Log.e("GH_API_QUERY", "Failed query: " + message);
+                    }
+                });
     }
 
     /**
@@ -147,7 +146,7 @@ public class FeedViewModel extends ViewModel {
      * Add new tags
      * @param tags - the tags
      */
-    FeedViewModel addTags(String[] tags) {
+    IssuesViewModel addTags(String[] tags) {
         for (String tag : tags) {
             tagExistanceMap.put(tag, true);
             tagAddedCallback.exec(tag);
@@ -191,7 +190,7 @@ public class FeedViewModel extends ViewModel {
      * @param callback - the callback
      * @return this instance
      */
-    FeedViewModel setOnQueryResponseCB(IQueryResponseCB callback) {
+    IssuesViewModel setOnQueryResponseCB(IQueryResponseCB callback) {
         queryResponseCallback = callback;
         return this;
     }
@@ -201,9 +200,10 @@ public class FeedViewModel extends ViewModel {
      * @param callback - the callback
      * @return this instance
      */
-    FeedViewModel setOnTagAddedCB(ITagAddedCB callback) {
+    IssuesViewModel setOnTagAddedCB(ITagAddedCB callback) {
         tagAddedCallback = callback;
         return this;
     }
+
 
 }

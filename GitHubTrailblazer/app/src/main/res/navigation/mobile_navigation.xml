@@ -6,7 +6,7 @@
             app:startDestination="@+id/nav_feed">
     <fragment
             android:id="@+id/nav_feed"
-            android:name="com.example.githubtrailblazer.ui.feed.FeedFragment"
+            android:name="com.example.githubtrailblazer.ui.repositories.ReposFragment"
             android:label="@string/menu_explore"
             tools:layout="@layout/fragment_feed"/>
     <fragment
@@ -16,7 +16,7 @@
             tools:layout="@layout/fragment_saved"/>
     <fragment
             android:id="@+id/nav_myrepos"
-            android:name="com.example.githubtrailblazer.ui.myrepos.IssuesFragment"
+            android:name="com.example.githubtrailblazer.ui.issues.IssuesFragment"
             android:label="@string/menu_myrepos"
             tools:layout="@layout/fragment_issues"/>
     <fragment

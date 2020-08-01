@@ -1,39 +1,31 @@
-package com.example.githubtrailblazer.ui.feed;
+package com.example.githubtrailblazer.ui.repositories;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.*;
-import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
-import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.githubtrailblazer.Helpers;
 import com.example.githubtrailblazer.R;
-import com.example.githubtrailblazer.components.repocard.Model;
 import com.example.githubtrailblazer.components.searchbar.SearchBar;
 import com.example.githubtrailblazer.components.toggle.Toggle;
 import com.example.githubtrailblazer.connector.RepoFeedData;
-import com.example.githubtrailblazer.ui.feed.notification.NotificationEntry;
-import com.example.githubtrailblazer.ui.feed.notification.NotificationViewHolder;
+import com.example.githubtrailblazer.ui.FeedAdapter;
+import com.example.githubtrailblazer.ui.repositories.notification.NotificationEntry;
+import com.example.githubtrailblazer.ui.repositories.notification.NotificationViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.firebase.ui.database.SnapshotParser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -45,23 +37,20 @@ import com.google.firebase.database.ValueEventListener;
 import com.example.githubtrailblazer.data.RepoCardData;
 import com.example.githubtrailblazer.data.ToggleOptionData;
 
-import java.util.ArrayList;
-import java.util.regex.Pattern;
-
 import static android.content.ContentValues.TAG;
 
 
 /**
  * FeedFragment class
  */
-public class FeedFragment extends Fragment {
-    private FeedViewModel viewModel = new FeedViewModel();
+public class ReposFragment extends Fragment {
+    private ReposViewModel viewModel = new ReposViewModel();
     private final String delimiterPattern = "\\s|,";
 
     // feed-specific refs
     private LinearLayout tagContainer;
     private SwipeRefreshLayout swipeToRefresh;
-    private RepoCardAdapter feedAdapter;
+    private FeedAdapter feedAdapter;
 
     // Firebase-specific refs
     private DatabaseReference mDatabase;
@@ -108,13 +97,13 @@ public class FeedFragment extends Fragment {
         // setup feed sort
         ((Toggle)view.findViewById(R.id.feed__sort))
             .setOptions(new ToggleOptionData[] {
-                new ToggleOptionData("Newest", FeedViewModel.SortOption.NEWEST, R.drawable.calendar_solid_optionstoggle_light, R.drawable.calendar_solid_optionstoggle_dark),
-                new ToggleOptionData("Most Stars", FeedViewModel.SortOption.MOST_STARS, R.drawable.star_solid_optiontoggle_light, R.drawable.star_solid_optiontoggle_dark),
-                new ToggleOptionData("Most Forks", FeedViewModel.SortOption.MOST_FORKS, R.drawable.sitemap_solid_optionstoggle_light, R.drawable.sitemap_solid_optionstoggle_dark)
+                new ToggleOptionData("Newest", RepoFeedData.SortOption.NEWEST, R.drawable.calendar_solid_optionstoggle_light, R.drawable.calendar_solid_optionstoggle_dark),
+                new ToggleOptionData("Most Stars", RepoFeedData.SortOption.MOST_STARS, R.drawable.star_solid_optiontoggle_light, R.drawable.star_solid_optiontoggle_dark),
+                new ToggleOptionData("Most Forks", RepoFeedData.SortOption.MOST_FORKS, R.drawable.sitemap_solid_optionstoggle_light, R.drawable.sitemap_solid_optionstoggle_dark)
             })
-            .setOnOptionSelected(new Toggle.IOnOptionSelectedCB<FeedViewModel.SortOption>() {
+            .setOnOptionSelected(new Toggle.IOnOptionSelectedCB<RepoFeedData.SortOption>() {
                 @Override
-                public void handle(FeedViewModel.SortOption value) {
+                public void handle(RepoFeedData.SortOption value) {
                     if (viewModel.setSort(value)) {
                         feedAdapter.loadNew(getActivity());
                         viewModel.execQuery();
@@ -125,14 +114,14 @@ public class FeedFragment extends Fragment {
         // setup feed filter
         ((Toggle)view.findViewById(R.id.feed__filter))
             .setOptions(new ToggleOptionData[]{
-                new ToggleOptionData("Explore", FeedViewModel.FilterOption.EXPLORE, R.drawable.binoculars_solid_optionstoggle_light, R.drawable.binoculars_solid_optionstoggle_dark),
-                new ToggleOptionData("Starred", FeedViewModel.FilterOption.STARRED, R.drawable.star_solid_optiontoggle_light, R.drawable.star_solid_optiontoggle_dark),
-                new ToggleOptionData("Following", FeedViewModel.FilterOption.FOLLOWING, R.drawable.user_solid_optionstoggle_light, R.drawable.user_solid_optionstoggle_dark),
-                new ToggleOptionData("Contributed", FeedViewModel.FilterOption.CONTRIBUTED, R.drawable.user_friends_solid_optionstoggle_light, R.drawable.user_friends_solid_optionstoggle_dark)
+                new ToggleOptionData("Explore", RepoFeedData.FilterOption.EXPLORE, R.drawable.binoculars_solid_optionstoggle_light, R.drawable.binoculars_solid_optionstoggle_dark),
+                new ToggleOptionData("Starred", RepoFeedData.FilterOption.STARRED, R.drawable.star_solid_optiontoggle_light, R.drawable.star_solid_optiontoggle_dark),
+                new ToggleOptionData("Following", RepoFeedData.FilterOption.FOLLOWING, R.drawable.user_solid_optionstoggle_light, R.drawable.user_solid_optionstoggle_dark),
+                new ToggleOptionData("Contributed", RepoFeedData.FilterOption.CONTRIBUTED, R.drawable.user_friends_solid_optionstoggle_light, R.drawable.user_friends_solid_optionstoggle_dark)
             })
-            .setOnOptionSelected(new Toggle.IOnOptionSelectedCB<FeedViewModel.FilterOption>() {
+            .setOnOptionSelected(new Toggle.IOnOptionSelectedCB<RepoFeedData.FilterOption>() {
                 @Override
-                public void handle(FeedViewModel.FilterOption value) {
+                public void handle(RepoFeedData.FilterOption value) {
                     if (viewModel.setFilter(value)) {
                         feedAdapter.loadNew(getActivity());
                         viewModel.execQuery();
@@ -185,7 +174,7 @@ public class FeedFragment extends Fragment {
         // bind to view model
         viewModel
             // bind to tag added events
-            .setOnTagAddedCB(new FeedViewModel.ITagAddedCB() {
+            .setOnTagAddedCB(new ReposViewModel.ITagAddedCB() {
                 @Override
                 public void exec(String tag) {
                     // create & add tag
@@ -207,7 +196,7 @@ public class FeedFragment extends Fragment {
                 }
             })
             // bind to query execution
-            .setOnQueryResponseCB(new FeedViewModel.IQueryResponseCB() {
+            .setOnQueryResponseCB(new ReposViewModel.IQueryResponseCB() {
                 @Override
                 public void exec(RepoFeedData data) {
                     feedAdapter.finishLoading(getActivity(), data.repositories, data.hasNextPage);
@@ -230,8 +219,8 @@ public class FeedFragment extends Fragment {
 
         // use mock data on first load
         // TODO: when nothing is searched, recommend repos based on their profile
-        final RepoCardData[] mock = (RepoCardData[]) Helpers.fromRawJSON(context, R.raw.feed_activity_mock, RepoCardData[].class);
-        feedAdapter = new RepoCardAdapter(mock);
+        final RepoCardData[] mock = (RepoCardData[]) Helpers.fromRawJSON(context, R.raw.repo_feed_mock, RepoCardData[].class);
+        feedAdapter = new FeedAdapter(mock);
 
 
         // setup repo feed

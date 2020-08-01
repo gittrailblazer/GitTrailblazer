@@ -17,6 +17,7 @@ public class Connector {
     private static HashMap<QueryType, Class> queryTypeMap = new HashMap() {{
         put(QueryType.USER_DETAILS, UserDetailsData.class);
         put(QueryType.REPO_FEED, RepoFeedData.class);
+        put(QueryType.ISSUE_FEED, IssueFeedData.class);
     }};
     static ApolloClient ghclient = ApolloClient.builder()
             .serverUrl(GH_ENDPOINT_URL)
@@ -189,6 +190,7 @@ public class Connector {
      */
     public enum QueryType {
         REPO_FEED,
+        ISSUE_FEED,
         USER_DETAILS
     }
 

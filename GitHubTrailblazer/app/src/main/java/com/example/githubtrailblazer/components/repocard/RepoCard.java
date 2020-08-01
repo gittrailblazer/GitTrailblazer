@@ -18,6 +18,7 @@ import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 import com.example.githubtrailblazer.R;
+import com.example.githubtrailblazer.data.Rating;
 import com.example.githubtrailblazer.data.RepoCardData;
 import com.squareup.picasso.Picasso;
 
@@ -135,10 +136,10 @@ public class RepoCard extends LinearLayout {
         if (forks != null) ((TextView)findViewById(R.id.projectCard__forks)).setText(forks);
 
         // update upvotes / downvotes
-        RepoCardData.Rating rating = model.getRating();
+        Rating rating = model.getRating();
         if (rating != null) {
-            ((ImageView)findViewById(R.id.projectCard__btnUpvote)).setImageTintList(rating == RepoCardData.Rating.UPVOTE ? ColorStateList.valueOf(colorUpvoteSelected) : ColorStateList.valueOf(colorUnselected));
-            ((ImageView)findViewById(R.id.projectCard__btnDownvote)).setImageTintList(rating == RepoCardData.Rating.DOWNVOTE ? ColorStateList.valueOf(colorDownvoteSelected) : ColorStateList.valueOf(colorUnselected));
+            ((ImageView)findViewById(R.id.projectCard__btnUpvote)).setImageTintList(rating == Rating.UPVOTE ? ColorStateList.valueOf(colorUpvoteSelected) : ColorStateList.valueOf(colorUnselected));
+            ((ImageView)findViewById(R.id.projectCard__btnDownvote)).setImageTintList(rating == Rating.DOWNVOTE ? ColorStateList.valueOf(colorDownvoteSelected) : ColorStateList.valueOf(colorUnselected));
         }
 
         // update user has commented
