@@ -1,4 +1,4 @@
-package com.example.githubtrailblazer.ui.feed.notification;
+package com.example.githubtrailblazer.ui.repositories.notification;
 
 import com.example.githubtrailblazer.components.Notification;
 

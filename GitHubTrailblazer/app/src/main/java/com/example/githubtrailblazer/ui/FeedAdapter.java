@@ -1,4 +1,4 @@
-package com.example.githubtrailblazer.ui.feed;
+package com.example.githubtrailblazer.ui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,8 +7,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.githubtrailblazer.R;
-import com.example.githubtrailblazer.components.repocard.Model;
+import com.example.githubtrailblazer.components.issuecard.IssueCard;
 import com.example.githubtrailblazer.components.repocard.RepoCard;
+import com.example.githubtrailblazer.data.IssueCardData;
 import com.example.githubtrailblazer.data.RepoCardData;
 
 import java.util.ArrayList;
@@ -18,26 +19,49 @@ import java.util.ArrayList;
 /**
  * RepoCardAdapter class
  */
-public class RepoCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static final int VIEW_TYPE_CARD = 0;
-    private static final int VIEW_TYPE_LOADING = 1;
-    private ArrayList<Model> models = new ArrayList<>();
+public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final int VIEW_TYPE_REPOCARD = 0;
+    private static final int VIEW_TYPE_ISSUECARD = 1;
+    private static final int VIEW_TYPE_LOADING = 2;
+    private ArrayList<Object> dataset = new ArrayList<>();
     private boolean loading = false;
     private boolean hasNextPage = true;
 
     /**
      * RepoCardAdapter.CardViewHolder class
      */
-    public static class CardViewHolder extends RecyclerView.ViewHolder {
+    public static class RepoCardViewHolder extends RecyclerView.ViewHolder {
         public RepoCard card;
 
         /**
          * Card view holder constructor
          * @param card - the card view
          */
-        public CardViewHolder(View card) {
+        public RepoCardViewHolder(View card) {
             super(card);
             this.card = (RepoCard) card;
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            int margin = (int) card.getResources().getDimension(R.dimen.app_project_margin_md);
+            layoutParams.setMargins(0, 0, 0, margin);
+            this.card.setLayoutParams(layoutParams);
+        }
+    }
+
+    /**
+     * RepoCardAdapter.CardViewHolder class
+     */
+    public static class IssueCardViewHolder extends RecyclerView.ViewHolder {
+        public IssueCard card;
+
+        /**
+         * Card view holder constructor
+         * @param card - the card view
+         */
+        public IssueCardViewHolder(View card) {
+            super(card);
+            this.card = (IssueCard) card;
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
             );
@@ -71,8 +95,12 @@ public class RepoCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      * Repo card adapter constructor
      * @param data - the initial data to display
      */
-    public RepoCardAdapter(RepoCardData[] data) {
-        for (RepoCardData d : data) models.add(new Model(d));
+    public FeedAdapter(Object[] data) {
+        if (data instanceof RepoCardData[]) {
+            for (Object d : data) dataset.add(new com.example.githubtrailblazer.components.repocard.Model((RepoCardData)d));
+        } else if (data instanceof IssueCardData[]) {
+            for (Object d : data) dataset.add(new com.example.githubtrailblazer.components.issuecard.Model((IssueCardData)d));
+        }
     }
 
     /**
@@ -82,7 +110,9 @@ public class RepoCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      */
     @Override
     public int getItemViewType(int position) {
-        return (models.get(position) == null) ? VIEW_TYPE_LOADING : VIEW_TYPE_CARD;
+        if (dataset.get(position) == null) return VIEW_TYPE_LOADING;
+        else if (dataset.get(position) instanceof com.example.githubtrailblazer.components.repocard.Model) return VIEW_TYPE_REPOCARD;
+        else return VIEW_TYPE_ISSUECARD;
     }
 
     /**
@@ -94,8 +124,10 @@ public class RepoCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        if (viewType == VIEW_TYPE_CARD) {
-            return new CardViewHolder(View.inflate(context, R.layout.repo_card, null));
+        if (viewType == VIEW_TYPE_REPOCARD) {
+            return new RepoCardViewHolder(View.inflate(context, R.layout.repo_card, null));
+        } else if (viewType == VIEW_TYPE_ISSUECARD) {
+            return new IssueCardViewHolder(View.inflate(context, R.layout.issue_card, null));
         } else {
             return new LoadingViewHolder(View.inflate(context, R.layout.loading, null));
         }
@@ -108,8 +140,10 @@ public class RepoCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof CardViewHolder) {
-            ((CardViewHolder)holder).card.bindModel(models.get(position));
+        if (holder instanceof RepoCardViewHolder) {
+            ((RepoCardViewHolder)holder).card.bindModel((com.example.githubtrailblazer.components.repocard.Model) dataset.get(position));
+        } else if (holder instanceof IssueCardViewHolder) {
+            ((IssueCardViewHolder)holder).card.bindModel((com.example.githubtrailblazer.components.issuecard.Model) dataset.get(position));
         }
     }
 
@@ -119,7 +153,7 @@ public class RepoCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      */
     @Override
     public int getItemCount() {
-        return models.size();
+        return dataset.size();
     }
 
     /**
@@ -128,11 +162,11 @@ public class RepoCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      */
     public void loadMore(Activity activity) {
         if (!loading && hasNextPage) {
-            models.add(null);
+            dataset.add(null);
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    notifyItemInserted(models.size() - 1);
+                    notifyItemInserted(dataset.size() - 1);
                 }
             });
             loading = true;
@@ -145,8 +179,8 @@ public class RepoCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      */
     public void loadNew(Activity activity) {
         if (!loading) {
-            models.clear();
-            models.add(null);
+            dataset.clear();
+            dataset.add(null);
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -164,19 +198,25 @@ public class RepoCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      * @param data - the new data
      * @param hasNextPage - does a next page of data exist?
      */
-    public void finishLoading(Activity activity, RepoCardData[] data, boolean hasNextPage) {
+    public void finishLoading(Activity activity, Object[] data, boolean hasNextPage) {
         if (loading) {
-            int start = models.size() - 1;
-            models.remove(start);
-            for (RepoCardData d : data) models.add(new Model(d));
+            loading = false;
+            this.hasNextPage = hasNextPage;
+            int start = dataset.size() - 1;
+            dataset.remove(start);
+            if (data instanceof RepoCardData[]) {
+                for (Object d : data) dataset.add(new com.example.githubtrailblazer.components.repocard.Model((RepoCardData)d));
+            } else if (data instanceof IssueCardData[]) {
+                for (Object d : data) dataset.add(new com.example.githubtrailblazer.components.issuecard.Model((IssueCardData)d));
+            } else {
+                return;
+            }
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     notifyItemRangeChanged(start, Math.max(data.length, 1));
                 }
             });
-            loading = false;
-            this.hasNextPage = hasNextPage;
         }
     }
 

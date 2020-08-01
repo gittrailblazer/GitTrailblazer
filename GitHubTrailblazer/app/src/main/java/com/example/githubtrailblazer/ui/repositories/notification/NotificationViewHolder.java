@@ -1,18 +1,10 @@
-package com.example.githubtrailblazer.ui.feed.notification;
+package com.example.githubtrailblazer.ui.repositories.notification;
 
-import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.githubtrailblazer.R;
 import com.example.githubtrailblazer.components.Notification;
-
-import java.util.List;
 
 // stores and recycles views as they are scrolled off screen
 public class NotificationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

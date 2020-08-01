@@ -2,7 +2,6 @@ package com.example.githubtrailblazer.components;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Typeface;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -12,7 +11,6 @@ import android.text.style.ClickableSpan;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -22,10 +20,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.example.githubtrailblazer.R;
-import com.example.githubtrailblazer.connector.Connector;
-import com.example.githubtrailblazer.ui.feed.notification.NotificationEntry;
-
-import org.w3c.dom.Text;
+import com.example.githubtrailblazer.ui.repositories.notification.NotificationEntry;
 
 public class Notification extends LinearLayout {
     private Type type;

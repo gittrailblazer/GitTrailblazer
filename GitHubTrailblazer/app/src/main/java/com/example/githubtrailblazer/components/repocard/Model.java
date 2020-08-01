@@ -7,6 +7,7 @@ import android.net.Uri;
 import com.example.githubtrailblazer.Helpers;
 import com.example.githubtrailblazer.R;
 import com.example.githubtrailblazer.RepoDetailActivity;
+import com.example.githubtrailblazer.data.Rating;
 import com.example.githubtrailblazer.data.RepoCardData;
 import com.google.gson.reflect.TypeToken;
 
@@ -140,8 +141,8 @@ public class Model {
         return Helpers.formatCount(data.forks);
     }
 
-    RepoCardData.Rating getRating() {
-        return RepoCardData.Rating.from(data.valRated);
+    Rating getRating() {
+        return Rating.from(data.valRated);
     }
 
     Boolean isCommented() {

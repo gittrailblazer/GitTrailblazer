@@ -1,0 +1,128 @@
+[
+  {
+    "service": "gh",
+    "id": 1,
+    "number": 1,
+    "title": "Some Issue Title 1",
+    "state": "Open",
+    "url":  "https://github.com/sgmenda/automatic-parakeet/issues/1",
+    "repoData": {
+      "name":  "some-user-1/some-random-project-1",
+      "language":  "JavaScript",
+      "description":  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse aliquet ipsum eu lacus porttitor cursus. Proin eget nibh tellus. Etiam enim odio, tincidunt eget bibendum quis, vehicula et odio. Donec luctus blandit arcu at vulputate. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nulla ante dui, hendrerit ut odio non, ornare auctor orci. Morbi lacinia velit ac eros placerat dignissim. Donec volutpat, elit quis aliquet sagittis, massa dolor ultricies risus, et mollis arcu turpis non turpis. Nunc tincidunt dui non lorem malesuada pharetra.",
+      "rating":  3375,
+      "valRated": 0,
+      "comments":  500,
+      "isCommented": false,
+      "stars":  948,
+      "isStarred": true,
+      "forks": 1239,
+      "isForked": false
+    }
+  },
+  {
+    "service": "gh",
+    "id": 2,
+    "number": 2,
+    "title": "Some Issue Title 2",
+    "state": "Open",
+    "url":  "https://github.com/sgmenda/automatic-parakeet/issues/2",
+    "repoData": {
+      "name":  "some-user-2/some-random-project-2",
+      "language":  "Go",
+      "description":  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse aliquet ipsum eu lacus porttitor cursus. Proin eget nibh tellus. Etiam enim odio, tincidunt eget bibendum quis, vehicula et odio. Donec luctus blandit arcu at vulputate. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nulla ante dui, hendrerit ut odio non, ornare auctor orci. Morbi lacinia velit ac eros placerat dignissim. Donec volutpat, elit quis aliquet sagittis, massa dolor ultricies risus, et mollis arcu turpis non turpis. Nunc tincidunt dui non lorem malesuada pharetra.",
+      "rating":  2797,
+      "valRated": -1,
+      "comments":  750,
+      "isCommented": true,
+      "stars":  1551,
+      "isStarred": false,
+      "forks": 1049,
+      "isForked": true
+    }
+  },
+  {
+    "service": "gh",
+    "id": 3,
+    "number": 3,
+    "title": "Some Issue Title 3",
+    "state": "Open",
+    "url":  "https://github.com/sgmenda/automatic-parakeet/issues/3",
+    "repoData": {
+      "name":  "some-user-3/some-random-project-3",
+      "language":  "Java",
+      "description":  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse aliquet ipsum eu lacus porttitor cursus. Proin eget nibh tellus. Etiam enim odio, tincidunt eget bibendum quis, vehicula et odio. Donec luctus blandit arcu at vulputate. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nulla ante dui, hendrerit ut odio non, ornare auctor orci. Morbi lacinia velit ac eros placerat dignissim. Donec volutpat, elit quis aliquet sagittis, massa dolor ultricies risus, et mollis arcu turpis non turpis. Nunc tincidunt dui non lorem malesuada pharetra.",
+      "rating":  468,
+      "valRated": 1,
+      "comments":  132,
+      "isCommented": false,
+      "stars":  30,
+      "isStarred": true,
+      "forks": 35,
+      "isForked": false
+    }
+  },
+  {
+    "service": "gh",
+    "id": 4,
+    "number": 4,
+    "title": "Some Issue Title 4",
+    "state": "Open",
+    "url":  "https://github.com/sgmenda/automatic-parakeet/issues/4",
+    "repoData": {
+      "name": "some-user-4/some-random-project-4",
+      "language": "C++",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse aliquet ipsum eu lacus porttitor cursus. Proin eget nibh tellus. Etiam enim odio, tincidunt eget bibendum quis, vehicula et odio. Donec luctus blandit arcu at vulputate. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nulla ante dui, hendrerit ut odio non, ornare auctor orci. Morbi lacinia velit ac eros placerat dignissim. Donec volutpat, elit quis aliquet sagittis, massa dolor ultricies risus, et mollis arcu turpis non turpis. Nunc tincidunt dui non lorem malesuada pharetra.",
+      "rating": 143,
+      "valRated": 1,
+      "comments": 34,
+      "isCommented": false,
+      "stars": 21,
+      "isStarred": false,
+      "forks": 10,
+      "isForked": false
+    }
+  },
+  {
+    "service": "gh",
+    "id": 5,
+    "number": 5,
+    "title": "Some Issue Title 5",
+    "state": "Open",
+    "url":  "https://github.com/sgmenda/automatic-parakeet/issues/5",
+    "repoData": {
+      "name": "facebook/facebook-android-sdk",
+      "language": "Java",
+      "description": "Used to integrate Android apps with Facebook Platform. This open-source library allows you to integrate Facebook into your Android app. Learn more about the provided samples, documentation, integrating the SDK into your app, accessing source code, and more at https://developers.facebook.com/docs/android",
+      "rating": 7319,
+      "valRated": 1,
+      "comments": 2081,
+      "isCommented": false,
+      "stars": 5169,
+      "isStarred": false,
+      "forks": 3398,
+      "isForked": false
+    }
+  },
+  {
+    "service": "gh",
+    "id": 6,
+    "number": 6,
+    "title": "Some Issue Title 6",
+    "state": "Open",
+    "url":  "https://github.com/sgmenda/automatic-parakeet/issues/6",
+    "repoData": {
+      "name": "some-user-5/some-random-project-5",
+      "language": "SomeRandomLang",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse aliquet ipsum eu lacus porttitor cursus. Proin eget nibh tellus. Etiam enim odio, tincidunt eget bibendum quis, vehicula et odio. Donec luctus blandit arcu at vulputate. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nulla ante dui, hendrerit ut odio non, ornare auctor orci. Morbi lacinia velit ac eros placerat dignissim. Donec volutpat, elit quis aliquet sagittis, massa dolor ultricies risus, et mollis arcu turpis non turpis. Nunc tincidunt dui non lorem malesuada pharetra.",
+      "rating": 143,
+      "valRated": 1,
+      "comments": 34,
+      "isCommented": false,
+      "stars": 21,
+      "isStarred": false,
+      "forks": 10,
+      "isForked": false
+    }
+  }
+]
