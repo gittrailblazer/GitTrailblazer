@@ -26,11 +26,11 @@ public class IssueFeedData {
      */
     public IssueFeedData(@NotNull Connector.QueryParams queryParams,
                          Connector.ISuccessCallback successCallback,
-                         Connector.IErrorCallback errorCallback) {
+                         Connector.IErrorCallback errorCallback) throws Exception {
         String searchString = (String)queryParams.next();
         final IssueFeedData _instance = this;
 
-        Connector.ghclient.query(GhIssueFeedQuery.builder().searchString(searchString).build())
+        Connector.getInstance().getGHClient().query(GhIssueFeedQuery.builder().searchString(searchString).build())
                 .enqueue(new ApolloCall.Callback<GhIssueFeedQuery.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<GhIssueFeedQuery.Data> response) {

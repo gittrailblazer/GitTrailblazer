@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 /**
  * Connector class for abstracting GitHub AND GitLab API interfaces
+ * Follows the (lazy-loading) Singleton pattern.
  */
 public class Connector {
     private static final String GH_ENDPOINT_URL = "https://api.github.com/graphql";
@@ -19,30 +20,42 @@ public class Connector {
         put(QueryType.REPO_FEED, RepoFeedData.class);
         put(QueryType.ISSUE_FEED, IssueFeedData.class);
     }};
-    static ApolloClient ghclient = ApolloClient.builder()
-            .serverUrl(GH_ENDPOINT_URL)
-            .okHttpClient(new OkHttpClient.Builder()
-                    .addInterceptor(chain -> {
-                        Request original = chain.request();
-                        Request.Builder builder = original.newBuilder().method(original.method(), original.body());
-                        builder.header("content-type", "application/json");
-                        return chain.proceed(builder.build());
-                    })
-                    .build())
-            .build();
 
-    static ApolloClient glclient = ApolloClient.builder()
-            .serverUrl(GL_ENDPOINT_URL)
-            .okHttpClient(new OkHttpClient.Builder()
-                    .addInterceptor(chain -> {
-                        Request original = chain.request();
-                        Request.Builder builder = original.newBuilder().method(original.method(), original.body());
-                        builder.header("content-type", "application/json");
-                        return chain.proceed(builder.build());
-                    })
-                    .build())
-            .build();
+    private ApolloClient ghclient = null;
+    private ApolloClient glclient = null;
+    private boolean isInitialized = false;
 
+    // Implementing the Singleton pattern with a private initializer.
+    private static volatile Connector instance = null;
+
+    private Connector() {
+    }
+
+    // function adapted from https://en.wikipedia.org/wiki/Singleton_pattern#cite_ref-6
+    public static Connector getInstance() {
+        if (instance == null) {
+            synchronized (Connector.class) {
+                if (instance == null) {
+                    instance = new Connector();
+                }
+            }
+        }
+        return instance;
+    }
+
+    public ApolloClient getGHClient() throws Exception {
+        if (isInitialized) {
+            return ghclient;
+        }
+        throw new Exception("Trying to access uninitialized GH client!");
+    }
+
+    public ApolloClient getGLClient() throws Exception {
+        if (isInitialized) {
+            return glclient;
+        }
+        throw new Exception("Trying to access uninitialized GL client!");
+    }
 
     /*
      * STEPS: How to retrieve and access API data
@@ -128,10 +141,10 @@ public class Connector {
     /**
      * Initialize the connector
      *
-     * @param githubAccessToken - github oauth access token
+     * @param githubAccessToken         - github oauth access token
      * @param gitlabPersonalAccessToken - gitlab personal access token
      */
-    public static void initialize(String githubAccessToken, String gitlabPersonalAccessToken) {
+    public void initialize(String githubAccessToken, String gitlabPersonalAccessToken) {
         // This is a singleton HTTP client.
         // We use this to handle our requests.
         OkHttpClient ghOkHttpClient = new OkHttpClient.Builder()
@@ -166,6 +179,9 @@ public class Connector {
                 .serverUrl(GL_ENDPOINT_URL)
                 .okHttpClient(glOkHttpClient)
                 .build();
+
+        // flip isInitialized flag
+        isInitialized = true;
     }
 
     /**
