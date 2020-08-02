@@ -23,9 +23,9 @@ public class UserDetailsData {
      */
     public UserDetailsData(@NotNull Connector.QueryParams queryParams,
                            Connector.ISuccessCallback successCallback,
-                           Connector.IErrorCallback errorCallback) {
+                           Connector.IErrorCallback errorCallback) throws Exception {
         final UserDetailsData _instance = this;
-        Connector.ghclient.query(UserDetailsQuery.builder().build())
+        Connector.getInstance().getGHClient().query(UserDetailsQuery.builder().build())
             .enqueue(new ApolloCall.Callback<UserDetailsQuery.Data>() {
                 @Override
                 public void onResponse(@NotNull Response<UserDetailsQuery.Data> response) {

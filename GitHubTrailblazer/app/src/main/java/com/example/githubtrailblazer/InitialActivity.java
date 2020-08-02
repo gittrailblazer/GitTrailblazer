@@ -62,7 +62,7 @@ public class InitialActivity extends AppCompatActivity {
                                 public void onSuccess(AuthResult authResult) {
                                     // initialize connector with oauth access token
                                     String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
-                                    Connector.initialize(accessToken, gitlabPersonalAccessToken);
+                                    Connector.getInstance().initialize(accessToken, gitlabPersonalAccessToken);
 
                                     addGithubUserAndRedirect();
                                 }
@@ -80,7 +80,7 @@ public class InitialActivity extends AppCompatActivity {
                                 public void onSuccess(AuthResult authResult) {
                                     // initialize connector with oauth access token
                                     String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
-                                    Connector.initialize(accessToken, gitlabPersonalAccessToken);
+                                    Connector.getInstance().initialize(accessToken, gitlabPersonalAccessToken);
 
                                     addGithubUserAndRedirect();
                                 }
