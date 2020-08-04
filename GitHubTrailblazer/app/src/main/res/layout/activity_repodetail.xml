@@ -218,7 +218,7 @@
                                 <TextView
                                     android:id="@+id/repodetail_readme"
                                     android:layout_width="380dp"
-                                    android:layout_height="167dp"
+                                    android:layout_height="wrap_content"
                                     android:layout_marginStart="13dp"
                                     android:layout_marginTop="5dp"
                                     android:layout_marginBottom="10dp"
