@@ -79,7 +79,7 @@ public class RepoDetailActivity extends AppCompatActivity {
         descriptionTextView.setText(data.description);
         languageTextView.setText(data.language);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            readmeTextView.setText(Html.fromHtml("<h1 align=\"center\"> Git Trailblazer </h1> <br>\n<p align=\"center\">\n  <a href=\"https://gitpoint.co/\">\n  </a>\n</p>\n\n<p align=\"center\">\n  All the repositories in your pocket. Built with Java.\n</p>\n\n<p align=\"center\">\n  <a href=\"https://itunes.apple.com/us/app/gitpoint/id1251245162?mt=8\">\n", Html.FROM_HTML_MODE_COMPACT));
+            readmeTextView.setText(Html.fromHtml("<h1 align=\"center\"> Awesome Python </h1> <br>\n<p align=\"center\">\n  <a href=\"https://gitpoint.co/\">\n  </a>\n</p>\n\n<p align=\"center\">\n A curated list of awesome Python frameworks, libraries, software and resources. \n</p>\n\n<p align=\"center\">\n  <a href=\"https://itunes.apple.com/us/app/gitpoint/id1251245162?mt=8\">\n", Html.FROM_HTML_MODE_COMPACT));
         } else {
             readmeTextView.setText(Html.fromHtml("<h2>Title</h2><br><p>Description here</p>"));
         }

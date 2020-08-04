@@ -83,7 +83,7 @@
                                     app:layout_constraintBottom_toBottomOf="@+id/repodetail_user_id"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="@+id/repodetail_user_id"
-                                    app:srcCompat="@drawable/default_profile" />
+                                    app:srcCompat="@mipmap/demo_avatar" />
 
                                 <TextView
                                     android:id="@+id/repodetail_user_id"
@@ -284,7 +284,7 @@
                                     android:layout_weight="0" />
 
                                 <Space
-                                    android:layout_width="90dp"
+                                    android:layout_width="100dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0" />
 
@@ -319,7 +319,7 @@
                                     android:layout_weight="0" />
 
                                 <Space
-                                    android:layout_width="90dp"
+                                    android:layout_width="80dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0" />
 
