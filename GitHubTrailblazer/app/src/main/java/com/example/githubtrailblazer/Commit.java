@@ -76,4 +76,44 @@ public class Commit {
         }
         return commits;
     }
+
+    /**
+     * Generate mock contribution data
+     */
+    public static ArrayList<Commit> generateDemoCommitMockData(ArrayList<Commit> commits) {
+        String contributorImageURL = "drawable://" + R.drawable.default_profile;
+        Commit commit = new Commit("vinta", contributorImageURL, "Aug 2, 2020",
+                "Merge pull request #1585 from look4regev/sort-readme");
+        commits.add(commit);
+
+        Commit commit2 = new Commit("look4regev", contributorImageURL, "Aug 2, 2020",
+                "Sort readme and add to docs build");
+        commits.add(commit2);
+        Commit commit3 = new Commit("vinta", contributorImageURL, "Jul 27, 2020",
+                "Sort readme and add to docs build");
+        commits.add(commit3);
+        Commit commit4 = new Commit("jcupitt", contributorImageURL, "Jul 26, 2020",
+                "Merge branch 'master' of https://github.com/vinta/awesome-python into… ");
+        commits.add(commit4);
+        Commit commit5 = new Commit("vinta", contributorImageURL, "Jul 25, 2020",
+                "Merge pull request #1576 from rpdelaney/structlog");
+        commits.add(commit5);
+        Commit commit6 = new Commit("rpdelaney", contributorImageURL, "Jul 14, 2020",
+                "add structlog");
+        commits.add(commit6);
+        Commit commit7 = new Commit("vinta", contributorImageURL, "Jul 12, 2020",
+                "Merge pull request #1575 from thePrankster/master");
+        commits.add(commit7);
+        Commit commit8 = new Commit("thePrankster", contributorImageURL, "Jul 12, 2020",
+                "Merge pull request #1 from thePrankster/thePrankster ");
+        commits.add(commit8);
+        Commit commit9 = new Commit("thePrankster", contributorImageURL, "Jul 12, 2020",
+                "Added Arcade");
+        commits.add(commit9);
+        Commit commit10 = new Commit("vinta", contributorImageURL, "Jul 10, 2020",
+                "Merge pull request #1573 from codingCapricorn/patch-1");
+        commits.add(commit9);
+
+        return commits;
+    }
 }

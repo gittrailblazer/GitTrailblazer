@@ -204,7 +204,7 @@ public class RepoDetailActivity extends AppCompatActivity {
 
         // TODO: Get contributor data (all contributors) from GitHub/GitLab and display it
         // generate mock data
-        Contributor.generateContributorMockData(contributorList);
+        Contributor.generateDemoContributorMockData(contributorList);
 
         // define the design for contributors popup window
         historyDialog.setContentView(R.layout.repo_contributors_popup);
@@ -240,7 +240,7 @@ public class RepoDetailActivity extends AppCompatActivity {
 
         // TODO: Get contribution data (all commits) from GitHub/GitLab and display it
         // generate mock data
-        Commit.generateCommitMockData(commitList);
+        Commit.generateDemoCommitMockData(commitList);
 
         // define the design for contributions popup window
         historyDialog.setContentView(R.layout.repo_commit_popup);

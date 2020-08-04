@@ -60,4 +60,34 @@ public class Contributor {
         }
         return contributors;
     }
+
+    /**
+     * Generate demo contributor data
+     */
+    public static ArrayList<Contributor> generateDemoContributorMockData(ArrayList<Contributor> contributors) {
+        String contributorImageURL = "drawable://" + R.drawable.default_profile;
+
+        Contributor contributor1 = new Contributor("vinta", contributorImageURL, "406 commits");
+        contributors.add(contributor1);
+        Contributor contributor2 = new Contributor("dhamaniasad", contributorImageURL, "11 commits");
+        contributors.add(contributor2);
+        Contributor contributor3 = new Contributor("vndmtrx", contributorImageURL, "9 commits");
+        contributors.add(contributor3);
+        Contributor contributor4 = new Contributor("nicoe", contributorImageURL, "7 commits");
+        contributors.add(contributor4);
+        Contributor contributor5 = new Contributor("ellisonleao", contributorImageURL, "7 commits");
+        contributors.add(contributor5);
+        Contributor contributor6 = new Contributor("Alir3z4", contributorImageURL, "7 commits");
+        contributors.add(contributor6);
+        Contributor contributor7 = new Contributor("quobit", contributorImageURL, "6 commits");
+        contributors.add(contributor7);
+        Contributor contributor8 = new Contributor("agroszer", contributorImageURL, "6 commits");
+        contributors.add(contributor8);
+        Contributor contributor9 = new Contributor("probar", contributorImageURL, "5 commits");
+        contributors.add(contributor9);
+        Contributor contributor10 = new Contributor("makrusak", contributorImageURL, "5 commits");
+        contributors.add(contributor10);
+
+        return contributors;
+    }
 }
