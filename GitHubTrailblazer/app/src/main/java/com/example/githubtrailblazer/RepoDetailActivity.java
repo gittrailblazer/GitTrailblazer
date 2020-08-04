@@ -242,6 +242,7 @@ public class RepoDetailActivity extends AppCompatActivity {
         // generate mock data
         Commit.generateCommitMockData(commitList);
         //Commit.generateCommitData(commitList);
+        
 
         // define the design for contributions popup window
         historyDialog.setContentView(R.layout.repo_commit_popup);
