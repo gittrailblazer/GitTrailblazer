@@ -37,7 +37,7 @@ public class CommentActivity extends AppCompatActivity {
     EditText addcomment;
     TextView post;
     ArrayList<Comment> comments;
-    ArrayList<String> comments_str;
+    ArrayList<String> comments_str = new ArrayList<>();
     DocumentReference docRef;
 
     CommentAdapter commentAdapter;
@@ -62,7 +62,7 @@ public class CommentActivity extends AppCompatActivity {
         FirebaseFirestore.getInstance().collection("RepoComments").whereEqualTo("RepoUrl", RepoUrl).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful())
+                if(task.isSuccessful() && !task.getResult().isEmpty())
                 {
                     // user records to create a list of comment thread
                     DocumentSnapshot comment_doc = task.getResult().getDocuments().get(0);
@@ -74,15 +74,16 @@ public class CommentActivity extends AppCompatActivity {
                     }
                     docRef = FirebaseFirestore.getInstance().collection("RepoComments").document(comment_doc.getId());
 
-                    // use doc from firebase to update ListView
-                    commentAdapter = new CommentAdapter( CommentActivity.this, comments);
-                    recyclerView.setAdapter(commentAdapter);
                 }
                 else
                 {
-                    Map<String, Object> data = new HashMap<>();
-                    data.put("RepoUrl", RepoUrl);
+                    docRef = FirebaseFirestore.getInstance().collection("RepoComments").document();
+                    docRef.update("RepoUrl", RepoUrl);
                 }
+
+                // use doc from firebase to update ListView
+                commentAdapter = new CommentAdapter( CommentActivity.this, comments);
+                recyclerView.setAdapter(commentAdapter);
             }
         });
 
