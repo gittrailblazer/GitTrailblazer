@@ -1,0 +1,7 @@
+mutation StarRepo($repoID: ID!, $mutationId: String!) {
+    addStar(input: {starrableId: $repoID, clientMutationId: $mutationId}) {
+        starrable {
+            id
+        }
+    }
+}

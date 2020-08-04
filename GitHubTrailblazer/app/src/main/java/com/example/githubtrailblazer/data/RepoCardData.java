@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class RepoCardData implements Serializable {
     public String service;
     public String url;
+    public String id;
     public String name;
     public String language;
     public String description;
