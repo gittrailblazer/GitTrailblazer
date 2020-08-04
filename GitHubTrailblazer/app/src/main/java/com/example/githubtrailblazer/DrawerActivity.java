@@ -124,7 +124,7 @@ public class DrawerActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_feed, R.id.nav_saved, R.id.nav_myrepos)
+                R.id.nav_repositories, R.id.nav_issues)
                 .setDrawerLayout(drawer)
                 .build();
 

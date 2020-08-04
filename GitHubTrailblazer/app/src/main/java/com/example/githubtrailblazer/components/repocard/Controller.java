@@ -46,8 +46,8 @@ class Controller implements View.OnClickListener, PopupMenu.OnMenuItemClickListe
                 // open repo in GitHub when 'Open in GitHub' item is selected
                 model.openInBrowser();
                 return true;
-            case R.id.actions_item_stopSeeingThis:
-                // TODO: remove repo from feed when 'Stop seeing this' item is selected
+//            case R.id.actions_item_stopSeeingThis:
+//                // TODO: remove repo from feed when 'Stop seeing this' item is selected
             default:
                 return false;
         }
