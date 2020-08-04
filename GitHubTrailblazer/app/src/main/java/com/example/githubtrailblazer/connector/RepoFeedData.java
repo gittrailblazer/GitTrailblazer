@@ -94,6 +94,7 @@ public class RepoFeedData {
                                     repoCardData.service = Connector.Service.GITHUB.shortName();
                                     GhRepoFeedQuery.AsRepository repository = (GhRepoFeedQuery.AsRepository) nodes.get(i);
                                     repoCardData.url = repository.url().toString();
+                                    repoCardData.id = repository.id();
                                     repoCardData.name = repository.nameWithOwner();
                                     GhRepoFeedQuery.PrimaryLanguage _pl = repository.primaryLanguage();
                                     repoCardData.language = (_pl == null) ? null : _pl.name();

@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.util.Log;
+
 import com.example.githubtrailblazer.Helpers;
 import com.example.githubtrailblazer.R;
 import com.example.githubtrailblazer.RepoDetailActivity;
+import com.example.githubtrailblazer.connector.Connector;
 import com.example.githubtrailblazer.data.Rating;
 import com.example.githubtrailblazer.data.RepoCardData;
 import com.google.gson.reflect.TypeToken;
@@ -27,7 +30,8 @@ public class Model {
     Model bindView(RepoCard repoCard) {
         // setup singleton language color map if not defined
         if (ghColors == null) {
-            Type mapType = new TypeToken<HashMap<String, String>>(){}.getType();
+            Type mapType = new TypeToken<HashMap<String, String>>() {
+            }.getType();
             ghColors = (HashMap<String, String>) Helpers.fromRawJSON(repoCard.getContext(), R.raw.github_lang_colors, mapType);
         }
         this.repoCard = repoCard;
@@ -79,8 +83,39 @@ public class Model {
 
     Model star() {
         if (data != null) {
-            data.isStarred = !data.isStarred;
-            data.stars += data.isStarred ? 1 : -1;
+            if (!data.isStarred) {
+                // if unstarred, star repo
+                data.isStarred = true;
+                data.stars += 1;
+                new Connector.Query(Connector.QueryType.STAR_REPO, data.id)
+                        .exec(new Connector.ISuccessCallback() {
+                            @Override
+                            public void handle(Object result) {
+                                Log.d("GH_API_QUERY", "Successful query: managed to star repo " + data.url);
+                            }
+                        }, new Connector.IErrorCallback() {
+                            @Override
+                            public void error(String message) {
+                                Log.e("GH_API_QUERY", "Failed query: " + message);
+                            }
+                        });
+            } else {
+                // if starred, unstar repo
+                data.isStarred = false;
+                data.stars -= 1;
+                new Connector.Query(Connector.QueryType.UNSTAR_REPO, data.id)
+                        .exec(new Connector.ISuccessCallback() {
+                            @Override
+                            public void handle(Object result) {
+                                Log.d("GH_API_QUERY", "Successful query: managed to unstar repo " + data.url);
+                            }
+                        }, new Connector.IErrorCallback() {
+                            @Override
+                            public void error(String message) {
+                                Log.e("GH_API_QUERY", "Failed query: " + message);
+                            }
+                        });
+            }
             repoCard.update(this);
         }
         return this;
