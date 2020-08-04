@@ -132,6 +132,7 @@ public class RepoFeedFragment extends Fragment {
 
         // inflate bell
         LinearLayout bellContainer = getActivity().findViewById(R.id.bell_container);
+        bellContainer.removeAllViews();
         inflater.inflate(R.layout.bell_layout, bellContainer, true);
         DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
         TextView bell_counter = getActivity().findViewById(R.id.bell_count);
