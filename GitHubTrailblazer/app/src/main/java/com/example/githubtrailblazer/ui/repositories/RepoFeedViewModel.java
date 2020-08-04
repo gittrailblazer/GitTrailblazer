@@ -8,9 +8,9 @@ import com.example.githubtrailblazer.connector.RepoFeedData;
 import java.util.*;
 
 /**
- * FeedViewModel class
+ * RepoFeedViewModel class
  */
-public class ReposViewModel extends ViewModel {
+public class RepoFeedViewModel extends ViewModel {
     private IQueryResponseCB queryResponseCallback;
     private ITagAddedCB tagAddedCallback;
     private HashMap<String, Boolean> tagExistanceMap = new HashMap<>();
@@ -43,7 +43,7 @@ public class ReposViewModel extends ViewModel {
      * Execute a new query
      * @return this instance
      */
-    ReposViewModel execQuery() {
+    RepoFeedViewModel execQuery() {
         performQuery(true);
         return this;
     }
@@ -52,7 +52,7 @@ public class ReposViewModel extends ViewModel {
      * Execute a new query
      * @return this instance
      */
-    ReposViewModel loadMore() {
+    RepoFeedViewModel loadMore() {
         performQuery(false);
         return this;
     }
@@ -112,7 +112,7 @@ public class ReposViewModel extends ViewModel {
      * Add new tags
      * @param tags - the tags
      */
-    ReposViewModel addTags(String[] tags) {
+    RepoFeedViewModel addTags(String[] tags) {
         for (String tag : tags) {
             tagExistanceMap.put(tag, true);
             tagAddedCallback.exec(tag);
@@ -156,7 +156,7 @@ public class ReposViewModel extends ViewModel {
      * @param callback - the callback
      * @return this instance
      */
-    ReposViewModel setOnQueryResponseCB(IQueryResponseCB callback) {
+    RepoFeedViewModel setOnQueryResponseCB(IQueryResponseCB callback) {
         queryResponseCallback = callback;
         return this;
     }
@@ -166,7 +166,7 @@ public class ReposViewModel extends ViewModel {
      * @param callback - the callback
      * @return this instance
      */
-    ReposViewModel setOnTagAddedCB(ITagAddedCB callback) {
+    RepoFeedViewModel setOnTagAddedCB(ITagAddedCB callback) {
         tagAddedCallback = callback;
         return this;
     }

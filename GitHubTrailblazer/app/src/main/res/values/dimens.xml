@@ -16,6 +16,10 @@
     <dimen name="app_project_iconLang">12dp</dimen>
     <dimen name="app_sideNav_iconGithub_w">17.437dp</dimen>
     <dimen name="app_sideNav_iconGithub_h">18dp</dimen>
+    <dimen name="app_sideNav_iconExclamation_w">30dp</dimen>
+    <dimen name="app_sideNav_iconExclamation_h">30dp</dimen>
+    <dimen name="app_sideNav_iconCode_w">30dp</dimen>
+    <dimen name="app_sideNav_iconCode_h">24dp</dimen>
     <dimen name="app_sideNav_iconSquare">20dp</dimen>
     <dimen name="app_sideNav_margin_xs">3dp</dimen>
     <dimen name="app_sideNav_margin_sm">6dp</dimen>
