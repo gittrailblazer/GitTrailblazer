@@ -29,6 +29,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CommentActivity extends AppCompatActivity {
     String RepoUrl;
@@ -49,7 +51,11 @@ public class CommentActivity extends AppCompatActivity {
         // Get the repo url as unique ID
         Intent intent = getIntent();
         RepoUrl =  (String) intent.getSerializableExtra("url");
-        System.out.println(RepoUrl);
+
+        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         // Get comments for previous for the same repo
         comments = new ArrayList<>();
@@ -67,6 +73,15 @@ public class CommentActivity extends AppCompatActivity {
                         comments.add(ct);
                     }
                     docRef = FirebaseFirestore.getInstance().collection("RepoComments").document(comment_doc.getId());
+
+                    // use doc from firebase to update ListView
+                    commentAdapter = new CommentAdapter( CommentActivity.this, comments);
+                    recyclerView.setAdapter(commentAdapter);
+                }
+                else
+                {
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("RepoUrl", RepoUrl);
                 }
             }
         });
@@ -84,13 +99,6 @@ public class CommentActivity extends AppCompatActivity {
 
         addcomment = findViewById(R.id.add_comment);
         post = findViewById(R.id.post);
-
-        recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        commentAdapter = new CommentAdapter(this, comments);
-        recyclerView.setAdapter(commentAdapter);
 
         post.setOnClickListener(new View.OnClickListener() {
             @Override
