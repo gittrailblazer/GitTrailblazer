@@ -1,5 +1,6 @@
 package com.example.githubtrailblazer.components.ProjectComment;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Comment {
@@ -12,6 +13,26 @@ public class Comment {
         this.userName = userName;
         this.comment = comment;
         comment_date = date;
+    }
+
+    public Comment(String comment_str)
+    {
+        String[] comment_comp = comment_str.split("&");
+        userName = comment_comp[0];
+        comment = comment_comp[1];
+        try
+        {
+            comment_date = new SimpleDateFormat("dd/MM/yyyy").parse(comment_comp[2]);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public String comment_str()
+    {
+        return userName + '&' + comment + '&' + comment_date.toString();
     }
 
     @Override

@@ -154,7 +154,7 @@ public class RepoDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // When being tapped do nothing right now
                 Intent intent = new Intent(RepoDetailActivity.this, CommentActivity.class);
-                //intent.putExtra("url", data.url);
+                intent.putExtra("url", data.url);
                 startActivity(intent);
             }
         });
