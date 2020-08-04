@@ -3,9 +3,11 @@ package com.example.githubtrailblazer;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.os.Build;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -43,6 +45,7 @@ public class RepoDetailActivity extends AppCompatActivity {
     private TextView reponameTextView;
     private TextView descriptionTextView;
     private TextView languageTextView;
+    private TextView readmeTextView;
 
     private TextView upvoteTextView;
     private TextView commentTextView;
@@ -80,11 +83,16 @@ public class RepoDetailActivity extends AppCompatActivity {
         reponameTextView = findViewById(R.id.repodetail_name_txt);
         descriptionTextView = findViewById(R.id.repodetail_description_txt);
         languageTextView = findViewById(R.id.repodetail_lang_txt);
+        readmeTextView = findViewById(R.id.repodetail_readme);
 
         reponameTextView.setText(data.name);
         descriptionTextView.setText(data.description);
         languageTextView.setText(data.language);
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            readmeTextView.setText(Html.fromHtml("<h1 align=\"center\"> Awesome Python </h1> <br>\n<p align=\"center\">\n  <a href=\"https://gitpoint.co/\">\n  </a>\n</p>\n\n<p align=\"center\">\n A curated list of awesome Python frameworks, libraries, software and resources. \n</p>\n\n<p align=\"center\">\n  <a href=\"https://itunes.apple.com/us/app/gitpoint/id1251245162?mt=8\">\n", Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            readmeTextView.setText(Html.fromHtml("<h2>Title</h2><br><p>Description here</p>"));
+        }
         upvoteTextView = findViewById(R.id.repodetail_upvotes_txt);
         commentTextView = findViewById(R.id.repodetail_comment_txt);
         starTextView = findViewById(R.id.repodetail_star_txt);
@@ -95,7 +103,6 @@ public class RepoDetailActivity extends AppCompatActivity {
         commentBtn = findViewById(R.id.repodetail_comment_btn);
         starBtn = findViewById(R.id.repodetail_star_btn);
         forkBtn = findViewById(R.id.repodetail_fork_btn);
-
 
         viewModel = new ViewModelProvider(this).get(RepoDetailViewModel.class);
         viewModel.didVote = data.valRated;
