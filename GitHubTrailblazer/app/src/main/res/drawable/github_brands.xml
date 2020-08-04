@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="@dimen/app_repocard_iconGitHub_w"
-    android:height="@dimen/app_repocard_iconGitHub_h"
+    android:width="@dimen/app_sideNav_iconGithub_w"
+    android:height="@dimen/app_sideNav_iconGithub_h"
     android:viewportWidth="496"
     android:viewportHeight="512">
     <path

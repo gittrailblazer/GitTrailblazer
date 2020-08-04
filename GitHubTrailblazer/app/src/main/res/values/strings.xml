@@ -11,9 +11,8 @@
     <string name="app_project_user_default">User</string>
     <string name="app_optionToggle_default">All</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="menu_explore">Explore</string>
-    <string name="menu_saved">Saved Repositories</string>
-    <string name="menu_myrepos">My Repositories</string>
+    <string name="menu_repositories">Repositories</string>
+    <string name="menu_issues">Issues</string>
     <string name="menu_settings">Settings</string>
     <string name="repo_searchbar_hint_default">Search Repositories</string>
     <string name="issue_searchbar_hint_default">Search Issues</string>
