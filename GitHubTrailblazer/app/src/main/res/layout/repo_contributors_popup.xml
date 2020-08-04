@@ -36,5 +36,5 @@
         android:text="X"
         android:textStyle="bold"
         android:gravity="center"
-        android:background="@drawable/bg_circle_history" />
+        android:background="@drawable/circle_exit_btn" />
 </RelativeLayout>

@@ -1,5 +1,7 @@
 package com.example.githubtrailblazer;
 
+import java.util.ArrayList;
+
 /**
  * Stores repo contributor history
  */
@@ -43,5 +45,19 @@ public class Contributor {
                 ", imageURL='" + imageURL + '\'' +
                 ", numCommits='" + numCommits + '\'' +
                 '}';
+    }
+
+    /**
+     * Generate mock contributor data
+     */
+    public static ArrayList<Contributor> generateContributorMockData(ArrayList<Contributor> contributors) {
+        for(int i = 0; i < 15; i++) {
+            String contributorName = "Contributor " + (i+1);
+            String contributorImageURL = "drawable://" + R.drawable.default_profile;
+            String contributorNumCommits = "X commits";
+            Contributor contributor= new Contributor(contributorName, contributorImageURL, contributorNumCommits);
+            contributors.add(contributor);
+        }
+        return contributors;
     }
 }
