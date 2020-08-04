@@ -2,9 +2,14 @@ package com.example.githubtrailblazer;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.text.Html;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,7 +19,12 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.githubtrailblazer.connector.Connector;
+import com.example.githubtrailblazer.connector.ReadmeData;
+
+import com.example.githubtrailblazer.connector.UserDetailsData;
 import com.example.githubtrailblazer.data.RepoCardData;
+import com.squareup.picasso.Picasso;
 
 /**
  * RepoDetailActivity class
@@ -36,6 +46,7 @@ public class RepoDetailActivity extends AppCompatActivity {
     private TextView reponameTextView;
     private TextView descriptionTextView;
     private TextView languageTextView;
+    private TextView readmeTextView;
 
     private TextView upvoteTextView;
     private TextView commentTextView;
@@ -71,9 +82,11 @@ public class RepoDetailActivity extends AppCompatActivity {
         descriptionTextView = findViewById(R.id.repodetail_description_txt);
         languageTextView = findViewById(R.id.repodetail_lang_txt);
 
+        usernameTextView.setText(data.owner);
         reponameTextView.setText(data.name);
         descriptionTextView.setText(data.description);
         languageTextView.setText(data.language);
+        readmeTextView = findViewById(R.id.repodetail_readme);
 
         upvoteTextView = findViewById(R.id.repodetail_upvotes_txt);
         commentTextView = findViewById(R.id.repodetail_comment_txt);
@@ -92,6 +105,36 @@ public class RepoDetailActivity extends AppCompatActivity {
         viewModel.didStar = data.isStarred;
         viewModel.didFork = data.isForked;
         viewModel.didComment = data.isCommented;
+
+        // Fetch the README.md and display
+        new Connector
+                .Query(Connector.QueryType.README, data.owner, data.name)
+                .exec(new Connector.ISuccessCallback() {
+                    @Override
+                    public void handle(Object result) {
+                        ReadmeData data = (ReadmeData) result;
+
+                        // update non-async fields
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            readmeTextView.setText(Html.fromHtml(data.readme, Html.FROM_HTML_MODE_COMPACT));
+                        } else {
+                            readmeTextView.setText(Html.fromHtml(data.readme));
+                        }
+                    }
+                });
+
+        String profilePicUrl = data.profilePicUrl;
+
+        if (profilePicUrl != null && profilePicUrl != "")
+            new Handler(Looper.getMainLooper())
+                    .post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Picasso.get()
+                                    .load(profilePicUrl)
+                                    .into(((ImageView)findViewById(R.id.repodetail_user_avatar)));
+                        }
+                    });
 
         // Set the observer for the mutable UI elements
         final Observer<Integer> upvoteObserver = new Observer<Integer>() {

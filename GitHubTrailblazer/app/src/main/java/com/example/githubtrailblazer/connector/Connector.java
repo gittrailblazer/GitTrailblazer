@@ -18,6 +18,7 @@ public class Connector {
         put(QueryType.USER_DETAILS, UserDetailsData.class);
         put(QueryType.REPO_FEED, RepoFeedData.class);
         put(QueryType.ISSUE_FEED, IssueFeedData.class);
+        put(QueryType.README, ReadmeData.class);
     }};
     static ApolloClient ghclient = ApolloClient.builder()
             .serverUrl(GH_ENDPOINT_URL)
@@ -191,7 +192,8 @@ public class Connector {
     public enum QueryType {
         REPO_FEED,
         ISSUE_FEED,
-        USER_DETAILS
+        USER_DETAILS,
+        README
     }
 
     /**

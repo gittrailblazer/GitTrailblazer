@@ -9,6 +9,7 @@ public class RepoCardData implements Serializable {
     public String service;
     public String url;
     public String name;
+    public String owner;
     public String language;
     public String description;
     public String profilePicUrl;
