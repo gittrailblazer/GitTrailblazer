@@ -122,11 +122,10 @@ public class Model {
     }
 
     Model fork() {
-        if (data != null) {
-            data.isForked = !data.isForked;
-            data.forks += data.isForked ? 1 : -1;
-            repoCard.update(this);
-        }
+        Context context = repoCard.getContext();
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(data.url + "/fork"));
+        context.startActivity(i);
         return this;
     }
 

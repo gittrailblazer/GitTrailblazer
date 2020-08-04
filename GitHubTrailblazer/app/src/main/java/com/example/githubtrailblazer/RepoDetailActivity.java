@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.githubtrailblazer.components.ProjectComment.Comment;
 import com.example.githubtrailblazer.data.RepoCardData;
 
 import java.util.ArrayList;
@@ -162,6 +163,9 @@ public class RepoDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // When being tapped do nothing right now
+                Intent intent = new Intent(RepoDetailActivity.this, CommentActivity.class);
+                intent.putExtra("url", data.url);
+                startActivity(intent);
             }
         });
         starBtn.setOnClickListener(new View.OnClickListener() {
