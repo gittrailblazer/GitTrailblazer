@@ -6,11 +6,13 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,6 +20,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.githubtrailblazer.connector.Connector;
 import com.example.githubtrailblazer.data.RepoCardData;
 
 import java.util.ArrayList;
@@ -63,9 +66,12 @@ public class RepoDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repodetail);
 
+
         // Get the data passed from RepoCard
         Intent intent = getIntent();
         data = (RepoCardData) intent.getSerializableExtra("data");
+
+
 
         // init colors
         colorUnselected = ContextCompat.getColor(this, R.color.secondary6);
@@ -232,8 +238,10 @@ public class RepoDetailActivity extends AppCompatActivity {
         ArrayList<Commit> commitList = new ArrayList<>();
 
         // TODO: Get contribution data (all commits) from GitHub/GitLab and display it
+
         // generate mock data
         Commit.generateCommitMockData(commitList);
+        //Commit.generateCommitData(commitList);
 
         // define the design for contributions popup window
         historyDialog.setContentView(R.layout.repo_commit_popup);

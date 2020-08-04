@@ -1,5 +1,11 @@
 package com.example.githubtrailblazer;
 
+import android.util.Log;
+
+import com.example.githubtrailblazer.connector.CommitDetailsData;
+import com.example.githubtrailblazer.connector.Connector;
+import com.example.githubtrailblazer.connector.UserDetailsData;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -8,6 +14,7 @@ import java.util.Random;
  */
 public class Commit {
     private String contributorName, contributorImageURL, commitDate, commitDescription;
+
 
     public Commit(String contributorName, String contributorImageURL, String commitDate, String commitDescription) {
         this.contributorName = contributorName;
@@ -75,5 +82,51 @@ public class Commit {
             commits.add(commit);
         }
         return commits;
+    }
+
+    /**
+     * Generate real contribution data
+     */
+    public static void generateCommitData() {
+        new Connector.Query(Connector.QueryType.COMMIT_DETAILS)
+                .exec(new Connector.ISuccessCallback() {
+                    @Override
+                    public void handle(Object result) {
+                        CommitDetailsData data = (CommitDetailsData) result;
+
+                        Log.d("Message: ", data.message);
+
+                        String authorName = data.authorName;
+                        if(authorName == null || authorName.equals("")) {
+                            authorName = "ERROR: No name";
+                        }
+                        String authorDate = data.authorDate;
+                        if(authorDate == null || authorDate.equals("")) {
+                            authorDate = "ERROR: No date";
+                        }
+                        String authorImageURL = "drawable://" + R.drawable.default_profile;
+                        String messageHeadline = data.messageHeadline;
+                        if(messageHeadline == null || messageHeadline.equals("")) {
+                            messageHeadline = "ERROR: No message headline";
+                        }
+                        String message = data.message;
+                        if(message == null || message.equals("")){
+                            message = "ERROR: No message";
+                        }
+                        String authorDateAndCommitHeadline = authorDate + " --- " + messageHeadline;
+                        Commit currCommit = new Commit(authorName, authorImageURL, authorDateAndCommitHeadline, message);
+
+
+                        Log.d("AuthorName: ", authorName);
+                        for(int i = 0; i < 15; i++) {
+                        }
+                    }
+                }, new Connector.IErrorCallback() {
+                    @Override
+                    public void error(String message) {
+                        Log.d("GH_API_QUERY", "Failed query: " + message);
+                    }
+
+                });
     }
 }
