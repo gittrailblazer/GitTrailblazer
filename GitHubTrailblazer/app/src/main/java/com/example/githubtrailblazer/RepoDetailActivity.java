@@ -1,8 +1,11 @@
 package com.example.githubtrailblazer;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Build;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +29,9 @@ import com.example.githubtrailblazer.connector.ReadmeData;
 import com.example.githubtrailblazer.connector.UserDetailsData;
 import com.example.githubtrailblazer.data.RepoCardData;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * RepoDetailActivity class
@@ -58,6 +65,9 @@ public class RepoDetailActivity extends AppCompatActivity {
     private ImageButton commentBtn;
     private ImageButton starBtn;
     private ImageButton forkBtn;
+
+    // Dialog for contributions and contributors' histories
+    private Dialog historyDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,11 +220,83 @@ public class RepoDetailActivity extends AppCompatActivity {
             }
         });
 
-
         // setup toolbar
         Toolbar toolbar = findViewById(R.id.repodetail_toolbar);
         setSupportActionBar(toolbar);
+
+        // start dialog for history popup menu
+        historyDialog = new Dialog(this);
     }
 
+    /**
+     * Displays the contributors popup window
+     * @param v The popup window view
+     */
+    public void showContributorsPopup(View v) {
+        ListView mListView;
+        TextView txtClose;
+        ContributorListAdapter adapter;
+        ArrayList<Contributor> contributorList = new ArrayList<>();
 
+        // TODO: Get contributor data (all contributors) from GitHub/GitLab and display it
+        // generate mock data
+        Contributor.generateContributorMockData(contributorList);
+
+        // define the design for contributors popup window
+        historyDialog.setContentView(R.layout.repo_contributors_popup);
+        mListView = (ListView) historyDialog.findViewById(R.id.list_view);
+        txtClose = (TextView) historyDialog.findViewById(R.id.close_txt);
+
+        // bind contributors list to adapter and display contributor data
+        adapter = new ContributorListAdapter(this, R.layout.adapter_view_contributors, contributorList);
+        mListView.setAdapter(adapter);
+
+        // on-click listener for closing the popup window
+        txtClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                historyDialog.dismiss();
+            }
+        });
+
+        // display the design for contributors popup window
+        historyDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.BLUE));
+        historyDialog.show();
+    }
+
+    /**
+     * Displays the contributions popup window
+     * @param v The popup window view
+     */
+    public void showCommitsPopup(View v) {
+        ListView mListView;
+        TextView txtClose;
+        CommitListAdapter adapter;
+        ArrayList<Commit> commitList = new ArrayList<>();
+
+        // TODO: Get contribution data (all commits) from GitHub/GitLab and display it
+        // generate mock data
+        Commit.generateCommitMockData(commitList);
+
+        // define the design for contributions popup window
+        historyDialog.setContentView(R.layout.repo_commit_popup);
+        mListView = (ListView) historyDialog.findViewById(R.id.list_view);
+        txtClose = (TextView) historyDialog.findViewById(R.id.close_txt);
+
+        // bind contribution list to adapter
+        adapter = new CommitListAdapter(this, R.layout.adapter_view_commits, commitList);
+        mListView.setAdapter(adapter);
+
+        // on-click listener for closing the popup window
+        txtClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                historyDialog.dismiss();
+            }
+        });
+
+        // display the design for contributions popup window
+        historyDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.BLUE));
+        historyDialog.show();
+    }
 }

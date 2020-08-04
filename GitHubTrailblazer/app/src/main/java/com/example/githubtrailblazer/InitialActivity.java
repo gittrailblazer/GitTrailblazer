@@ -62,7 +62,7 @@ public class InitialActivity extends AppCompatActivity {
                                 public void onSuccess(AuthResult authResult) {
                                     // initialize connector with oauth access token
                                     String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
-                                    Connector.initialize(accessToken, gitlabPersonalAccessToken);
+                                    Connector.getInstance().initialize(accessToken, gitlabPersonalAccessToken);
 
                                     addGithubUserAndRedirect();
                                 }
@@ -80,7 +80,7 @@ public class InitialActivity extends AppCompatActivity {
                                 public void onSuccess(AuthResult authResult) {
                                     // initialize connector with oauth access token
                                     String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
-                                    Connector.initialize(accessToken, gitlabPersonalAccessToken);
+                                    Connector.getInstance().initialize(accessToken, gitlabPersonalAccessToken);
 
                                     addGithubUserAndRedirect();
                                 }
@@ -155,7 +155,7 @@ public class InitialActivity extends AppCompatActivity {
                                     User user = new User(data.id, data.username, true);
                                     FirebaseFirestore.getInstance().collection("Users").add(user);
                                     // send new users to questionnaire activity
-                                    Intent intent = new Intent(InitialActivity.this, QuestionaireActivity.class);
+                                    Intent intent = new Intent(InitialActivity.this, QuestionnaireActivity.class);
                                     finish();
                                     startActivity(intent);
                                 } else if (task.isSuccessful() && task.getResult().size() == 1) {

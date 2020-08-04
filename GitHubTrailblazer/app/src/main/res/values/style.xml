@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="QuestionaireButtonStyle" parent="@android:style/Widget.Button">
+
+    <style name="QuestionnaireButtonStyle" parent="@android:style/Widget.Button">
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:clickable">true</item>
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:textColor">#FFFFFF</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:padding">10sp</item>
+        <item name="android:padding">20sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:background">?attr/colorPrimary</item>
         <item name="android:gravity">center</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/topic_toggle_selector</item>
+        <item name="android:textColor">@color/topic_toggle_text</item>
     </style>
-    <style parent="@android:style/Widget.Spinner" name="SpinnerAsEditText">
+
+    <style name="SpinnerAsEditText" parent="@android:style/Widget.Spinner">
         <item name="android:background">@android:drawable/edit_text</item>
     </style>
+
     <style name="PopupMenuStyle" parent="@android:style/Widget.PopupMenu">
         <item name="android:listPreferredItemHeightSmall">35dp</item>
         <item name="android:dropDownHorizontalOffset">-4dp</item>

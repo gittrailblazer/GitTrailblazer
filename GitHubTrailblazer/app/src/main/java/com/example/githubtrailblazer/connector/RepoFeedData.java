@@ -54,7 +54,7 @@ public class RepoFeedData {
      */
     public RepoFeedData(@NotNull Connector.QueryParams queryParams,
                         Connector.ISuccessCallback successCallback,
-                        Connector.IErrorCallback errorCallback) {
+                        Connector.IErrorCallback errorCallback) throws Exception {
         // parse args
         final SortOption sortOption = (SortOption)queryParams.next();
         final FilterOption filterOption = (FilterOption)queryParams.next();
@@ -75,7 +75,7 @@ public class RepoFeedData {
         }
         final String ghSearchString = searchString + (searchString.isEmpty() ? "" : " ") + ghSortString;
 
-        Connector.ghclient.query(GhRepoFeedQuery.builder().searchString(ghSearchString).build())
+        Connector.getInstance().getGHClient().query(GhRepoFeedQuery.builder().searchString(ghSearchString).build())
                 .enqueue(new ApolloCall.Callback<GhRepoFeedQuery.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<GhRepoFeedQuery.Data> response) {
@@ -132,7 +132,7 @@ public class RepoFeedData {
                     }
                 });
 
-        Connector.glclient.query(GlRepoFeedQuery.builder().searchString(searchString).build())
+        Connector.getInstance().getGLClient().query(GlRepoFeedQuery.builder().searchString(searchString).build())
                 .enqueue(new ApolloCall.Callback<GlRepoFeedQuery.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<GlRepoFeedQuery.Data> response) {
