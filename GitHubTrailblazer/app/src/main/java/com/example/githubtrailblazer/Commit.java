@@ -87,7 +87,7 @@ public class Commit {
     /**
      * Generate real contribution data
      */
-    public static void generateCommitData() {
+    public static ArrayList<Commit> generateCommitData(ArrayList<Commit> commits) {
         new Connector.Query(Connector.QueryType.COMMIT_DETAILS)
                 .exec(new Connector.ISuccessCallback() {
                     @Override
@@ -119,6 +119,7 @@ public class Commit {
 
                         Log.d("AuthorName: ", authorName);
                         for(int i = 0; i < 15; i++) {
+                            commits.add(currCommit);
                         }
                     }
                 }, new Connector.IErrorCallback() {
@@ -128,5 +129,9 @@ public class Commit {
                     }
 
                 });
+        while(commits.size() < 15) {
+            // wait till the list is filled
+        }
+        return commits;
     }
 }

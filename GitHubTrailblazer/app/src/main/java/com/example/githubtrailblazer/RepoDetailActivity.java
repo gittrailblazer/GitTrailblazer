@@ -240,8 +240,8 @@ public class RepoDetailActivity extends AppCompatActivity {
         // TODO: Get contribution data (all commits) from GitHub/GitLab and display it
 
         // generate mock data
-        Commit.generateCommitMockData(commitList);
-        //Commit.generateCommitData(commitList);
+        //Commit.generateCommitMockData(commitList);
+        commitList = Commit.generateCommitData(commitList);
         
 
         // define the design for contributions popup window
