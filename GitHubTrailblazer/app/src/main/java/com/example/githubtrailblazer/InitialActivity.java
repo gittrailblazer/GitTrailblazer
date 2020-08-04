@@ -160,7 +160,9 @@ public class InitialActivity extends AppCompatActivity {
                                     startActivity(intent);
                                 } else if (task.isSuccessful() && task.getResult().size() == 1) {
                                     // send existing users to the main activity
-                                    Intent intent = new Intent(InitialActivity.this, DrawerActivity.class);
+//                                    Intent intent = new Intent(InitialActivity.this, DrawerActivity.class);
+                                    // DEMO: ALWAYS SEND USER TO THE QUESTIONNAIRE
+                                    Intent intent = new Intent(InitialActivity.this, QuestionnaireActivity.class);
                                     finish();
                                     startActivity(intent);
                                 }
