@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageButton;
@@ -18,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import java.io.*;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -25,15 +27,19 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.githubtrailblazer.connector.Connector;
 import com.example.githubtrailblazer.connector.ReadmeData;
 
 import com.example.githubtrailblazer.connector.UserDetailsData;
+import com.example.githubtrailblazer.connector.CommitDetailsData;
+import com.example.githubtrailblazer.connector.Connector;
+import com.example.githubtrailblazer.components.ProjectComment.Comment;
 import com.example.githubtrailblazer.data.RepoCardData;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import us.feras.mdv.MarkdownView;
 
 /**
  * RepoDetailActivity class
@@ -42,6 +48,7 @@ public class RepoDetailActivity extends AppCompatActivity {
     private LinearLayout container;
 
     private RepoDetailViewModel viewModel;
+    private String repoOwner, repoName, repoReadMe;
 
     private RepoCardData data;
     private int colorUnselected;
@@ -51,10 +58,14 @@ public class RepoDetailActivity extends AppCompatActivity {
     private int colorDownvoteSelected;
     private int colorForkSelected;
 
+    private ImageView userAvatar;
+
     private TextView usernameTextView;
     private TextView reponameTextView;
     private TextView descriptionTextView;
     private TextView languageTextView;
+    private TextView repoReadMeTextView;
+    private MarkdownView repoReadMeMarkdownView;
 
     private WebView readmeWebView;
 
@@ -85,6 +96,9 @@ public class RepoDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         data = (RepoCardData) intent.getSerializableExtra("data");
 
+        //init readme
+        //repoReadMe = "";
+
         // init colors
         colorUnselected = ContextCompat.getColor(this, R.color.secondary6);
         colorStarSelected = ContextCompat.getColor(this, R.color.projectStar);
@@ -94,6 +108,7 @@ public class RepoDetailActivity extends AppCompatActivity {
         colorForkSelected = ContextCompat.getColor(this, R.color.projectFork);
 
         // Assign UI elements
+        userAvatar = findViewById(R.id.repodetail_user_avatar);
         usernameTextView = findViewById(R.id.repodetail_user_id);
         reponameTextView = findViewById(R.id.repodetail_name_txt);
         descriptionTextView = findViewById(R.id.repodetail_description_txt);
@@ -109,6 +124,48 @@ public class RepoDetailActivity extends AppCompatActivity {
         descriptionTextView.setText(data.description);
         languageTextView.setText(data.language);
 
+        //repoReadMeTextView = findViewById(R.id.repodetail_readme);
+        //repoReadMeMarkdownView = findViewById(R.id.markdownView_readMe);
+
+
+
+        // TODO: Display production data from GitLab
+        // if user clicks on a GitLab or mock repo
+        if(data.profilePicUrl == null || data.profilePicUrl.equals("")) {
+            // load default avatar
+
+        } else {
+            // load GitHub avatar
+            Picasso.get().load(data.profilePicUrl).into(userAvatar);
+        }
+        // assign mock name to non-GitHub repos
+        if(data.name == null || data.name.equals("")) {
+            data.name = "randomName/randomRepo";
+        }
+        String[] parts = data.name.split("/");
+        repoOwner = parts[0];
+        repoName = parts[1];
+        usernameTextView.setText(repoOwner);
+        reponameTextView.setText(repoName);
+        descriptionTextView.setText(data.description);
+        languageTextView.setText(data.language);
+
+        new Connector.Query(Connector.QueryType.COMMIT_DETAILS, repoName, repoOwner)
+                .exec(new Connector.ISuccessCallback() {
+                    @Override
+                    public void handle(Object result) {
+                        CommitDetailsData data = (CommitDetailsData) result;
+                        if(data != null) {
+                            repoReadMeTextView.setText(data.readMe);
+                            repoReadMe = data.readMe;
+                        }
+                    }
+                }, new Connector.IErrorCallback() {
+                    @Override
+                    public void error(String message) {
+
+                    }
+                });
 
         upvoteTextView = findViewById(R.id.repodetail_upvotes_txt);
         commentTextView = findViewById(R.id.repodetail_comment_txt);
@@ -233,6 +290,9 @@ public class RepoDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // When being tapped do nothing right now
+                Intent intent = new Intent(RepoDetailActivity.this, CommentActivity.class);
+                intent.putExtra("url", data.url);
+                startActivity(intent);
             }
         });
         starBtn.setOnClickListener(new View.OnClickListener() {
@@ -263,8 +323,26 @@ public class RepoDetailActivity extends AppCompatActivity {
         ArrayList<Contributor> contributorList = new ArrayList<>();
 
         // TODO: Get contributor data (all contributors) from GitHub/GitLab and display it
+        contributorList = Contributor.generateContributorData(contributorList, 50, repoName, repoOwner);
+
+        // clean up contributor List
+        int lastIndex = contributorList.size() - 1;
+        int secLastIndex = contributorList.size() - 2;
+        String last = contributorList.get(lastIndex).getName();
+        String secLast = contributorList.get(secLastIndex).getName();
+        while(last.equals(secLast)) {
+            contributorList.remove(contributorList.size()-2);
+            lastIndex = contributorList.size() - 1;
+            secLastIndex = contributorList.size() - 2;
+            if(secLastIndex >= 0) {
+                last = contributorList.get(lastIndex).getName();
+                secLast = contributorList.get(secLastIndex).getName();
+            } else {
+                break;
+            }
+        }
         // generate mock data
-        Contributor.generateContributorMockData(contributorList);
+        //Contributor.generateContributorMockData(contributorList);
 
         // define the design for contributors popup window
         historyDialog.setContentView(R.layout.repo_contributors_popup);
@@ -299,8 +377,9 @@ public class RepoDetailActivity extends AppCompatActivity {
         ArrayList<Commit> commitList = new ArrayList<>();
 
         // TODO: Get contribution data (all commits) from GitHub/GitLab and display it
+        commitList = Commit.generateCommitData(commitList, 3, repoName, repoOwner);
         // generate mock data
-        Commit.generateCommitMockData(commitList);
+        //Commit.generateCommitMockData(commitList);
 
         // define the design for contributions popup window
         historyDialog.setContentView(R.layout.repo_commit_popup);

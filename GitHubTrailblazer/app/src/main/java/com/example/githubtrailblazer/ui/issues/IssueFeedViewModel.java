@@ -1,41 +1,35 @@
 package com.example.githubtrailblazer.ui.issues;
 
 import android.util.Log;
+
 import androidx.lifecycle.ViewModel;
+
 import com.example.githubtrailblazer.connector.Connector;
 import com.example.githubtrailblazer.connector.IssueFeedData;
-import com.example.githubtrailblazer.data.IssueCardData;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-
-public class IssuesViewModel extends ViewModel {
+/**
+ * IssueFeedViewModel class
+ */
+public class IssueFeedViewModel extends ViewModel {
     private IQueryResponseCB queryResponseCallback;
     private ITagAddedCB tagAddedCallback;
     private HashMap<String, Boolean> tagExistanceMap = new HashMap<>();
-    SortOption sortOption = SortOption.NEWEST;
-    FilterOption filterOption = FilterOption.EXPLORE;
-
-    /**
-     * The query response sort options
-     */
-    public enum SortOption {
-        NEWEST,
-        MOST_STARS,
-        MOST_FORKS
-    }
+    IssueFeedData.SortOption sortOption = IssueFeedData.SortOption.NEWEST;
+//    FilterOption filterOption = FilterOption.EXPLORE;
 
     /**
      * The query response filter options
      */
-    public enum FilterOption {
-        EXPLORE,
-        STARRED,
-        FOLLOWING,
-        CONTRIBUTED
-    }
+//    public enum FilterOption {
+//        EXPLORE,
+//        STARRED,
+//        FOLLOWING,
+//        CONTRIBUTED
+//    }
 
     /**
      * Query response callback interface
@@ -43,6 +37,7 @@ public class IssuesViewModel extends ViewModel {
     interface IQueryResponseCB {
         /**
          * Execute the query response callback
+         *
          * @param data - the query data
          */
         void exec(IssueFeedData data);
@@ -54,6 +49,7 @@ public class IssuesViewModel extends ViewModel {
     interface ITagAddedCB {
         /**
          * Execute the tag added callback
+         *
          * @param tag - the tag that was added
          */
         void exec(String tag);
@@ -61,18 +57,20 @@ public class IssuesViewModel extends ViewModel {
 
     /**
      * Execute a new query
+     *
      * @return this instance
      */
-    IssuesViewModel execQuery() {
+    IssueFeedViewModel execQuery() {
         performQuery(true);
         return this;
     }
 
     /**
      * Execute a new query
+     *
      * @return this instance
      */
-    IssuesViewModel loadMore() {
+    IssueFeedViewModel loadMore() {
         performQuery(false);
         return this;
     }
@@ -81,16 +79,19 @@ public class IssuesViewModel extends ViewModel {
      * Perform feed query
      */
     private void performQuery(boolean isNewQuery) {
-        // TODO: use isNewQuery to do pagination
 
+        // TODO: use isNewQuery to do pagination
         StringBuilder sb = new StringBuilder();
         boolean isEmpty = true;
+
+        // TODO: allow toggling this in the UI
+        boolean ShowFriendlyFeed = true;
 
         // build tag(s) portion of query
         Iterator it = tagExistanceMap.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            String topic = (String)pair.getKey();
+            Map.Entry pair = (Map.Entry) it.next();
+            String topic = (String) pair.getKey();
 
             if (!isEmpty) {
                 sb.append(" ");
@@ -103,22 +104,8 @@ public class IssuesViewModel extends ViewModel {
             sb.append(topic);
         }
 
-        // build sort and ordering portion of query
-        if (!isEmpty) sb.append(" ");
-        switch (sortOption) {
-            case NEWEST:
-                sb.append("sort:updated");
-                break;
-            case MOST_STARS:
-                sb.append("sort:stars");
-                break;
-            case MOST_FORKS:
-                sb.append("sort:forks");
-                break;
-        }
-
         // perform the query
-        new Connector.Query(Connector.QueryType.ISSUE_FEED, sb.toString())
+        new Connector.Query(Connector.QueryType.ISSUE_FEED, sortOption, sb.toString(), ShowFriendlyFeed)
                 .exec(new Connector.ISuccessCallback() {
                     @Override
                     public void handle(Object result) {
@@ -135,6 +122,7 @@ public class IssuesViewModel extends ViewModel {
 
     /**
      * Remove a tag
+     *
      * @param tag - the tag to be removed
      */
     ViewModel removeTag(String tag) {
@@ -144,9 +132,10 @@ public class IssuesViewModel extends ViewModel {
 
     /**
      * Add new tags
+     *
      * @param tags - the tags
      */
-    IssuesViewModel addTags(String[] tags) {
+    IssueFeedViewModel addTags(String[] tags) {
         for (String tag : tags) {
             tagExistanceMap.put(tag, true);
             tagAddedCallback.exec(tag);
@@ -156,6 +145,7 @@ public class IssuesViewModel extends ViewModel {
 
     /**
      * Check if a tag already exists
+     *
      * @param tag - the tag to check for
      * @return if it exists
      */
@@ -165,10 +155,11 @@ public class IssuesViewModel extends ViewModel {
 
     /**
      * Set the sort by option
+     *
      * @param sortOption - the sort by option
      * @return if a change occurred
      */
-    boolean setSort(SortOption sortOption) {
+    boolean setSort(IssueFeedData.SortOption sortOption) {
         boolean isChanged = (sortOption != this.sortOption);
         if (isChanged) this.sortOption = sortOption;
         return isChanged;
@@ -179,28 +170,30 @@ public class IssuesViewModel extends ViewModel {
      * @param filterOption - the filter by option
      * @return if a change occurred
      */
-    boolean setFilter(FilterOption filterOption) {
-        boolean isChanged = (filterOption != this.filterOption);
-        if (isChanged) this.filterOption = filterOption;
-        return isChanged;
-    }
+//    boolean setFilter(FilterOption filterOption) {
+//        boolean isChanged = (filterOption != this.filterOption);
+//        if (isChanged) this.filterOption = filterOption;
+//        return isChanged;
+//    }
 
     /**
      * Set on query response callback
+     *
      * @param callback - the callback
      * @return this instance
      */
-    IssuesViewModel setOnQueryResponseCB(IQueryResponseCB callback) {
+    IssueFeedViewModel setOnQueryResponseCB(IQueryResponseCB callback) {
         queryResponseCallback = callback;
         return this;
     }
 
     /**
      * Set on tag added callback
+     *
      * @param callback - the callback
      * @return this instance
      */
-    IssuesViewModel setOnTagAddedCB(ITagAddedCB callback) {
+    IssueFeedViewModel setOnTagAddedCB(ITagAddedCB callback) {
         tagAddedCallback = callback;
         return this;
     }

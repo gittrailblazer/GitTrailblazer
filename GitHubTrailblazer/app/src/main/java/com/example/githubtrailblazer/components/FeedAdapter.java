@@ -1,4 +1,4 @@
-package com.example.githubtrailblazer.ui;
+package com.example.githubtrailblazer.components;
 
 import android.app.Activity;
 import android.content.Context;

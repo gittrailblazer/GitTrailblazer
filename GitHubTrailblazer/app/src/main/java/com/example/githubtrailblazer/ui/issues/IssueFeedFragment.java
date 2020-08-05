@@ -12,18 +12,19 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import com.example.githubtrailblazer.Helpers;
 import com.example.githubtrailblazer.R;
 import com.example.githubtrailblazer.components.searchbar.SearchBar;
 import com.example.githubtrailblazer.components.toggle.Toggle;
 import com.example.githubtrailblazer.connector.IssueFeedData;
 import com.example.githubtrailblazer.data.IssueCardData;
 import com.example.githubtrailblazer.data.ToggleOptionData;
-import com.example.githubtrailblazer.ui.FeedAdapter;
+import com.example.githubtrailblazer.components.FeedAdapter;
 
-
-public class IssuesFragment extends Fragment {
-    private IssuesViewModel viewModel = new IssuesViewModel();
+/**
+ * IssueFeedFragment
+ */
+public class IssueFeedFragment extends Fragment {
+    private IssueFeedViewModel viewModel = new IssueFeedViewModel();
     private final String delimiterPattern = "\\s|,";
 
     // feed-specific refs
@@ -48,7 +49,7 @@ public class IssuesFragment extends Fragment {
 
         // setup fragment
         Context context = getActivity();
-        View view = inflater.inflate(R.layout.fragment_feed, container, false);
+        View view = inflater.inflate(R.layout.fragment_issues, container, false);
         tagContainer = view.findViewById(R.id.feed__tags);
 
         // setup search bar
@@ -76,13 +77,12 @@ public class IssuesFragment extends Fragment {
         // setup feed sort
         ((Toggle)view.findViewById(R.id.feed__sort))
                 .setOptions(new ToggleOptionData[] {
-                        new ToggleOptionData("Newest", IssuesViewModel.SortOption.NEWEST, R.drawable.calendar_solid_optionstoggle_light, R.drawable.calendar_solid_optionstoggle_dark),
-                        new ToggleOptionData("Latest", IssuesViewModel.SortOption.MOST_STARS, R.drawable.star_solid_optiontoggle_light, R.drawable.star_solid_optiontoggle_dark),
-                        new ToggleOptionData("Most Reactions", IssuesViewModel.SortOption.MOST_FORKS, R.drawable.sitemap_solid_optionstoggle_light, R.drawable.sitemap_solid_optionstoggle_dark)
+                        new ToggleOptionData("Newest", IssueFeedData.SortOption.NEWEST, R.drawable.calendar_solid_optionstoggle_light, R.drawable.calendar_solid_optionstoggle_dark),
+                        new ToggleOptionData("Most Popular", IssueFeedData.SortOption.MOST_POPULAR, R.drawable.users_solid_options_toggle_light, R.drawable.users_solid_options_toggle_dark)
                 })
-                .setOnOptionSelected(new Toggle.IOnOptionSelectedCB<IssuesViewModel.SortOption>() {
+                .setOnOptionSelected(new Toggle.IOnOptionSelectedCB<IssueFeedData.SortOption>() {
                     @Override
-                    public void handle(IssuesViewModel.SortOption value) {
+                    public void handle(IssueFeedData.SortOption value) {
                         if (viewModel.setSort(value)) {
                             feedAdapter.loadNew(getActivity());
                             viewModel.execQuery();
@@ -91,23 +91,23 @@ public class IssuesFragment extends Fragment {
                 });
 
         // setup feed filter
-        ((Toggle)view.findViewById(R.id.feed__filter))
-                .setOptions(new ToggleOptionData[]{
-                        new ToggleOptionData("Explore", IssuesViewModel.FilterOption.EXPLORE, R.drawable.binoculars_solid_optionstoggle_light, R.drawable.binoculars_solid_optionstoggle_dark),
-                        new ToggleOptionData("Created", IssuesViewModel.FilterOption.STARRED, R.drawable.star_solid_optiontoggle_light, R.drawable.star_solid_optiontoggle_dark),
-                        new ToggleOptionData("Commented", IssuesViewModel.FilterOption.FOLLOWING, R.drawable.user_solid_optionstoggle_light, R.drawable.user_solid_optionstoggle_dark),
-                        new ToggleOptionData("Mentioned", IssuesViewModel.FilterOption.CONTRIBUTED, R.drawable.user_friends_solid_optionstoggle_light, R.drawable.user_friends_solid_optionstoggle_dark),
-                        new ToggleOptionData("Assigned", IssuesViewModel.FilterOption.CONTRIBUTED, R.drawable.user_friends_solid_optionstoggle_light, R.drawable.user_friends_solid_optionstoggle_dark)
-                })
-                .setOnOptionSelected(new Toggle.IOnOptionSelectedCB<IssuesViewModel.FilterOption>() {
-                    @Override
-                    public void handle(IssuesViewModel.FilterOption value) {
-                        if (viewModel.setFilter(value)) {
-                            feedAdapter.loadNew(getActivity());
-                            viewModel.execQuery();
-                        }
-                    }
-                });
+//        ((Toggle)view.findViewById(R.id.feed__filter))
+//                .setOptions(new ToggleOptionData[]{
+//                        new ToggleOptionData("Explore", IssueFeedViewModel.FilterOption.EXPLORE, R.drawable.binoculars_solid_optionstoggle_light, R.drawable.binoculars_solid_optionstoggle_dark),
+//                        new ToggleOptionData("Created", IssueFeedViewModel.FilterOption.STARRED, R.drawable.star_solid_optiontoggle_light, R.drawable.star_solid_optiontoggle_dark),
+//                        new ToggleOptionData("Commented", IssueFeedViewModel.FilterOption.FOLLOWING, R.drawable.user_solid_optionstoggle_light, R.drawable.user_solid_optionstoggle_dark),
+//                        new ToggleOptionData("Mentioned", IssueFeedViewModel.FilterOption.CONTRIBUTED, R.drawable.user_friends_solid_optionstoggle_light, R.drawable.user_friends_solid_optionstoggle_dark),
+//                        new ToggleOptionData("Assigned", IssueFeedViewModel.FilterOption.CONTRIBUTED, R.drawable.user_friends_solid_optionstoggle_light, R.drawable.user_friends_solid_optionstoggle_dark)
+//                })
+//                .setOnOptionSelected(new Toggle.IOnOptionSelectedCB<IssueFeedViewModel.FilterOption>() {
+//                    @Override
+//                    public void handle(IssueFeedViewModel.FilterOption value) {
+//                        if (viewModel.setFilter(value)) {
+//                            feedAdapter.loadNew(getActivity());
+//                            viewModel.execQuery();
+//                        }
+//                    }
+//                });
 
 
         // inflate bell
@@ -154,7 +154,7 @@ public class IssuesFragment extends Fragment {
         // bind to view model
         viewModel
                 // bind to tag added events
-                .setOnTagAddedCB(new IssuesViewModel.ITagAddedCB() {
+                .setOnTagAddedCB(new IssueFeedViewModel.ITagAddedCB() {
                     @Override
                     public void exec(String tag) {
                         // create & add tag
@@ -176,7 +176,7 @@ public class IssuesFragment extends Fragment {
                     }
                 })
                 // bind to query execution
-                .setOnQueryResponseCB(new IssuesViewModel.IQueryResponseCB() {
+                .setOnQueryResponseCB(new IssueFeedViewModel.IQueryResponseCB() {
                     @Override
                     public void exec(IssueFeedData data) {
                         feedAdapter.finishLoading(getActivity(), data.issues, data.hasNextPage);
@@ -196,14 +196,8 @@ public class IssuesFragment extends Fragment {
         });
         swipeToRefresh.setColorSchemeColors(context.getColor(R.color.primary1));
 
-
-        // use mock data on first load
-        // TODO: when nothing is searched, recommend repos based on their profile
-        final IssueCardData[] mock = (IssueCardData[]) Helpers.fromRawJSON(context, R.raw.issue_feed_mock, IssueCardData[].class);
-        feedAdapter = new FeedAdapter(mock);
-
-
         // setup repo feed
+        feedAdapter = new FeedAdapter(new IssueCardData[]{});
         RecyclerView feed = view.findViewById(R.id.feed__list);
         feed.setAdapter(feedAdapter);
         feed.setLayoutManager(new LinearLayoutManager(context));
@@ -227,6 +221,10 @@ public class IssuesFragment extends Fragment {
                 }
             }
         });
+
+        // init repo feed
+        feedAdapter.loadNew(getActivity());
+        viewModel.execQuery();
 
         return view;
     }

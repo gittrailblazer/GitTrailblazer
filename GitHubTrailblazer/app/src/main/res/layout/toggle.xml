@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.githubtrailblazer.components.toggle.Toggle
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/secondary5"
+        android:background="@color/primary1"
+        android:paddingHorizontal="@dimen/app_project_margin_md"
+        android:paddingVertical="@dimen/app_project_margin_sm"
+        android:minHeight="0dp"/>

@@ -4,12 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.ToggleButton;
 
+import com.example.githubtrailblazer.connector.Connector;
+import com.example.githubtrailblazer.connector.UserHistoryData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -25,33 +30,70 @@ import java.util.Set;
 
 public class QuestionnaireActivity extends AppCompatActivity {
     Set<String> topics = new HashSet<String>();
+    String githubUsername = null;
     // The row of topics that we are currently filling.
     TableRow rowOfTopics = null;
     // Counter of the number of topics added so we don't overfill rows
     int numTopics = 0;
+
+    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questionnaire);
 
-        // Hardcoded list of suggested topics
-        // TODO: Get suggested topics from the GitHub API
-        ArrayList<String> suggestedTopics = new ArrayList<String>();
-        suggestedTopics.add("React");
-        suggestedTopics.add("NodeJS");
-        suggestedTopics.add("JavaScript");
-        suggestedTopics.add("CSS");
-        suggestedTopics.add("HTML");
-        suggestedTopics.add("Lisp");
-        suggestedTopics.add("Python3");
-        suggestedTopics.add("20xx");
-        suggestedTopics.add("clxx");
-        suggestedTopics.add("cl-20xx");
+        mHandler = new Handler(Looper.getMainLooper());
 
-        // create topic toggles for each of the suggested topics
-        for (String suggestedTopic : suggestedTopics) {
-            createTopicToggle(suggestedTopic, true);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            githubUsername = extras.getString("githubUsername");
+        }
+
+        if (githubUsername != null) {
+            Log.d("XXX", "GitHub username is " + githubUsername);
+            // if logged in with github, use github activity to generate suggested topics
+            new Connector.Query(Connector.QueryType.USER_HISTORY, githubUsername)
+                    .exec(new Connector.ISuccessCallback() {
+                        @Override
+                        public void handle(Object result) {
+                            UserHistoryData data = (UserHistoryData) result;
+                            ArrayList<String> suggestedTopics = ((UserHistoryData) result).suggestedTopics;
+                            // Move to a UI thread so can update the UI
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // create topic toggles for each of the suggested topics
+                                    for (String suggestedTopic : suggestedTopics) {
+                                        createTopicToggle(suggestedTopic, true);
+                                    }
+                                }
+                            });
+                        }
+                    }, new Connector.IErrorCallback() {
+                        @Override
+                        public void error(String message) {
+                            Log.e("GH_API_QUERY", "Failed query: " + message);
+                        }
+                    });
+        } else {
+            // otherwise, use a hardcoded list of topics
+            ArrayList<String> suggestedTopics = new ArrayList<String>();
+            suggestedTopics.add("React");
+            suggestedTopics.add("NodeJS");
+            suggestedTopics.add("JavaScript");
+            suggestedTopics.add("CSS");
+            suggestedTopics.add("HTML");
+            suggestedTopics.add("Lisp");
+            suggestedTopics.add("Python3");
+            suggestedTopics.add("20xx");
+            suggestedTopics.add("clxx");
+            suggestedTopics.add("cl-20xx");
+
+            // create topic toggles for each of the suggested topics
+            for (String suggestedTopic : suggestedTopics) {
+                createTopicToggle(suggestedTopic, true);
+            }
         }
     }
 

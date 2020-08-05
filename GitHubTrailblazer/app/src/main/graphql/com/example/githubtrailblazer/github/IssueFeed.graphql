@@ -11,12 +11,12 @@ query ghIssueFeed($searchString: String!) {
                 id
                 number
                 title
-                state
                 url
+                bodyText
+                createdAt
                 repository
                 {
                     nameWithOwner
-                    description
                     forkCount
                     stargazers
                     {

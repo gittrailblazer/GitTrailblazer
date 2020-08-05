@@ -69,7 +69,6 @@ public class CommitListAdapter extends ArrayAdapter<Commit> {
         String imageURL = getItem(position).getContributorImageURL();
         String commitDateAndDescription = "[" + getItem(position).getCommitDate() + "]\n" + getItem(position).getCommitDescription();
 
-
         if(convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(mContext);
             convertView = inflater.inflate(mResource, parent, false);
@@ -130,7 +129,6 @@ public class CommitListAdapter extends ArrayAdapter<Commit> {
                 .memoryCache(new WeakMemoryCache())
                 .discCacheSize(100 * 1024 * 1024)
                 .build();
-
         ImageLoader.getInstance().init(config);
     }
 }

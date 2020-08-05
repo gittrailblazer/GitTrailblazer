@@ -17,6 +17,7 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
+import com.example.githubtrailblazer.Helpers;
 import com.example.githubtrailblazer.R;
 import com.example.githubtrailblazer.data.Rating;
 import com.example.githubtrailblazer.data.RepoCardData;
@@ -99,14 +100,13 @@ public class RepoCard extends LinearLayout {
 
         // update language
         String language = model.getLanguage();
-        LinearLayout ll_language = findViewById(R.id.projectCard__langContainer);
         if (language != null) {
             ((TextView)findViewById(R.id.projectCard__lang)).setText(language);
             findViewById(R.id.projectCard__langCirc)
-                    .getBackground().setColorFilter(model.getLanguageColor(), PorterDuff.Mode.SRC_ATOP);
-            ll_language.setVisibility(VISIBLE);
+                    .getBackground().setColorFilter(Helpers.getLanguageColor(getContext(), language), PorterDuff.Mode.SRC_ATOP);
+            findViewById(R.id.projectCard__langContainer).setVisibility(VISIBLE);
         } else {
-            ll_language.setVisibility(GONE);
+            findViewById(R.id.projectCard__langContainer).setVisibility(GONE);
         }
 
         // update description

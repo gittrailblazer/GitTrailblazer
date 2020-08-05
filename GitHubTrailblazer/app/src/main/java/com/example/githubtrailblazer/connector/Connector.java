@@ -20,6 +20,10 @@ public class Connector {
         put(QueryType.REPO_FEED, RepoFeedData.class);
         put(QueryType.ISSUE_FEED, IssueFeedData.class);
         put(QueryType.README, ReadmeData.class);
+        put(QueryType.COMMIT_DETAILS, CommitDetailsData.class);
+        put(QueryType.STAR_REPO, StarRepo.class);
+        put(QueryType.UNSTAR_REPO, UnStarRepo.class);
+        put(QueryType.USER_HISTORY, UserHistoryData.class);
     }};
 
     private ApolloClient ghclient = null;
@@ -209,7 +213,11 @@ public class Connector {
         REPO_FEED,
         ISSUE_FEED,
         USER_DETAILS,
-        README
+        README,
+        COMMIT_DETAILS,
+        STAR_REPO,
+        UNSTAR_REPO,
+        USER_HISTORY
     }
 
     /**

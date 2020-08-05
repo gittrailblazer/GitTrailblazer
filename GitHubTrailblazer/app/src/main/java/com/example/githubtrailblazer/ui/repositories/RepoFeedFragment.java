@@ -21,7 +21,7 @@ import com.example.githubtrailblazer.R;
 import com.example.githubtrailblazer.components.searchbar.SearchBar;
 import com.example.githubtrailblazer.components.toggle.Toggle;
 import com.example.githubtrailblazer.connector.RepoFeedData;
-import com.example.githubtrailblazer.ui.FeedAdapter;
+import com.example.githubtrailblazer.components.FeedAdapter;
 import com.example.githubtrailblazer.ui.repositories.notification.NotificationEntry;
 import com.example.githubtrailblazer.ui.repositories.notification.NotificationViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -41,14 +41,13 @@ import static android.content.ContentValues.TAG;
 
 
 /**
- * FeedFragment class
+ * RepoFeedFragment class
  */
-public class ReposFragment extends Fragment {
-    private ReposViewModel viewModel = new ReposViewModel();
+public class RepoFeedFragment extends Fragment {
+    private RepoFeedViewModel viewModel = new RepoFeedViewModel();
     private final String delimiterPattern = "\\s|,";
 
     // feed-specific refs
-    private LinearLayout tagContainer;
     private SwipeRefreshLayout swipeToRefresh;
     private FeedAdapter feedAdapter;
 
@@ -69,8 +68,7 @@ public class ReposFragment extends Fragment {
 
         // setup fragment
         Context context = getActivity();
-        View view = inflater.inflate(R.layout.fragment_feed, container, false);
-        tagContainer = view.findViewById(R.id.feed__tags);
+        View view = inflater.inflate(R.layout.fragment_repositories, container, false);
 
         // setup search bar
         LinearLayout toolbarContainer = getActivity().findViewById(R.id.toolbar_container);
@@ -105,6 +103,7 @@ public class ReposFragment extends Fragment {
                 @Override
                 public void handle(RepoFeedData.SortOption value) {
                     if (viewModel.setSort(value)) {
+                        // refresh
                         feedAdapter.loadNew(getActivity());
                         viewModel.execQuery();
                     }
@@ -116,13 +115,24 @@ public class ReposFragment extends Fragment {
             .setOptions(new ToggleOptionData[]{
                 new ToggleOptionData("Explore", RepoFeedData.FilterOption.EXPLORE, R.drawable.binoculars_solid_optionstoggle_light, R.drawable.binoculars_solid_optionstoggle_dark),
                 new ToggleOptionData("Starred", RepoFeedData.FilterOption.STARRED, R.drawable.star_solid_optiontoggle_light, R.drawable.star_solid_optiontoggle_dark),
-                new ToggleOptionData("Following", RepoFeedData.FilterOption.FOLLOWING, R.drawable.user_solid_optionstoggle_light, R.drawable.user_solid_optionstoggle_dark),
-                new ToggleOptionData("Contributed", RepoFeedData.FilterOption.CONTRIBUTED, R.drawable.user_friends_solid_optionstoggle_light, R.drawable.user_friends_solid_optionstoggle_dark)
+//                new ToggleOptionData("Following", RepoFeedData.FilterOption.FOLLOWING, R.drawable.user_solid_optionstoggle_light, R.drawable.user_solid_optionstoggle_dark),
+//                new ToggleOptionData("Contributed", RepoFeedData.FilterOption.CONTRIBUTED, R.drawable.user_friends_solid_optionstoggle_light, R.drawable.user_friends_solid_optionstoggle_dark)
             })
             .setOnOptionSelected(new Toggle.IOnOptionSelectedCB<RepoFeedData.FilterOption>() {
                 @Override
                 public void handle(RepoFeedData.FilterOption value) {
                     if (viewModel.setFilter(value)) {
+                        // hide/show search and filter UI elements if user is filtering
+                        if (value != RepoFeedData.FilterOption.EXPLORE) {
+                            view.findViewById(R.id.feed__tags).setVisibility(View.GONE);
+                            toolbarContainer.findViewById(R.id.searchbar).setVisibility(View.GONE);
+                            view.findViewById(R.id.feed__sort).setVisibility(View.GONE);
+                        } else {
+                            view.findViewById(R.id.feed__tags).setVisibility(View.VISIBLE);
+                            toolbarContainer.findViewById(R.id.searchbar).setVisibility(View.VISIBLE);
+                            view.findViewById(R.id.feed__sort).setVisibility(View.VISIBLE);
+                        }
+                        // refresh
                         feedAdapter.loadNew(getActivity());
                         viewModel.execQuery();
                     }
@@ -132,6 +142,7 @@ public class ReposFragment extends Fragment {
 
         // inflate bell
         LinearLayout bellContainer = getActivity().findViewById(R.id.bell_container);
+        bellContainer.removeAllViews();
         inflater.inflate(R.layout.bell_layout, bellContainer, true);
         DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
         TextView bell_counter = getActivity().findViewById(R.id.bell_count);
@@ -174,7 +185,7 @@ public class ReposFragment extends Fragment {
         // bind to view model
         viewModel
             // bind to tag added events
-            .setOnTagAddedCB(new ReposViewModel.ITagAddedCB() {
+            .setOnTagAddedCB(new RepoFeedViewModel.ITagAddedCB() {
                 @Override
                 public void exec(String tag) {
                     // create & add tag
@@ -192,11 +203,11 @@ public class ReposFragment extends Fragment {
                             viewModel.execQuery();
                         }
                     });
-                    tagContainer.addView(tagView, 0);
+                    ((LinearLayout)view.findViewById(R.id.feed__tags)).addView(tagView, 0);
                 }
             })
             // bind to query execution
-            .setOnQueryResponseCB(new ReposViewModel.IQueryResponseCB() {
+            .setOnQueryResponseCB(new RepoFeedViewModel.IQueryResponseCB() {
                 @Override
                 public void exec(RepoFeedData data) {
                     feedAdapter.finishLoading(getActivity(), data.repositories, data.hasNextPage);
@@ -217,13 +228,14 @@ public class ReposFragment extends Fragment {
         swipeToRefresh.setColorSchemeColors(context.getColor(R.color.primary1));
 
 
-        // use mock data on first load
-        // TODO: when nothing is searched, recommend repos based on their profile
-        final RepoCardData[] mock = (RepoCardData[]) Helpers.fromRawJSON(context, R.raw.repo_feed_mock, RepoCardData[].class);
-        feedAdapter = new FeedAdapter(mock);
+//        // use mock data on first load
+//        // TODO: when nothing is searched, recommend repos based on their profile
+//        final RepoCardData[] mock = (RepoCardData[]) Helpers.fromRawJSON(context, R.raw.repo_feed_mock, RepoCardData[].class);
+//        feedAdapter = new FeedAdapter(mock);
 
 
         // setup repo feed
+        feedAdapter = new FeedAdapter(new RepoCardData[]{});
         RecyclerView feed = view.findViewById(R.id.feed__list);
         feed.setAdapter(feedAdapter);
         feed.setLayoutManager(new LinearLayoutManager(context));
@@ -247,6 +259,10 @@ public class ReposFragment extends Fragment {
                 }
             }
         });
+
+        // init repo feed
+        feedAdapter.loadNew(getActivity());
+        viewModel.execQuery();
 
         return view;
     }

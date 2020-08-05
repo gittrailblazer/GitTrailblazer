@@ -282,9 +282,22 @@
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" >
+                                    app:layout_constraintTop_toTopOf="parent" />
 
-                                </WebView>
+                                <!--<us.feras.mdv.MarkdownView
+                                    android:layout_width="@dimen/_300sdp"
+                                    android:layout_height="@dimen/_150sdp"
+                                    android:id="@+id/markdownView_readMe"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:layout_marginBottom="@dimen/_5sdp"
+                                    android:text="README.md                                                                                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ...  "
+                                    android:textColor="@android:color/secondary_text_light"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"/>-->
+
+
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <LinearLayout

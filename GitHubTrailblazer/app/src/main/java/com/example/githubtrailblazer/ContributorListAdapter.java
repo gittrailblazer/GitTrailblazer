@@ -67,7 +67,7 @@ public class ContributorListAdapter extends ArrayAdapter<Contributor> {
         // get contributor information
         String name = getItem(position).getName();
         String imageURL = getItem(position).getImageURL();
-        String numCommits = getItem(position).getNumCommits();
+        String numCommits = String.valueOf(getItem(position).getNumCommits());
 
         if(convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -105,7 +105,8 @@ public class ContributorListAdapter extends ArrayAdapter<Contributor> {
         // display data
         imageLoader.displayImage(imageURL, holder.image, options);
         holder.name.setText(name);
-        holder.numCommits.setText(numCommits);
+        String numCommitsFormatted = numCommits + " commits";
+        holder.numCommits.setText(numCommitsFormatted);
         return convertView;
     }
 

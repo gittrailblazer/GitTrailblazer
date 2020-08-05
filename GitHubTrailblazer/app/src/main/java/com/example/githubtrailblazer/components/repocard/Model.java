@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.util.Log;
+
 import com.example.githubtrailblazer.Helpers;
 import com.example.githubtrailblazer.R;
 import com.example.githubtrailblazer.RepoDetailActivity;
+import com.example.githubtrailblazer.connector.Connector;
 import com.example.githubtrailblazer.data.Rating;
 import com.example.githubtrailblazer.data.RepoCardData;
 import com.google.gson.reflect.TypeToken;
@@ -18,18 +21,12 @@ import java.util.HashMap;
 public class Model {
     private final RepoCardData data;
     private RepoCard repoCard;
-    private static HashMap<String, String> ghColors;
 
     public Model(RepoCardData data) {
         this.data = data;
     }
 
     Model bindView(RepoCard repoCard) {
-        // setup singleton language color map if not defined
-        if (ghColors == null) {
-            Type mapType = new TypeToken<HashMap<String, String>>(){}.getType();
-            ghColors = (HashMap<String, String>) Helpers.fromRawJSON(repoCard.getContext(), R.raw.github_lang_colors, mapType);
-        }
         this.repoCard = repoCard;
         repoCard.update(this);
         return this;
@@ -79,19 +76,60 @@ public class Model {
 
     Model star() {
         if (data != null) {
-            data.isStarred = !data.isStarred;
-            data.stars += data.isStarred ? 1 : -1;
+            if (!data.isStarred) {
+                // if unstarred, star repo
+                data.isStarred = true;
+                data.stars += 1;
+                // if github, initiate an API query to star the repo
+                if (data.service.equals(Connector.Service.GITHUB.shortName())) {
+                    new Connector.Query(Connector.QueryType.STAR_REPO, data.id)
+                            .exec(new Connector.ISuccessCallback() {
+                                @Override
+                                public void handle(Object result) {
+                                    Log.d("GH_API_QUERY", "Successful query: managed to star repo " + data.url);
+                                }
+                            }, new Connector.IErrorCallback() {
+                                @Override
+                                public void error(String message) {
+                                    Log.e("GH_API_QUERY", "Failed query: " + message);
+                                }
+                            });
+                }
+            } else {
+                // if starred, unstar repo
+                data.isStarred = false;
+                data.stars -= 1;
+                // if github, initiate an API query to unstar the repo
+                if (data.service.equals(Connector.Service.GITHUB.shortName())) {
+                    new Connector.Query(Connector.QueryType.UNSTAR_REPO, data.id)
+                            .exec(new Connector.ISuccessCallback() {
+                                @Override
+                                public void handle(Object result) {
+                                    Log.d("GH_API_QUERY", "Successful query: managed to unstar repo " + data.url);
+                                }
+                            }, new Connector.IErrorCallback() {
+                                @Override
+                                public void error(String message) {
+                                    Log.e("GH_API_QUERY", "Failed query: " + message);
+                                }
+                            });
+                }
+            }
             repoCard.update(this);
         }
         return this;
     }
 
     Model fork() {
-        if (data != null) {
-            data.isForked = !data.isForked;
-            data.forks += data.isForked ? 1 : -1;
-            repoCard.update(this);
+        Context context = repoCard.getContext();
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        if (data.service.equals(Connector.Service.GITHUB.shortName())) {
+            i.setData(Uri.parse(data.url + "/fork"));
         }
+        if (data.service.equals(Connector.Service.GITLAB.shortName())) {
+            i.setData(Uri.parse(data.url + "/-/forks/new"));
+        }
+        context.startActivity(i);
         return this;
     }
 
@@ -118,11 +156,6 @@ public class Model {
 
     String getDescription() {
         return data.description == null || data.description.isEmpty() ? null : data.description;
-    }
-
-    Integer getLanguageColor() {
-        String hex = data.language == null ? null : ghColors.get(data.language);
-        return hex == null ? R.color.primary1 : Color.parseColor(hex);
     }
 
     String getRatings() {
@@ -157,15 +190,14 @@ public class Model {
         return data.isForked;
     }
 
-    Model openInBrowser() {
-        Context context = repoCard.getContext();
+    Model openInBrowser(Context context) {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(data.url));
         context.startActivity(i);
         return this;
     }
 
-    Model share() {
+    Model share(Context context) {
         // repo details to be shared
         String details = "Repo Name: " + data.name +
                 "\n\nRepo Language: " + data.language +
@@ -178,12 +210,11 @@ public class Model {
         sendIntent.putExtra(Intent.EXTRA_TEXT, details);
         sendIntent.setType("text/plain");
         Intent shareIntent = Intent.createChooser(sendIntent, null);
-        repoCard.getContext().startActivity(shareIntent);
+        context.startActivity(shareIntent);
         return this;
     }
 
-    Model showDetails() {
-        Context context = repoCard.getContext();
+    Model showDetails(Context context) {
         Intent intent = new Intent(context, RepoDetailActivity.class);
         intent.putExtra("data", data);
         context.startActivity(intent);
