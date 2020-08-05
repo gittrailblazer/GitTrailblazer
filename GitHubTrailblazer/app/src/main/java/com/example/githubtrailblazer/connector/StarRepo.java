@@ -1,10 +1,5 @@
 package com.example.githubtrailblazer.connector;
 
-<<<<<<< HEAD
-import android.util.Log;
-
-=======
->>>>>>> 797e192... Closes #87: Implement Starring
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
