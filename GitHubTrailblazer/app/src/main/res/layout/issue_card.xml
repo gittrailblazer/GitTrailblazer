@@ -6,7 +6,7 @@
               android:paddingVertical="@dimen/app_project_margin_md"
               android:paddingRight="@dimen/app_project_margin_md"
               android:paddingLeft="16dp"
-            android:background="@drawable/bg_issue_bug">
+            android:background="@drawable/bg_issue_friendly">
     <LinearLayout
                   android:orientation="horizontal"
                   android:layout_width="match_parent"

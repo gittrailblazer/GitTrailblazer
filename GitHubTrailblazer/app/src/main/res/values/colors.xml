@@ -19,6 +19,7 @@
 
     <color name="accent1">#FEBD15</color>
     <color name="bug">#FE1515</color>
+    <color name="friendly">#2FB024</color>
     <color name="feature">#2FB024</color>
 
     <color name="projectUpvote">#2FB024</color>

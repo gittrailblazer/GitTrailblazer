@@ -1,7 +1,9 @@
 package com.example.githubtrailblazer.ui.issues;
 
 import android.util.Log;
+
 import androidx.lifecycle.ViewModel;
+
 import com.example.githubtrailblazer.connector.Connector;
 import com.example.githubtrailblazer.connector.IssueFeedData;
 
@@ -35,6 +37,7 @@ public class IssueFeedViewModel extends ViewModel {
     interface IQueryResponseCB {
         /**
          * Execute the query response callback
+         *
          * @param data - the query data
          */
         void exec(IssueFeedData data);
@@ -46,6 +49,7 @@ public class IssueFeedViewModel extends ViewModel {
     interface ITagAddedCB {
         /**
          * Execute the tag added callback
+         *
          * @param tag - the tag that was added
          */
         void exec(String tag);
@@ -53,6 +57,7 @@ public class IssueFeedViewModel extends ViewModel {
 
     /**
      * Execute a new query
+     *
      * @return this instance
      */
     IssueFeedViewModel execQuery() {
@@ -62,6 +67,7 @@ public class IssueFeedViewModel extends ViewModel {
 
     /**
      * Execute a new query
+     *
      * @return this instance
      */
     IssueFeedViewModel loadMore() {
@@ -73,16 +79,19 @@ public class IssueFeedViewModel extends ViewModel {
      * Perform feed query
      */
     private void performQuery(boolean isNewQuery) {
-        // TODO: use isNewQuery to do pagination
 
+        // TODO: use isNewQuery to do pagination
         StringBuilder sb = new StringBuilder();
         boolean isEmpty = true;
+
+        // TODO: allow toggling this in the UI
+        boolean ShowFriendlyFeed = true;
 
         // build tag(s) portion of query
         Iterator it = tagExistanceMap.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            String topic = (String)pair.getKey();
+            Map.Entry pair = (Map.Entry) it.next();
+            String topic = (String) pair.getKey();
 
             if (!isEmpty) {
                 sb.append(" ");
@@ -96,7 +105,7 @@ public class IssueFeedViewModel extends ViewModel {
         }
 
         // perform the query
-        new Connector.Query(Connector.QueryType.ISSUE_FEED, sortOption, sb.toString())
+        new Connector.Query(Connector.QueryType.ISSUE_FEED, sortOption, sb.toString(), ShowFriendlyFeed)
                 .exec(new Connector.ISuccessCallback() {
                     @Override
                     public void handle(Object result) {
@@ -113,6 +122,7 @@ public class IssueFeedViewModel extends ViewModel {
 
     /**
      * Remove a tag
+     *
      * @param tag - the tag to be removed
      */
     ViewModel removeTag(String tag) {
@@ -122,6 +132,7 @@ public class IssueFeedViewModel extends ViewModel {
 
     /**
      * Add new tags
+     *
      * @param tags - the tags
      */
     IssueFeedViewModel addTags(String[] tags) {
@@ -134,6 +145,7 @@ public class IssueFeedViewModel extends ViewModel {
 
     /**
      * Check if a tag already exists
+     *
      * @param tag - the tag to check for
      * @return if it exists
      */
@@ -143,6 +155,7 @@ public class IssueFeedViewModel extends ViewModel {
 
     /**
      * Set the sort by option
+     *
      * @param sortOption - the sort by option
      * @return if a change occurred
      */
@@ -165,6 +178,7 @@ public class IssueFeedViewModel extends ViewModel {
 
     /**
      * Set on query response callback
+     *
      * @param callback - the callback
      * @return this instance
      */
@@ -175,6 +189,7 @@ public class IssueFeedViewModel extends ViewModel {
 
     /**
      * Set on tag added callback
+     *
      * @param callback - the callback
      * @return this instance
      */
