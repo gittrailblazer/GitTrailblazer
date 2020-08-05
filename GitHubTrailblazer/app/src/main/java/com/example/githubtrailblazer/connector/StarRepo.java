@@ -1,5 +1,7 @@
 package com.example.githubtrailblazer.connector;
 
+import android.util.Log;
+
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
@@ -31,6 +33,9 @@ public class StarRepo {
                 .enqueue(new ApolloCall.Callback<StarRepoMutation.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<StarRepoMutation.Data> response) {
+                        if (response.hasErrors()) {
+                            errorCallback.error("Apollo Failed query: " + response.getErrors());
+                        }
                         if (successCallback != null) successCallback.handle(_instance);
                     }
 
