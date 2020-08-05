@@ -1,5 +1,6 @@
 package com.example.githubtrailblazer.components.repocard;
 
+import android.content.Context;
 import android.view.MenuItem;
 import android.view.View;
 import androidx.appcompat.widget.PopupMenu;
@@ -31,7 +32,7 @@ class Controller implements View.OnClickListener, PopupMenu.OnMenuItemClickListe
                 model.showActions();
                 break;
             default:
-                model.showDetails();
+                model.showDetails(v.getContext());
         }
     }
 
@@ -40,11 +41,11 @@ class Controller implements View.OnClickListener, PopupMenu.OnMenuItemClickListe
         switch (item.getItemId()) {
             case R.id.actions_item_share:
                 // share repo details via Android Sharesheet when 'Share' item is selected
-                model.share();
+                model.share(item.getActionView().getContext());
                 return true;
             case R.id.actions_item_openInGithub:
                 // open repo in GitHub when 'Open in GitHub' item is selected
-                model.openInBrowser();
+                model.openInBrowser(item.getActionView().getContext());
                 return true;
 //            case R.id.actions_item_stopSeeingThis:
 //                // TODO: remove repo from feed when 'Stop seeing this' item is selected

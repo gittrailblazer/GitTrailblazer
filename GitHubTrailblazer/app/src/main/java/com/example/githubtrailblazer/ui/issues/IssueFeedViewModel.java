@@ -16,27 +16,18 @@ public class IssueFeedViewModel extends ViewModel {
     private IQueryResponseCB queryResponseCallback;
     private ITagAddedCB tagAddedCallback;
     private HashMap<String, Boolean> tagExistanceMap = new HashMap<>();
-    SortOption sortOption = SortOption.NEWEST;
+    IssueFeedData.SortOption sortOption = IssueFeedData.SortOption.NEWEST;
 //    FilterOption filterOption = FilterOption.EXPLORE;
-
-    /**
-     * The query response sort options
-     */
-    public enum SortOption {
-        NEWEST,
-        MOST_STARS,
-        MOST_FORKS
-    }
 
     /**
      * The query response filter options
      */
-    public enum FilterOption {
-        EXPLORE,
-        STARRED,
-        FOLLOWING,
-        CONTRIBUTED
-    }
+//    public enum FilterOption {
+//        EXPLORE,
+//        STARRED,
+//        FOLLOWING,
+//        CONTRIBUTED
+//    }
 
     /**
      * Query response callback interface
@@ -104,22 +95,8 @@ public class IssueFeedViewModel extends ViewModel {
             sb.append(topic);
         }
 
-        // build sort and ordering portion of query
-        if (!isEmpty) sb.append(" ");
-        switch (sortOption) {
-            case NEWEST:
-                sb.append("sort:updated");
-                break;
-            case MOST_STARS:
-                sb.append("sort:stars");
-                break;
-            case MOST_FORKS:
-                sb.append("sort:forks");
-                break;
-        }
-
         // perform the query
-        new Connector.Query(Connector.QueryType.ISSUE_FEED, sb.toString())
+        new Connector.Query(Connector.QueryType.ISSUE_FEED, sortOption, sb.toString())
                 .exec(new Connector.ISuccessCallback() {
                     @Override
                     public void handle(Object result) {
@@ -169,7 +146,7 @@ public class IssueFeedViewModel extends ViewModel {
      * @param sortOption - the sort by option
      * @return if a change occurred
      */
-    boolean setSort(SortOption sortOption) {
+    boolean setSort(IssueFeedData.SortOption sortOption) {
         boolean isChanged = (sortOption != this.sortOption);
         if (isChanged) this.sortOption = sortOption;
         return isChanged;

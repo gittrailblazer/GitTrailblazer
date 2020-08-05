@@ -21,7 +21,7 @@ import com.example.githubtrailblazer.R;
 import com.example.githubtrailblazer.components.searchbar.SearchBar;
 import com.example.githubtrailblazer.components.toggle.Toggle;
 import com.example.githubtrailblazer.connector.RepoFeedData;
-import com.example.githubtrailblazer.ui.FeedAdapter;
+import com.example.githubtrailblazer.components.FeedAdapter;
 import com.example.githubtrailblazer.ui.repositories.notification.NotificationEntry;
 import com.example.githubtrailblazer.ui.repositories.notification.NotificationViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
