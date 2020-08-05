@@ -1,5 +1,11 @@
 package com.example.githubtrailblazer;
 
+import android.util.Log;
+
+import com.example.githubtrailblazer.connector.CommitDetailsData;
+import com.example.githubtrailblazer.connector.Connector;
+import com.example.githubtrailblazer.connector.UserDetailsData;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -8,6 +14,7 @@ import java.util.Random;
  */
 public class Commit {
     private String contributorName, contributorImageURL, commitDate, commitDescription;
+
 
     public Commit(String contributorName, String contributorImageURL, String commitDate, String commitDescription) {
         this.contributorName = contributorName;
@@ -73,6 +80,38 @@ public class Commit {
             String contributionDescription = "This is a dummy description for this commit message.";
             Commit commit = new Commit(contributorName, contributorImageURL, contributionDate, contributionDescription);
             commits.add(commit);
+        }
+        return commits;
+    }
+
+    /**
+     * Generate real contribution data
+     */
+    public static ArrayList<Commit> generateCommitData(ArrayList<Commit> commits, int safeListSize) {
+        boolean finished = false;
+        new Connector.Query(Connector.QueryType.COMMIT_DETAILS)
+                .exec(new Connector.ISuccessCallback() {
+                    @Override
+                    public void handle(Object result) {
+                        CommitDetailsData data = (CommitDetailsData) result;
+                        ArrayList<Commit> allRepoCommits = data.allRepoCommits;
+
+                        for(int i = 0; i < allRepoCommits.size(); i++) {
+                            commits.add(allRepoCommits.get(i));
+                        }
+                        while(commits.size() < safeListSize) {
+                            commits.add(allRepoCommits.get(allRepoCommits.size()-1));
+                        }
+                    }
+                }, new Connector.IErrorCallback() {
+                    @Override
+                    public void error(String message) {
+                        Log.d("GH_API_QUERY", "Failed query: " + message);
+                    }
+
+                });
+        while(commits.size() < safeListSize) {
+            // do nothing
         }
         return commits;
     }

@@ -30,6 +30,7 @@ query ghRepoFeed($searchString: String!) {
                 {
                     totalCount
                 }
+
             }
         }
     }
