@@ -1,0 +1,30 @@
+# Adapted from https://github.com/mayankrastogi/github-graphql-search
+query commitDetails($repoName: String!, $repoOwner: String!) {
+    repository(name: $repoName, owner: $repoOwner) {
+        ref(qualifiedName: "master") {
+            target {
+                ... on Commit {
+                    id
+                    history(first: 100) {
+                        pageInfo {
+                            hasNextPage
+                        }
+                        edges {
+                            node {
+                                messageHeadline
+                                oid
+                                message
+                                author {
+                                    name
+                                    email
+                                    date
+                                    avatarUrl
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

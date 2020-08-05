@@ -5,20 +5,20 @@ package com.example.githubtrailblazer.data;
  */
 public class IssueCardData {
     public String service;
-    public Integer id;
+    public String id;
     public Integer number;
     public String title;
-    public String state;
     public String url;
+    public String description;
     public RepoData repoData;
+    public Long createdAt;
 
     /**
      * IssueCardData.RepoData class
      */
-    public class RepoData {
+    public static class RepoData {
         public String name;
         public String language;
-        public String description;
         public Integer rating;
         public Integer valRated;
         public Integer comments;

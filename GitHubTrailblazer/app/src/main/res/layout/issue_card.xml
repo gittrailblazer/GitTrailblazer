@@ -3,11 +3,11 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:paddingVertical="10dp"
-              android:paddingRight="10dp"
+              android:paddingVertical="@dimen/app_project_margin_md"
+              android:paddingRight="@dimen/app_project_margin_md"
               android:paddingLeft="16dp"
-            android:background="@drawable/bg_issue_bug">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:background="@drawable/bg_issue_friendly">
+    <LinearLayout
                   android:orientation="horizontal"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
@@ -15,104 +15,154 @@
         <TextView
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="This Is A Bug Title"
-            android:layout_weight="1"/>
-        <TextView
-                android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:text="#0" android:layout_weight="0"
-                android:paddingRight="10dp"/>
-        <TextView
-                android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:text="0d" android:layout_weight="0"
-                android:paddingRight="10dp"/>
-        <ImageButton
-                android:layout_width="@dimen/app_project_iconEllipsis_w"
-                android:layout_height="@dimen/app_project_iconEllipsis_h"
-                android:src="@drawable/ellipsis_v_solid" android:layout_gravity="end"
-                android:id="@+id/projectCard__btnActions" android:background="@android:color/transparent"
-                android:layout_weight="0"/>
+            android:layout_weight="1" android:textSize="@dimen/text_lg"
+            android:textColor="@color/secondary1"
+            android:id="@+id/issueCard__title"/>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="#0" android:layout_weight="0"
+                    android:paddingLeft="@dimen/app_project_margin_md" android:textSize="@dimen/text_md"
+                    android:textColor="@color/secondary1"
+                    android:id="@+id/issueCard__number"/>
+            <ImageView
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:src="@drawable/clock_solid" android:paddingLeft="@dimen/app_project_margin_md"
+                    android:layout_gravity="center_vertical"/>
+            <TextView
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="now" android:layout_weight="0"
+                    android:paddingHorizontal="@dimen/app_project_margin_sm" android:textSize="@dimen/text_md"
+                    android:textColor="@color/secondary1"
+                    android:id="@+id/issueCard__time"
+                    android:layout_gravity="center_vertical"/>
+        </LinearLayout>
     </LinearLayout>
     <TextView
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="This is a sample issue description."
-            android:paddingBottom="3dp"/>
-    <TextView
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="user/repository"
+            android:paddingBottom="@dimen/app_project_margin_md" android:textSize="@dimen/text_md"
+            android:id="@+id/issueCard__description"
+            android:maxLines="3" android:ellipsize="end"
+            android:textColor="@color/secondary1"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="@drawable/bg_issue_repo"
-            android:paddingLeft="10dp"/>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:paddingLeft="@dimen/app_project_margin_md"
+            android:id="@+id/issueCard__repoNameContainer">
+        <TextView
+                android:id="@+id/issueCard__service" android:text="@string/app_project_service_default"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:textColor="@color/secondary1"
+                android:textSize="@dimen/text_md"/>
+        <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="user/repository" android:textSize="@dimen/text_md"
+                android:textColor="@color/secondary1"
+                android:id="@+id/issueCard__repoName"/>
+    </LinearLayout>
+    <LinearLayout
                   android:orientation="horizontal"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:background="@drawable/bg_issue_repo"
-                  android:paddingLeft="10dp">
-        <ImageView
-                android:id="@+id/projectCard__langCirc" android:background="@drawable/bg_lang_circ"
-                android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"/>
-        <TextView
-                android:id="@+id/projectCard__lang" android:text="@string/app_project_lang_default"
-                android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/app_project_margin_xs"/>
+                  android:paddingVertical="@dimen/app_project_margin_sm"
+                  android:paddingLeft="@dimen/app_project_margin_md"
+                  android:id="@+id/issueCard__repoDetailContainer">
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:id="@+id/issueCard__langContainer"
+                android:layout_gravity="center_vertical">
+            <ImageView
+                    android:id="@+id/issueCard__langCirc" android:background="@drawable/bg_lang_circ"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"/>
+            <TextView
+                    android:id="@+id/issueCard__lang" android:text="@string/app_project_lang_default"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/app_project_margin_xs"
+                    android:textSize="@dimen/text_md"
+                    android:textColor="@color/secondary1"/>
+        </LinearLayout>
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
-                android:gravity="center">
-            <ImageButton
+                android:gravity="center"
+                android:layout_gravity="center_vertical">
+            <ImageView
                     android:layout_width="@dimen/app_project_iconSquare" android:layout_height="@dimen/app_project_iconSquare"
                     android:src="@drawable/arrow_alt_circle_up"
-                    android:id="@+id/projectCard__btnUpvote" android:background="@android:color/transparent"/>
+                    android:id="@+id/issueCard__imgUpvote" android:background="@android:color/transparent"/>
             <TextView
-                    android:id="@+id/projectCard__rating" android:text="@string/app_project_rating_default" android:textSize="@dimen/app_project_value"
+                    android:id="@+id/issueCard__rating" android:text="@string/app_project_rating_default"
+                    android:textSize="@dimen/text_sm"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/app_project_margin_sm" android:layout_marginEnd="@dimen/app_project_margin_sm" />
+                    android:layout_marginStart="@dimen/app_project_margin_sm" android:layout_marginEnd="@dimen/app_project_margin_sm"
+                    android:textColor="@color/secondary1"/>
         </LinearLayout>
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
-                android:gravity="center">
-            <ImageButton
+                android:gravity="center"
+                android:layout_gravity="center_vertical">
+            <ImageView
                     android:layout_width="@dimen/app_project_iconComment_w" android:layout_height="@dimen/app_project_iconComment_h"
                     android:src="@drawable/comment_alt_solid"
-                    android:id="@+id/projectCard__btnComment" android:background="@android:color/transparent"/>
+                    android:id="@+id/issueCard__imgComment" android:background="@android:color/transparent"/>
             <TextView
-                    android:id="@+id/projectCard__comments" android:text="@string/app_project_comments_default" android:textSize="@dimen/app_project_value"
+                    android:id="@+id/issueCard__comments" android:text="@string/app_project_comments_default"
+                    android:textSize="@dimen/text_sm"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/app_project_margin_sm" />
+                    android:layout_marginStart="@dimen/app_project_margin_sm"
+                    android:textColor="@color/secondary1"/>
         </LinearLayout>
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
-                android:gravity="center">
-            <ImageButton
+                android:gravity="center"
+                android:layout_gravity="center_vertical">
+            <ImageView
                     android:layout_width="@dimen/app_project_iconStar_w" android:layout_height="@dimen/app_project_iconStar_h"
                     android:src="@drawable/star_solid"
-                    android:id="@+id/projectCard__btnStar" android:background="@android:color/transparent"/>
+                    android:id="@+id/issueCard__imgStar" android:background="@android:color/transparent"/>
             <TextView
-                    android:id="@+id/projectCard__stars" android:text="@string/app_project_stars_default" android:textSize="@dimen/app_project_value"
+                    android:id="@+id/issueCard__stars" android:text="@string/app_project_stars_default"
+                    android:textSize="@dimen/text_sm"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/app_project_margin_sm" />
+                    android:layout_marginStart="@dimen/app_project_margin_sm"
+                    android:textColor="@color/secondary1"/>
         </LinearLayout>
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
-                android:gravity="center">
-            <ImageButton
+                android:gravity="center"
+                android:layout_gravity="center_vertical">
+            <ImageView
                     android:layout_width="@dimen/app_project_iconSitemap_w" android:layout_height="@dimen/app_project_iconSitemap_h"
                     android:src="@drawable/sitemap_solid"
-                    android:id="@+id/projectCard__btnFork" android:background="@android:color/transparent"/>
+                    android:id="@+id/issueCard__imgFork" android:background="@android:color/transparent"/>
             <TextView
-                    android:id="@+id/projectCard__forks" android:text="@string/app_project_forks_default" android:textSize="@dimen/app_project_value"
+                    android:id="@+id/issueCard__forks" android:text="@string/app_project_forks_default"
+                    android:textSize="@dimen/text_sm"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/app_project_margin_sm" />
+                    android:layout_marginStart="@dimen/app_project_margin_sm"
+                    android:textColor="@color/secondary1"/>
         </LinearLayout>
     </LinearLayout>
 </com.example.githubtrailblazer.components.issuecard.IssueCard>

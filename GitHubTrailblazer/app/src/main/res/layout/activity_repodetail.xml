@@ -23,22 +23,18 @@
                 android:layout_height="wrap_content"
                 android:theme="@style/AppTheme.AppBarOverlay">
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/repodetail_toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="?attr/colorPrimary"
-                    app:popupTheme="@style/AppTheme.PopupOverlay">
-
-                    <LinearLayout
-                        android:id="@+id/toolbar_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-                        <!-- Dynamically add whatever you need in the toolbar here, within the specific view -->
-                    </LinearLayout>
-                </androidx.appcompat.widget.Toolbar>
+                <ImageButton
+                    android:id="@+id/repodetail_back_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_weight="1"
+                    android:background="#00FFFFFF"
+                    android:minHeight="56dp"
+                    android:scaleX="1.5"
+                    android:scaleY="1.5"
+                    android:tint="#FFFFFF"
+                    app:srcCompat="@drawable/abc_vector_test" />
 
             </com.google.android.material.appbar.AppBarLayout>
 
@@ -121,6 +117,8 @@
                                     android:textSize="12sp"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintTop_toBottomOf="@+id/repodetail_fork_btn" />
+
+
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <androidx.constraintlayout.widget.ConstraintLayout
@@ -187,7 +185,64 @@
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_5sdp">
+
+                                <ImageButton
+                                    android:id="@+id/repodetail_contributors_img"
+                                    android:layout_width="@dimen/app_project_iconSquare"
+                                    android:layout_height="@dimen/app_project_iconSquare"
+                                    android:layout_marginStart="13dp"
+                                    app:layout_constraintBottom_toBottomOf="@+id/repodetail_contributors_txt"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="@+id/repodetail_contributors_txt"
+                                    app:srcCompat="@drawable/ic_baseline_person_24"
+                                    android:onClick="showContributorsPopup"/>
+
+                                <TextView
+                                    android:id="@+id/repodetail_contributors_txt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="5dp"
+                                    android:text="Project contributors"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/repodetail_contributors_img"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:onClick="showContributorsPopup"/>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_5sdp">
+
+                                <ImageButton
+                                    android:id="@+id/repodetail_contributions_img"
+                                    android:layout_width="@dimen/app_project_iconSquare"
+                                    android:layout_height="@dimen/app_project_iconSquare"
+                                    android:layout_marginStart="13dp"
+                                    app:layout_constraintBottom_toBottomOf="@+id/repodetail_contributions_txt"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="@+id/repodetail_contributions_txt"
+                                    app:srcCompat="@drawable/ic_baseline_commits_24"
+                                    android:onClick="showCommitsPopup"/>
+
+                                <TextView
+                                    android:id="@+id/repodetail_contributions_txt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="5dp"
+                                    android:text="Project contributions"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/repodetail_contributions_img"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:onClick="showCommitsPopup"/>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                >
 
                                 <ImageView
                                     android:id="@+id/repodetail_lang_img"
@@ -212,13 +267,13 @@
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
 
-                                <TextView
+                                <us.feras.mdv.MarkdownView
                                     android:id="@+id/repodetail_readme"
                                     android:layout_width="380dp"
-                                    android:layout_height="167dp"
+                                    android:layout_height="wrap_content"
                                     android:layout_marginStart="13dp"
                                     android:layout_marginTop="5dp"
                                     android:layout_marginBottom="10dp"
@@ -228,6 +283,21 @@
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
+
+                                <!--<us.feras.mdv.MarkdownView
+                                    android:layout_width="@dimen/_300sdp"
+                                    android:layout_height="@dimen/_150sdp"
+                                    android:id="@+id/markdownView_readMe"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:layout_marginBottom="@dimen/_5sdp"
+                                    android:text="README.md                                                                                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ...  "
+                                    android:textColor="@android:color/secondary_text_light"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"/>-->
+
+
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <LinearLayout

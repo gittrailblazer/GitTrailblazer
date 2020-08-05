@@ -74,7 +74,6 @@ public class CommentActivity extends AppCompatActivity {
                         comments.add(ct);
                     }
                     docRef = FirebaseFirestore.getInstance().collection("RepoComments").document(comment_doc.getId());
-
                 }
                 else
                 {
@@ -119,7 +118,7 @@ public class CommentActivity extends AppCompatActivity {
 
     private void addComment(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String displayName = "null";
+        String displayName = "";
         if (user != null) {
             // User is Login
              displayName = user.getDisplayName();
