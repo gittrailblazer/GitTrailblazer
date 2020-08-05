@@ -213,7 +213,7 @@ public class Connector {
         USER_DETAILS,
         STAR_REPO,
         UNSTAR_REPO,
-        USER_HISTORY
+        USER_HISTORY,
     }
 
     /**
