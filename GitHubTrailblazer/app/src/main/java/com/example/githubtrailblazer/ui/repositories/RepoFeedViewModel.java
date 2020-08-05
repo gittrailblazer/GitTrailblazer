@@ -1,9 +1,18 @@
 package com.example.githubtrailblazer.ui.repositories;
 
 import android.util.Log;
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import com.example.githubtrailblazer.connector.Connector;
 import com.example.githubtrailblazer.connector.RepoFeedData;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.*;
 
@@ -11,6 +20,9 @@ import java.util.*;
  * RepoFeedViewModel class
  */
 public class RepoFeedViewModel extends ViewModel {
+    private static int maxRandomTopics = 3;
+    private static String userId;
+    private static ArrayList<String> preferredTopics;
     private IQueryResponseCB queryResponseCallback;
     private ITagAddedCB tagAddedCallback;
     private HashMap<String, Boolean> tagExistanceMap = new HashMap<>();
@@ -44,7 +56,11 @@ public class RepoFeedViewModel extends ViewModel {
      * @return this instance
      */
     RepoFeedViewModel execQuery() {
-        performQuery(true);
+        String query = getEnteredTagQuery();
+        if (query.length() == 0)
+            performRandomQuery(true);
+        else
+            performQuery(query,true);
         return this;
     }
 
@@ -53,38 +69,21 @@ public class RepoFeedViewModel extends ViewModel {
      * @return this instance
      */
     RepoFeedViewModel loadMore() {
-        performQuery(false);
+        String query = getEnteredTagQuery();
+        if (query.length() == 0)
+            performRandomQuery(true);
+        else
+            performQuery(query,true);
         return this;
     }
 
     /**
      * Perform feed query
      */
-    private void performQuery(boolean isNewQuery) {
+    private void performQuery(String query, boolean isNewQuery) {
         // TODO: use isNewQuery to do pagination
-
-        StringBuilder sb = new StringBuilder();
-        boolean isEmpty = true;
-
-        // build tag(s) portion of query
-        Iterator it = tagExistanceMap.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            String topic = (String) pair.getKey();
-
-            if (!isEmpty) {
-                sb.append(" ");
-            } else {
-                isEmpty = false;
-            }
-
-            // TODO: Fix this!! Issue #59
-            //            sb.append("topic:");
-            sb.append(topic);
-        }
-
         // perform the query
-        new Connector.Query(Connector.QueryType.REPO_FEED, sortOption, filterOption, sb.toString())
+        new Connector.Query(Connector.QueryType.REPO_FEED, sortOption, filterOption, query)
             .exec(new Connector.ISuccessCallback() {
                 @Override
                 public void handle(Object result) {
@@ -97,6 +96,84 @@ public class RepoFeedViewModel extends ViewModel {
                     Log.e("GH_API_QUERY", "Failed query: " + message);
                 }
             });
+    }
+
+    /**
+     * Perform random feed query
+     */
+    private void performRandomQuery(boolean isNewQuery) {
+        // TODO: use isNewQuery to do pagination
+        // ensure that the user has not changed, otherwise retrieve topics
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if (!currentUserId.equals(userId)) {
+            userId = currentUserId;
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            CollectionReference ref = db.collection("UserData");
+            ref.document(userId).get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot snapshot = task.getResult();
+                            if (snapshot != null)
+                                preferredTopics = (ArrayList<String>) snapshot.get("Topics");
+                            if (preferredTopics == null || snapshot == null)
+                                preferredTopics = new ArrayList<>();
+                            if (preferredTopics.size() == 0) {
+                                preferredTopics.add("React");
+                                preferredTopics.add("NodeJS");
+                                preferredTopics.add("JavaScript");
+                                preferredTopics.add("CSS");
+                                preferredTopics.add("HTML");
+                                preferredTopics.add("Lisp");
+                                preferredTopics.add("Python3");
+                                preferredTopics.add("20xx");
+                                preferredTopics.add("clxx");
+                                preferredTopics.add("cl-20xx");
+                            }
+                            performQuery(randomizeQuery(), isNewQuery);
+                        }
+                    });
+        } else {
+            performQuery(randomizeQuery(), isNewQuery);
+        }
+    }
+
+    private String getEnteredTagQuery() {
+        // build tag(s) portion of query
+        StringBuilder sb = new StringBuilder();
+        Iterator it = tagExistanceMap.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            String topic = (String) pair.getKey();
+            if (sb.length() != 0) sb.append(" ");
+            // TODO: Fix this!! Issue #59
+            //            sb.append("topic:");
+            sb.append(topic);
+        }
+        return sb.toString();
+    }
+
+    private String randomizeQuery() {
+        StringBuilder sb = new StringBuilder();
+
+        // the available topic indicies to choose from
+        ArrayList<Integer> availableIndices = new ArrayList<>();
+        for (int i = 0 ; i < preferredTopics.size(); ++i)
+            availableIndices.add(i);
+
+        // randomly pick number of topics to include, randomly choose indices of topics to include
+        Random rand = new Random();
+        for (int topicCount = (int)Math.floor(rand.nextInt(Math.min(maxRandomTopics, preferredTopics.size())) + 1); topicCount > 0; --topicCount) {
+            if (sb.length() != 0) sb.append(" ");
+            int index = (int)Math.floor(rand.nextInt(topicCount));
+            String topic = preferredTopics.get(availableIndices.get(index));
+            availableIndices.remove(index);
+            sb.append(topic);
+        }
+
+        Log.e("DEBUG", "random query: " + sb.toString());
+
+        return sb.toString();
     }
 
     /**
