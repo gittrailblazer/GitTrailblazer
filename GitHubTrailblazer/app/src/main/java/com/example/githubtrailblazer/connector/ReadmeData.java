@@ -35,8 +35,11 @@ public class ReadmeData {
                     public void onResponse(@NotNull Response<GhReadmeQuery.Data> response) {
                         GhReadmeQuery.Data data = response.getData();
                         if (data != null) {
-                            GhReadmeQuery.AsBlob object = (GhReadmeQuery.AsBlob)data.repository().object();
-                            readme = object.text();
+                            GhReadmeQuery.Repository repository = (GhReadmeQuery.Repository)data.repository();
+                            if (repository != null) {
+                                GhReadmeQuery.AsBlob object = (GhReadmeQuery.AsBlob)repository.object();
+                                if (object != null) readme = object.text();
+                            }
                             if (successCallback != null) successCallback.handle(_instance);
                         } else if (errorCallback != null) {
                             errorCallback.error("Failed query: data is NULL");

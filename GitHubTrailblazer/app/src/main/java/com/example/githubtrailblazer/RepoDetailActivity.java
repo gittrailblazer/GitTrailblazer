@@ -3,6 +3,7 @@ package com.example.githubtrailblazer;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.net.Uri;
 import android.os.Build;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -203,6 +204,14 @@ public class RepoDetailActivity extends AppCompatActivity {
             }
         };
 
+        linkTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(data.url));
+                RepoDetailActivity.this.startActivity(i);
+            }
+        });
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
