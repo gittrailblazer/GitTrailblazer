@@ -87,34 +87,40 @@ public class Model {
                 // if unstarred, star repo
                 data.isStarred = true;
                 data.stars += 1;
-                new Connector.Query(Connector.QueryType.STAR_REPO, data.id)
-                        .exec(new Connector.ISuccessCallback() {
-                            @Override
-                            public void handle(Object result) {
-                                Log.d("GH_API_QUERY", "Successful query: managed to star repo " + data.url);
-                            }
-                        }, new Connector.IErrorCallback() {
-                            @Override
-                            public void error(String message) {
-                                Log.e("GH_API_QUERY", "Failed query: " + message);
-                            }
-                        });
+                // if github, initiate an API query to star the repo
+                if (data.service.equals(Connector.Service.GITHUB.shortName())) {
+                    new Connector.Query(Connector.QueryType.STAR_REPO, data.id)
+                            .exec(new Connector.ISuccessCallback() {
+                                @Override
+                                public void handle(Object result) {
+                                    Log.d("GH_API_QUERY", "Successful query: managed to star repo " + data.url);
+                                }
+                            }, new Connector.IErrorCallback() {
+                                @Override
+                                public void error(String message) {
+                                    Log.e("GH_API_QUERY", "Failed query: " + message);
+                                }
+                            });
+                }
             } else {
                 // if starred, unstar repo
                 data.isStarred = false;
                 data.stars -= 1;
-                new Connector.Query(Connector.QueryType.UNSTAR_REPO, data.id)
-                        .exec(new Connector.ISuccessCallback() {
-                            @Override
-                            public void handle(Object result) {
-                                Log.d("GH_API_QUERY", "Successful query: managed to unstar repo " + data.url);
-                            }
-                        }, new Connector.IErrorCallback() {
-                            @Override
-                            public void error(String message) {
-                                Log.e("GH_API_QUERY", "Failed query: " + message);
-                            }
-                        });
+                // if github, initiate an API query to unstar the repo
+                if (data.service.equals(Connector.Service.GITHUB.shortName())) {
+                    new Connector.Query(Connector.QueryType.UNSTAR_REPO, data.id)
+                            .exec(new Connector.ISuccessCallback() {
+                                @Override
+                                public void handle(Object result) {
+                                    Log.d("GH_API_QUERY", "Successful query: managed to unstar repo " + data.url);
+                                }
+                            }, new Connector.IErrorCallback() {
+                                @Override
+                                public void error(String message) {
+                                    Log.e("GH_API_QUERY", "Failed query: " + message);
+                                }
+                            });
+                }
             }
             repoCard.update(this);
         }
@@ -124,7 +130,12 @@ public class Model {
     Model fork() {
         Context context = repoCard.getContext();
         Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(data.url + "/fork"));
+        if (data.service.equals(Connector.Service.GITHUB.shortName())) {
+            i.setData(Uri.parse(data.url + "/fork"));
+        }
+        if (data.service.equals(Connector.Service.GITLAB.shortName())) {
+            i.setData(Uri.parse(data.url + "/-/forks/new"));
+        }
         context.startActivity(i);
         return this;
     }
