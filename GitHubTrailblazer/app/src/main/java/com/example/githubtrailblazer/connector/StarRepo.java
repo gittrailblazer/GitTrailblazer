@@ -32,9 +32,11 @@ public class StarRepo {
                     @Override
                     public void onResponse(@NotNull Response<StarRepoMutation.Data> response) {
                         if (response.hasErrors()) {
-                            errorCallback.error("Apollo Failed query: " + response.getErrors());
+                            if (errorCallback != null)
+                                errorCallback.error("Apollo Failed query: " + response.getErrors());
+                        } else {
+                            if (successCallback != null) successCallback.handle(_instance);
                         }
-                        if (successCallback != null) successCallback.handle(_instance);
                     }
 
                     @Override
