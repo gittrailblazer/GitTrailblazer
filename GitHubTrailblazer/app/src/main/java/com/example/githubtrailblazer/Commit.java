@@ -87,9 +87,9 @@ public class Commit {
     /**
      * Generate real contribution data
      */
-    public static ArrayList<Commit> generateCommitData(ArrayList<Commit> commits, int safeListSize) {
+    public static ArrayList<Commit> generateCommitData(ArrayList<Commit> commits, int safeListSize, String repoName, String repoOwner) {
         boolean finished = false;
-        new Connector.Query(Connector.QueryType.COMMIT_DETAILS)
+        new Connector.Query(Connector.QueryType.COMMIT_DETAILS, repoName, repoOwner)
                 .exec(new Connector.ISuccessCallback() {
                     @Override
                     public void handle(Object result) {

@@ -30,6 +30,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Random;
 
+import us.feras.mdv.MarkdownView;
+
 /**
  * RepoDetailActivity class
  */
@@ -37,7 +39,7 @@ public class RepoDetailActivity extends AppCompatActivity {
     private LinearLayout container;
 
     private RepoDetailViewModel viewModel;
-    private String repoOwner, repoName;
+    private String repoOwner, repoName, repoReadMe;
 
     private RepoCardData data;
     private int colorUnselected;
@@ -53,7 +55,8 @@ public class RepoDetailActivity extends AppCompatActivity {
     private TextView reponameTextView;
     private TextView descriptionTextView;
     private TextView languageTextView;
-    private TextView repoReadMe;
+    private TextView repoReadMeTextView;
+    private MarkdownView repoReadMeMarkdownView;
 
     private TextView upvoteTextView;
     private TextView commentTextView;
@@ -78,6 +81,9 @@ public class RepoDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         data = (RepoCardData) intent.getSerializableExtra("data");
 
+        //init readme
+        //repoReadMe = "";
+
         // init colors
         colorUnselected = ContextCompat.getColor(this, R.color.secondary6);
         colorStarSelected = ContextCompat.getColor(this, R.color.projectStar);
@@ -92,7 +98,9 @@ public class RepoDetailActivity extends AppCompatActivity {
         reponameTextView = findViewById(R.id.repodetail_name_txt);
         descriptionTextView = findViewById(R.id.repodetail_description_txt);
         languageTextView = findViewById(R.id.repodetail_lang_txt);
-        repoReadMe = findViewById(R.id.repodetail_readme);
+        repoReadMeTextView = findViewById(R.id.repodetail_readme);
+        //repoReadMeMarkdownView = findViewById(R.id.markdownView_readMe);
+
 
 
         // TODO: Display production data from GitLab
@@ -116,13 +124,14 @@ public class RepoDetailActivity extends AppCompatActivity {
         descriptionTextView.setText(data.description);
         languageTextView.setText(data.language);
 
-        new Connector.Query(Connector.QueryType.COMMIT_DETAILS)
+        new Connector.Query(Connector.QueryType.COMMIT_DETAILS, repoName, repoOwner)
                 .exec(new Connector.ISuccessCallback() {
                     @Override
                     public void handle(Object result) {
                         CommitDetailsData data = (CommitDetailsData) result;
                         if(data != null) {
-                            repoReadMe.setText(data.readMe);
+                            repoReadMeTextView.setText(data.readMe);
+                            repoReadMe = data.readMe;
                         }
                     }
                 }, new Connector.IErrorCallback() {
@@ -231,6 +240,10 @@ public class RepoDetailActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.repodetail_toolbar);
         setSupportActionBar(toolbar);
 
+        // display readme (wait till data is loaded)
+        //while(repoReadMe == null || repoReadMe.equals("")) { }
+        //repoReadMeMarkdownView.loadMarkdown(repoReadMe);
+
         // start dialog for history popup menu
         historyDialog = new Dialog(this);
     }
@@ -246,7 +259,7 @@ public class RepoDetailActivity extends AppCompatActivity {
         ArrayList<Contributor> contributorList = new ArrayList<>();
 
         // TODO: Get contributor data (all contributors) from GitHub/GitLab and display it
-        contributorList = Contributor.generateContributorData(contributorList, 50);
+        contributorList = Contributor.generateContributorData(contributorList, 50, repoName, repoOwner);
 
         // clean up contributor List
         int lastIndex = contributorList.size() - 1;
@@ -300,7 +313,7 @@ public class RepoDetailActivity extends AppCompatActivity {
         ArrayList<Commit> commitList = new ArrayList<>();
 
         // TODO: Get contribution data (all commits) from GitHub/GitLab and display it
-        commitList = Commit.generateCommitData(commitList, 3);
+        commitList = Commit.generateCommitData(commitList, 3, repoName, repoOwner);
         // generate mock data
         //Commit.generateCommitMockData(commitList);
 

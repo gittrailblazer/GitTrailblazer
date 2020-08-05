@@ -1,6 +1,6 @@
 # Adapted from https://github.com/mayankrastogi/github-graphql-search
-query commitDetails {
-    repository(name: "awesome-python", owner: "vinta") {
+query commitDetails($repoName: String!, $repoOwner: String!) {
+    repository(name: $repoName, owner: $repoOwner) {
         ref(qualifiedName: "master") {
             target {
                 ... on Commit {
@@ -33,4 +33,3 @@ query commitDetails {
         }
     }
 }
-
