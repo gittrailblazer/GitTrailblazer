@@ -23,22 +23,18 @@
                 android:layout_height="wrap_content"
                 android:theme="@style/AppTheme.AppBarOverlay">
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/repodetail_toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="?attr/colorPrimary"
-                    app:popupTheme="@style/AppTheme.PopupOverlay">
-
-                    <LinearLayout
-                        android:id="@+id/toolbar_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-                        <!-- Dynamically add whatever you need in the toolbar here, within the specific view -->
-                    </LinearLayout>
-                </androidx.appcompat.widget.Toolbar>
+                <ImageButton
+                    android:id="@+id/repodetail_back_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_weight="1"
+                    android:background="#00FFFFFF"
+                    android:minHeight="56dp"
+                    android:scaleX="1.5"
+                    android:scaleY="1.5"
+                    android:tint="#FFFFFF"
+                    app:srcCompat="@drawable/abc_vector_test" />
 
             </com.google.android.material.appbar.AppBarLayout>
 
@@ -271,13 +267,13 @@
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
 
-                                <TextView
+                                <WebView
                                     android:id="@+id/repodetail_readme"
                                     android:layout_width="380dp"
-                                    android:layout_height="167dp"
+                                    android:layout_height="800dp"
                                     android:layout_marginStart="13dp"
                                     android:layout_marginTop="5dp"
                                     android:layout_marginBottom="10dp"
@@ -286,7 +282,9 @@
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                                    app:layout_constraintTop_toTopOf="parent" >
+
+                                </WebView>
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <LinearLayout

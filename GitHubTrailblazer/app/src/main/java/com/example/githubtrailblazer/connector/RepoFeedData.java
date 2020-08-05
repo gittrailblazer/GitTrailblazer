@@ -99,7 +99,6 @@ public class RepoFeedData {
                                     repoCardData.language = (_pl == null) ? null : _pl.name();
                                     repoCardData.description = repository.description();
                                     GhRepoFeedQuery.Owner _o = repository.owner();
-                                    repoCardData.owner = repository.owner().toString();
                                     repoCardData.profilePicUrl = (_o == null) ? null : _o.avatarUrl().toString();
                                     repoCardData.rating = 0;             // TODO: implement ratings
                                     repoCardData.valRated = 0;           // TODO: implement ratings

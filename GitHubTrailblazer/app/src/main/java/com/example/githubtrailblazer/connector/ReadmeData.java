@@ -25,15 +25,18 @@ public class ReadmeData {
      */
     public ReadmeData(@NotNull Connector.QueryParams queryParams,
                            Connector.ISuccessCallback successCallback,
-                           Connector.IErrorCallback errorCallback) {
+                           Connector.IErrorCallback errorCallback) throws Exception {
         final ReadmeData _instance = this;
-        Connector.ghclient.query(GhReadmeQuery.builder().build())
+        final String owner = (String)queryParams.next();
+        final String name = (String)queryParams.next();
+        Connector.getInstance().getGHClient().query(GhReadmeQuery.builder().owner(owner).name(name).build())
                 .enqueue(new ApolloCall.Callback<GhReadmeQuery.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<GhReadmeQuery.Data> response) {
                         GhReadmeQuery.Data data = response.getData();
                         if (data != null) {
-                            readme = data.repository().object().toString();
+                            GhReadmeQuery.AsBlob object = (GhReadmeQuery.AsBlob)data.repository().object();
+                            readme = object.text();
                             if (successCallback != null) successCallback.handle(_instance);
                         } else if (errorCallback != null) {
                             errorCallback.error("Failed query: data is NULL");

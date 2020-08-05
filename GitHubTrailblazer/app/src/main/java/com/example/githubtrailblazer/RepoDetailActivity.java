@@ -11,11 +11,13 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import java.io.*;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -53,18 +55,23 @@ public class RepoDetailActivity extends AppCompatActivity {
     private TextView reponameTextView;
     private TextView descriptionTextView;
     private TextView languageTextView;
-    private TextView readmeTextView;
+
+    private WebView readmeWebView;
 
     private TextView upvoteTextView;
     private TextView commentTextView;
     private TextView starTextView;
     private TextView forkTextView;
 
+    private ImageButton backBtn;
     private ImageButton upvoteBtn;
     private ImageButton downvoteBtn;
     private ImageButton commentBtn;
     private ImageButton starBtn;
     private ImageButton forkBtn;
+
+    private String owner;
+    private String repoName;
 
     // Dialog for contributions and contributors' histories
     private Dialog historyDialog;
@@ -92,17 +99,23 @@ public class RepoDetailActivity extends AppCompatActivity {
         descriptionTextView = findViewById(R.id.repodetail_description_txt);
         languageTextView = findViewById(R.id.repodetail_lang_txt);
 
-        usernameTextView.setText(data.owner);
+        readmeWebView = findViewById(R.id.repodetail_readme);
+
+        int ownerIndex = data.name.indexOf("/");
+        owner = data.name.substring(0, ownerIndex);
+        repoName = data.name.substring(ownerIndex+1);
+        usernameTextView.setText(owner);
         reponameTextView.setText(data.name);
         descriptionTextView.setText(data.description);
         languageTextView.setText(data.language);
-        readmeTextView = findViewById(R.id.repodetail_readme);
+
 
         upvoteTextView = findViewById(R.id.repodetail_upvotes_txt);
         commentTextView = findViewById(R.id.repodetail_comment_txt);
         starTextView = findViewById(R.id.repodetail_star_txt);
         forkTextView = findViewById(R.id.repodetail_fork_txt);
 
+        backBtn = findViewById(R.id.repodetail_back_btn);
         upvoteBtn = findViewById(R.id.repodetail_upvote_btn);
         downvoteBtn = findViewById(R.id.repodetail_downvote_btn);
         commentBtn = findViewById(R.id.repodetail_comment_btn);
@@ -118,18 +131,26 @@ public class RepoDetailActivity extends AppCompatActivity {
 
         // Fetch the README.md and display
         new Connector
-                .Query(Connector.QueryType.README, data.owner, data.name)
+                .Query(Connector.QueryType.README, owner, repoName)
                 .exec(new Connector.ISuccessCallback() {
                     @Override
                     public void handle(Object result) {
                         ReadmeData data = (ReadmeData) result;
 
                         // update non-async fields
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            readmeTextView.setText(Html.fromHtml(data.readme, Html.FROM_HTML_MODE_COMPACT));
-                        } else {
-                            readmeTextView.setText(Html.fromHtml(data.readme));
-                        }
+
+                        final String mimeType = "text/html";
+                        final String encoding = "UTF-8";
+                        String html = data.readme;
+                        String test = "www.google.com";
+                        System.out.print("What is going on");
+                        readmeWebView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                readmeWebView.loadDataWithBaseURL("", html, mimeType, encoding, "");
+                            }
+                        });
+                        //readmeWebView.loadUrl("www.google.com");
                     }
                 });
 
@@ -176,6 +197,13 @@ public class RepoDetailActivity extends AppCompatActivity {
             }
         };
 
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         // Observer the mutable UI elements
         viewModel.getUpvotes().observe(this, upvoteObserver);
         viewModel.getComments().observe(this, commentObserver);
@@ -219,10 +247,6 @@ public class RepoDetailActivity extends AppCompatActivity {
                 viewModel.fork();
             }
         });
-
-        // setup toolbar
-        Toolbar toolbar = findViewById(R.id.repodetail_toolbar);
-        setSupportActionBar(toolbar);
 
         // start dialog for history popup menu
         historyDialog = new Dialog(this);
