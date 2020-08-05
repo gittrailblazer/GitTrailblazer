@@ -3,16 +3,23 @@ package com.example.githubtrailblazer;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.net.Uri;
+import android.os.Build;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import java.io.*;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +28,9 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.githubtrailblazer.connector.ReadmeData;
+
+import com.example.githubtrailblazer.connector.UserDetailsData;
 import com.example.githubtrailblazer.connector.CommitDetailsData;
 import com.example.githubtrailblazer.connector.Connector;
 import com.example.githubtrailblazer.components.ProjectComment.Comment;
@@ -54,15 +64,17 @@ public class RepoDetailActivity extends AppCompatActivity {
     private TextView usernameTextView;
     private TextView reponameTextView;
     private TextView descriptionTextView;
+    private TextView linkTextView;
     private TextView languageTextView;
-    private TextView repoReadMeTextView;
-    private MarkdownView repoReadMeMarkdownView;
+
+    private MarkdownView readmeMarkdownView;
 
     private TextView upvoteTextView;
     private TextView commentTextView;
     private TextView starTextView;
     private TextView forkTextView;
 
+    private ImageButton backBtn;
     private ImageButton upvoteBtn;
     private ImageButton downvoteBtn;
     private ImageButton commentBtn;
@@ -81,9 +93,6 @@ public class RepoDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         data = (RepoCardData) intent.getSerializableExtra("data");
 
-        //init readme
-        //repoReadMe = "";
-
         // init colors
         colorUnselected = ContextCompat.getColor(this, R.color.secondary6);
         colorStarSelected = ContextCompat.getColor(this, R.color.projectStar);
@@ -97,9 +106,14 @@ public class RepoDetailActivity extends AppCompatActivity {
         usernameTextView = findViewById(R.id.repodetail_user_id);
         reponameTextView = findViewById(R.id.repodetail_name_txt);
         descriptionTextView = findViewById(R.id.repodetail_description_txt);
+        linkTextView = findViewById(R.id.repodetail_link_txt);
         languageTextView = findViewById(R.id.repodetail_lang_txt);
-        repoReadMeTextView = findViewById(R.id.repodetail_readme);
-        //repoReadMeMarkdownView = findViewById(R.id.markdownView_readMe);
+
+        readmeMarkdownView = findViewById(R.id.repodetail_readme);
+
+        linkTextView.setText(data.url);
+        descriptionTextView.setText(data.description);
+        languageTextView.setText(data.language);
 
 
 
@@ -121,31 +135,13 @@ public class RepoDetailActivity extends AppCompatActivity {
         repoName = parts[1];
         usernameTextView.setText(repoOwner);
         reponameTextView.setText(repoName);
-        descriptionTextView.setText(data.description);
-        languageTextView.setText(data.language);
-
-        new Connector.Query(Connector.QueryType.COMMIT_DETAILS, repoName, repoOwner)
-                .exec(new Connector.ISuccessCallback() {
-                    @Override
-                    public void handle(Object result) {
-                        CommitDetailsData data = (CommitDetailsData) result;
-                        if(data != null) {
-                            repoReadMeTextView.setText(data.readMe);
-                            repoReadMe = data.readMe;
-                        }
-                    }
-                }, new Connector.IErrorCallback() {
-                    @Override
-                    public void error(String message) {
-
-                    }
-                });
 
         upvoteTextView = findViewById(R.id.repodetail_upvotes_txt);
         commentTextView = findViewById(R.id.repodetail_comment_txt);
         starTextView = findViewById(R.id.repodetail_star_txt);
         forkTextView = findViewById(R.id.repodetail_fork_txt);
 
+        backBtn = findViewById(R.id.repodetail_back_btn);
         upvoteBtn = findViewById(R.id.repodetail_upvote_btn);
         downvoteBtn = findViewById(R.id.repodetail_downvote_btn);
         commentBtn = findViewById(R.id.repodetail_comment_btn);
@@ -158,6 +154,25 @@ public class RepoDetailActivity extends AppCompatActivity {
         viewModel.didStar = data.isStarred;
         viewModel.didFork = data.isForked;
         viewModel.didComment = data.isCommented;
+
+        // Fetch the README.md and display
+        new Connector
+                .Query(Connector.QueryType.README, repoOwner, repoName)
+                .exec(new Connector.ISuccessCallback() {
+                    @Override
+                    public void handle(Object result) {
+                        ReadmeData data = (ReadmeData) result;
+
+                        // update non-async fields
+                        String markdown = data.readme;
+                        readmeMarkdownView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                readmeMarkdownView.loadMarkdown(markdown);
+                            }
+                        });
+                    }
+                });
 
         // Set the observer for the mutable UI elements
         final Observer<Integer> upvoteObserver = new Observer<Integer>() {
@@ -188,6 +203,21 @@ public class RepoDetailActivity extends AppCompatActivity {
                 forkBtn.setImageTintList(viewModel.didFork ? ColorStateList.valueOf(colorForkSelected) : ColorStateList.valueOf(colorUnselected));
             }
         };
+
+        linkTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(data.url));
+                RepoDetailActivity.this.startActivity(i);
+            }
+        });
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         // Observer the mutable UI elements
         viewModel.getUpvotes().observe(this, upvoteObserver);
@@ -235,14 +265,6 @@ public class RepoDetailActivity extends AppCompatActivity {
                 viewModel.fork();
             }
         });
-
-        // setup toolbar
-        Toolbar toolbar = findViewById(R.id.repodetail_toolbar);
-        setSupportActionBar(toolbar);
-
-        // display readme (wait till data is loaded)
-        //while(repoReadMe == null || repoReadMe.equals("")) { }
-        //repoReadMeMarkdownView.loadMarkdown(repoReadMe);
 
         // start dialog for history popup menu
         historyDialog = new Dialog(this);

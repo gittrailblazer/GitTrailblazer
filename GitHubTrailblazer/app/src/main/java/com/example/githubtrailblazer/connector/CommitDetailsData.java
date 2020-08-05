@@ -23,7 +23,6 @@ public class CommitDetailsData {
     public String commitDate;
     public String messageHeadline;
     public String message;
-    public String readMe;
 
     public ArrayList<Commit> allRepoCommits = new ArrayList<>();
     public ArrayList<Contributor> allRepoContributors = new ArrayList<>();
@@ -51,16 +50,6 @@ public class CommitDetailsData {
                             if(dataRepo != null) {
                                 if(dataRepo.ref() != null) {
                                     id = data.repository().ref().target();
-                                }
-                            }
-
-
-                            // get README
-                            if(dataRepo != null) {
-                                Object readMeObj = dataRepo.object();
-                                CommitDetailsQuery.AsBlob readMeBlob = (CommitDetailsQuery.AsBlob) readMeObj;
-                                if(readMeBlob != null && (readMeBlob.text() != null || readMeBlob.text().equals(""))) {
-                                    readMe = readMeBlob.text();
                                 }
                             }
 
