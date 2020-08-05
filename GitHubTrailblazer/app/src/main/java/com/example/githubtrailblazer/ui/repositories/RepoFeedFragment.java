@@ -48,7 +48,6 @@ public class RepoFeedFragment extends Fragment {
     private final String delimiterPattern = "\\s|,";
 
     // feed-specific refs
-    private LinearLayout tagContainer;
     private SwipeRefreshLayout swipeToRefresh;
     private FeedAdapter feedAdapter;
 
@@ -70,7 +69,6 @@ public class RepoFeedFragment extends Fragment {
         // setup fragment
         Context context = getActivity();
         View view = inflater.inflate(R.layout.fragment_repositories, container, false);
-        tagContainer = view.findViewById(R.id.feed__tags);
 
         // setup search bar
         LinearLayout toolbarContainer = getActivity().findViewById(R.id.toolbar_container);
@@ -105,6 +103,7 @@ public class RepoFeedFragment extends Fragment {
                 @Override
                 public void handle(RepoFeedData.SortOption value) {
                     if (viewModel.setSort(value)) {
+                        // refresh
                         feedAdapter.loadNew(getActivity());
                         viewModel.execQuery();
                     }
@@ -123,6 +122,17 @@ public class RepoFeedFragment extends Fragment {
                 @Override
                 public void handle(RepoFeedData.FilterOption value) {
                     if (viewModel.setFilter(value)) {
+                        // hide/show search and filter UI elements if user is filtering
+                        if (value != RepoFeedData.FilterOption.EXPLORE) {
+                            view.findViewById(R.id.feed__tags).setVisibility(View.GONE);
+                            toolbarContainer.findViewById(R.id.searchbar).setVisibility(View.GONE);
+                            view.findViewById(R.id.feed__sort).setVisibility(View.GONE);
+                        } else {
+                            view.findViewById(R.id.feed__tags).setVisibility(View.VISIBLE);
+                            toolbarContainer.findViewById(R.id.searchbar).setVisibility(View.VISIBLE);
+                            view.findViewById(R.id.feed__sort).setVisibility(View.VISIBLE);
+                        }
+                        // refresh
                         feedAdapter.loadNew(getActivity());
                         viewModel.execQuery();
                     }
@@ -193,7 +203,7 @@ public class RepoFeedFragment extends Fragment {
                             viewModel.execQuery();
                         }
                     });
-                    tagContainer.addView(tagView, 0);
+                    ((LinearLayout)view.findViewById(R.id.feed__tags)).addView(tagView, 0);
                 }
             })
             // bind to query execution
