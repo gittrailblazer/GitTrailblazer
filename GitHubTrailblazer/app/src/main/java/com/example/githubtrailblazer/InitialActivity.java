@@ -165,12 +165,13 @@ public class InitialActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful() && task.getResult().size() == 0) {
-                                    User user = new User(data.id, data.username, true);
-                                    FirebaseFirestore.getInstance().collection("Users").add(user);
-                                    // send new users to questionnaire activity
-                                    Intent intent = new Intent(InitialActivity.this, QuestionnaireActivity.class);
-                                    finish();
-                                    startActivity(intent);
+                                User user = new User(data.id, data.username, true);
+                                FirebaseFirestore.getInstance().collection("Users").add(user);
+                                // send new users to questionnaire activity
+                                Intent intent = new Intent(InitialActivity.this, QuestionnaireActivity.class);
+                                intent.putExtra("githubUsername", data.username);
+                                finish();
+                                startActivity(intent);
                                 } else if (task.isSuccessful() && task.getResult().size() == 1) {
                                     // send existing users to the main activity
                                     Intent intent = new Intent(InitialActivity.this, DrawerActivity.class);
