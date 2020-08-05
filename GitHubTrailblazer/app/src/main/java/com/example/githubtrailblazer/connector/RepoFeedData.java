@@ -105,6 +105,7 @@ public class RepoFeedData {
                                         repoCardData.service = Connector.Service.GITHUB.shortName();
                                         GhStarredRepoFeedQuery.Node repository = nodes.get(i);
                                         repoCardData.url = repository.url().toString();
+                                        repoCardData.id = repository.id();
                                         repoCardData.name = repository.nameWithOwner();
                                         GhStarredRepoFeedQuery.PrimaryLanguage _pl = repository.primaryLanguage();
                                         repoCardData.language = (_pl == null) ? null : _pl.name();
@@ -161,7 +162,6 @@ public class RepoFeedData {
                 break;
         }
         final String ghSearchString = searchString + (searchString.isEmpty() ? "" : " ") + ghSortString;
-
         // GitHub query
         try {
             Connector.getInstance().getGHClient().query(GhRepoFeedQuery.builder().searchString(ghSearchString).build())
@@ -183,6 +183,7 @@ public class RepoFeedData {
                                         repoCardData.service = Connector.Service.GITHUB.shortName();
                                         GhRepoFeedQuery.AsRepository repository = (GhRepoFeedQuery.AsRepository) nodes.get(i);
                                         repoCardData.url = repository.url().toString();
+                                        repoCardData.id = repository.id();
                                         repoCardData.name = repository.nameWithOwner();
                                         GhRepoFeedQuery.PrimaryLanguage _pl = repository.primaryLanguage();
                                         repoCardData.language = (_pl == null) ? null : _pl.name();
