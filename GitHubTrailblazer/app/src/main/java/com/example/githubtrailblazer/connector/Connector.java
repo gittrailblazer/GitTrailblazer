@@ -22,6 +22,7 @@ public class Connector {
         put(QueryType.COMMIT_DETAILS, CommitDetailsData.class);
         put(QueryType.STAR_REPO, StarRepo.class);
         put(QueryType.UNSTAR_REPO, UnStarRepo.class);
+        put(QueryType.USER_HISTORY, UserHistoryData.class);
     }};
 
     private ApolloClient ghclient = null;
@@ -213,7 +214,8 @@ public class Connector {
         USER_DETAILS,
         COMMIT_DETAILS,
         STAR_REPO,
-        UNSTAR_REPO
+        UNSTAR_REPO,
+        USER_HISTORY
     }
 
     /**
