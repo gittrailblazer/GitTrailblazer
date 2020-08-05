@@ -228,13 +228,14 @@ public class RepoFeedFragment extends Fragment {
         swipeToRefresh.setColorSchemeColors(context.getColor(R.color.primary1));
 
 
-        // use mock data on first load
-        // TODO: when nothing is searched, recommend repos based on their profile
-        final RepoCardData[] mock = (RepoCardData[]) Helpers.fromRawJSON(context, R.raw.repo_feed_mock, RepoCardData[].class);
-        feedAdapter = new FeedAdapter(mock);
+//        // use mock data on first load
+//        // TODO: when nothing is searched, recommend repos based on their profile
+//        final RepoCardData[] mock = (RepoCardData[]) Helpers.fromRawJSON(context, R.raw.repo_feed_mock, RepoCardData[].class);
+//        feedAdapter = new FeedAdapter(mock);
 
 
         // setup repo feed
+        feedAdapter = new FeedAdapter(new RepoCardData[]{});
         RecyclerView feed = view.findViewById(R.id.feed__list);
         feed.setAdapter(feedAdapter);
         feed.setLayoutManager(new LinearLayoutManager(context));
@@ -258,6 +259,10 @@ public class RepoFeedFragment extends Fragment {
                 }
             }
         });
+
+        // init repo feed
+        feedAdapter.loadNew(getActivity());
+        viewModel.execQuery();
 
         return view;
     }
