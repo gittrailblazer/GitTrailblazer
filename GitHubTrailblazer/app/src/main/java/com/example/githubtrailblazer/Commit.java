@@ -87,39 +87,20 @@ public class Commit {
     /**
      * Generate real contribution data
      */
-    public static ArrayList<Commit> generateCommitData(ArrayList<Commit> commits) {
+    public static ArrayList<Commit> generateCommitData(ArrayList<Commit> commits, int safeListSize) {
+        boolean finished = false;
         new Connector.Query(Connector.QueryType.COMMIT_DETAILS)
                 .exec(new Connector.ISuccessCallback() {
                     @Override
                     public void handle(Object result) {
                         CommitDetailsData data = (CommitDetailsData) result;
+                        ArrayList<Commit> allRepoCommits = data.allRepoCommits;
 
-                        Log.d("Message: ", data.message);
-
-                        String authorName = data.authorName;
-                        if(authorName == null || authorName.equals("")) {
-                            authorName = "ERROR: No name";
+                        for(int i = 0; i < allRepoCommits.size(); i++) {
+                            commits.add(allRepoCommits.get(i));
                         }
-                        String authorDate = data.authorDate;
-                        if(authorDate == null || authorDate.equals("")) {
-                            authorDate = "ERROR: No date";
-                        }
-                        String authorImageURL = "drawable://" + R.drawable.default_profile;
-                        String messageHeadline = data.messageHeadline;
-                        if(messageHeadline == null || messageHeadline.equals("")) {
-                            messageHeadline = "ERROR: No message headline";
-                        }
-                        String message = data.message;
-                        if(message == null || message.equals("")){
-                            message = "ERROR: No message";
-                        }
-                        String authorDateAndCommitHeadline = authorDate + " --- " + messageHeadline;
-                        Commit currCommit = new Commit(authorName, authorImageURL, authorDateAndCommitHeadline, message);
-
-
-                        Log.d("AuthorName: ", authorName);
-                        for(int i = 0; i < 15; i++) {
-                            commits.add(currCommit);
+                        while(commits.size() < safeListSize) {
+                            commits.add(allRepoCommits.get(allRepoCommits.size()-1));
                         }
                     }
                 }, new Connector.IErrorCallback() {
@@ -129,8 +110,8 @@ public class Commit {
                     }
 
                 });
-        while(commits.size() < 15) {
-            // wait till the list is filled
+        while(commits.size() < safeListSize) {
+            // do nothing
         }
         return commits;
     }

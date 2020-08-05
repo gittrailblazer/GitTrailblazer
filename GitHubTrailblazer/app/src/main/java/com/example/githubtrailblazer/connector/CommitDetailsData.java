@@ -5,21 +5,27 @@ import android.util.Log;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
+import com.example.githubtrailblazer.Commit;
+import com.example.githubtrailblazer.Contributor;
 import com.example.githubtrailblazer.github.CommitDetailsQuery;
 import com.example.githubtrailblazer.github.UserDetailsQuery;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommitDetailsData {
     // Properties accessible in success callback
     public CommitDetailsQuery.Target id = null;
     public String authorName;
-    public String authorDate;
+    public String authorAvatarURL;
+    public String commitDate;
     public String messageHeadline;
     public String message;
 
+    public ArrayList<Commit> allRepoCommits = new ArrayList<>();
+    public ArrayList<Contributor> allRepoContributors = new ArrayList<>();
     /**
      * Create user details data by querying API via connector
      * NOTE: must be PUBLIC and must have the following signature (for reflection):
@@ -41,12 +47,20 @@ public class CommitDetailsData {
                             id = data.repository().ref().target();
                             CommitDetailsQuery.AsCommit commit = (CommitDetailsQuery.AsCommit) id;
                             List<CommitDetailsQuery.Edge> edges = ((CommitDetailsQuery.AsCommit) id).history().edges();
-                            CommitDetailsQuery.Node firstCommit = edges.get(1).node();
-                            authorName = firstCommit.author().name();
-                            authorDate = firstCommit.author().date().toString();
-                            messageHeadline = firstCommit.messageHeadline();
-                            message = firstCommit.message();
-                            Log.d("ERROR:", message);
+
+                            // for all commits in this repo, generate commits
+                            for(int i = 0; i < edges.size(); i++) {
+                                CommitDetailsQuery.Node currCommit = edges.get(i).node();
+                                authorName = currCommit.author().name();
+                                authorAvatarURL = currCommit.author().avatarUrl().toString();
+                                commitDate = currCommit.author().date().toString();
+                                messageHeadline = currCommit.messageHeadline();
+                                message = currCommit.message();
+
+                                Commit currCommitObj = new Commit(authorName, authorAvatarURL, commitDate, messageHeadline);
+                                allRepoCommits.add(currCommitObj);
+                            }
+
                             if (successCallback != null) successCallback.handle(_instance);
                         } else if (errorCallback != null) {
                             errorCallback.error("Failed query: data is NULL");

@@ -202,8 +202,26 @@ public class RepoDetailActivity extends AppCompatActivity {
         ArrayList<Contributor> contributorList = new ArrayList<>();
 
         // TODO: Get contributor data (all contributors) from GitHub/GitLab and display it
+        contributorList = Contributor.generateContributorData(contributorList, 50);
+
+        // clean up contributor List
+        int lastIndex = contributorList.size() - 1;
+        int secLastIndex = contributorList.size() - 2;
+        String last = contributorList.get(lastIndex).getName();
+        String secLast = contributorList.get(secLastIndex).getName();
+        while(last.equals(secLast)) {
+            contributorList.remove(contributorList.size()-2);
+            lastIndex = contributorList.size() - 1;
+            secLastIndex = contributorList.size() - 2;
+            if(secLastIndex >= 0) {
+                last = contributorList.get(lastIndex).getName();
+                secLast = contributorList.get(secLastIndex).getName();
+            } else {
+                break;
+            }
+        }
         // generate mock data
-        Contributor.generateContributorMockData(contributorList);
+        //Contributor.generateContributorMockData(contributorList);
 
         // define the design for contributors popup window
         historyDialog.setContentView(R.layout.repo_contributors_popup);
@@ -241,7 +259,7 @@ public class RepoDetailActivity extends AppCompatActivity {
 
         // generate mock data
         //Commit.generateCommitMockData(commitList);
-        commitList = Commit.generateCommitData(commitList);
+        commitList = Commit.generateCommitData(commitList, 3);
         
 
         // define the design for contributions popup window
