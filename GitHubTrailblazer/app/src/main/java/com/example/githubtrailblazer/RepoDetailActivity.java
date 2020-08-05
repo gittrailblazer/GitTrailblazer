@@ -63,11 +63,10 @@ public class RepoDetailActivity extends AppCompatActivity {
     private TextView usernameTextView;
     private TextView reponameTextView;
     private TextView descriptionTextView;
+    private TextView linkTextView;
     private TextView languageTextView;
-    private TextView repoReadMeTextView;
-    private MarkdownView repoReadMeMarkdownView;
 
-    private WebView readmeWebView;
+    private MarkdownView readmeMarkdownView;
 
     private TextView upvoteTextView;
     private TextView commentTextView;
@@ -81,9 +80,6 @@ public class RepoDetailActivity extends AppCompatActivity {
     private ImageButton starBtn;
     private ImageButton forkBtn;
 
-    private String owner;
-    private String repoName;
-
     // Dialog for contributions and contributors' histories
     private Dialog historyDialog;
 
@@ -95,9 +91,6 @@ public class RepoDetailActivity extends AppCompatActivity {
         // Get the data passed from RepoCard
         Intent intent = getIntent();
         data = (RepoCardData) intent.getSerializableExtra("data");
-
-        //init readme
-        //repoReadMe = "";
 
         // init colors
         colorUnselected = ContextCompat.getColor(this, R.color.secondary6);
@@ -112,20 +105,14 @@ public class RepoDetailActivity extends AppCompatActivity {
         usernameTextView = findViewById(R.id.repodetail_user_id);
         reponameTextView = findViewById(R.id.repodetail_name_txt);
         descriptionTextView = findViewById(R.id.repodetail_description_txt);
+        linkTextView = findViewById(R.id.repodetail_link_txt);
         languageTextView = findViewById(R.id.repodetail_lang_txt);
 
-        readmeWebView = findViewById(R.id.repodetail_readme);
+        readmeMarkdownView = findViewById(R.id.repodetail_readme);
 
-        int ownerIndex = data.name.indexOf("/");
-        owner = data.name.substring(0, ownerIndex);
-        repoName = data.name.substring(ownerIndex+1);
-        usernameTextView.setText(owner);
-        reponameTextView.setText(data.name);
+        linkTextView.setText(data.url);
         descriptionTextView.setText(data.description);
         languageTextView.setText(data.language);
-
-        //repoReadMeTextView = findViewById(R.id.repodetail_readme);
-        //repoReadMeMarkdownView = findViewById(R.id.markdownView_readMe);
 
 
 
@@ -147,25 +134,6 @@ public class RepoDetailActivity extends AppCompatActivity {
         repoName = parts[1];
         usernameTextView.setText(repoOwner);
         reponameTextView.setText(repoName);
-        descriptionTextView.setText(data.description);
-        languageTextView.setText(data.language);
-
-        new Connector.Query(Connector.QueryType.COMMIT_DETAILS, repoName, repoOwner)
-                .exec(new Connector.ISuccessCallback() {
-                    @Override
-                    public void handle(Object result) {
-                        CommitDetailsData data = (CommitDetailsData) result;
-                        if(data != null) {
-                            repoReadMeTextView.setText(data.readMe);
-                            repoReadMe = data.readMe;
-                        }
-                    }
-                }, new Connector.IErrorCallback() {
-                    @Override
-                    public void error(String message) {
-
-                    }
-                });
 
         upvoteTextView = findViewById(R.id.repodetail_upvotes_txt);
         commentTextView = findViewById(R.id.repodetail_comment_txt);
@@ -188,41 +156,22 @@ public class RepoDetailActivity extends AppCompatActivity {
 
         // Fetch the README.md and display
         new Connector
-                .Query(Connector.QueryType.README, owner, repoName)
+                .Query(Connector.QueryType.README, repoOwner, repoName)
                 .exec(new Connector.ISuccessCallback() {
                     @Override
                     public void handle(Object result) {
                         ReadmeData data = (ReadmeData) result;
 
                         // update non-async fields
-
-                        final String mimeType = "text/html";
-                        final String encoding = "UTF-8";
-                        String html = data.readme;
-                        String test = "www.google.com";
-                        System.out.print("What is going on");
-                        readmeWebView.post(new Runnable() {
+                        String markdown = data.readme;
+                        readmeMarkdownView.post(new Runnable() {
                             @Override
                             public void run() {
-                                readmeWebView.loadDataWithBaseURL("", html, mimeType, encoding, "");
+                                readmeMarkdownView.loadMarkdown(markdown);
                             }
                         });
-                        //readmeWebView.loadUrl("www.google.com");
                     }
                 });
-
-        String profilePicUrl = data.profilePicUrl;
-
-        if (profilePicUrl != null && profilePicUrl != "")
-            new Handler(Looper.getMainLooper())
-                    .post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Picasso.get()
-                                    .load(profilePicUrl)
-                                    .into(((ImageView)findViewById(R.id.repodetail_user_avatar)));
-                        }
-                    });
 
         // Set the observer for the mutable UI elements
         final Observer<Integer> upvoteObserver = new Observer<Integer>() {

@@ -26,10 +26,5 @@ query commitDetails($repoName: String!, $repoOwner: String!) {
                 }
             }
         }
-        object(expression: "master:README.md") {
-            ... on Blob {
-                text
-            }
-        }
     }
 }
