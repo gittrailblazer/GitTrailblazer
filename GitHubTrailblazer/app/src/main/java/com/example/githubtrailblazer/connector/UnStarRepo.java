@@ -31,7 +31,11 @@ public class UnStarRepo {
                 .enqueue(new ApolloCall.Callback<UnStarRepoMutation.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<UnStarRepoMutation.Data> response) {
-                        if (successCallback != null) successCallback.handle(_instance);
+                        if (response.hasErrors() && errorCallback != null) {
+                            errorCallback.error("Apollo Failed query: " + response.getErrors());
+                        } else if (successCallback != null) {
+                            successCallback.handle(_instance);
+                        }
                     }
 
                     @Override

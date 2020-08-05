@@ -162,7 +162,6 @@ public class RepoFeedData {
                 break;
         }
         final String ghSearchString = searchString + (searchString.isEmpty() ? "" : " ") + ghSortString;
-
         // GitHub query
         try {
             Connector.getInstance().getGHClient().query(GhRepoFeedQuery.builder().searchString(ghSearchString).build())

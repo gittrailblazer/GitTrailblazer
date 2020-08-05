@@ -31,7 +31,11 @@ public class StarRepo {
                 .enqueue(new ApolloCall.Callback<StarRepoMutation.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<StarRepoMutation.Data> response) {
-                        if (successCallback != null) successCallback.handle(_instance);
+                        if (response.hasErrors() && errorCallback != null) {
+                            errorCallback.error("Apollo Failed query: " + response.getErrors());
+                        } else if (successCallback != null) {
+                            successCallback.handle(_instance);
+                        }
                     }
 
                     @Override
