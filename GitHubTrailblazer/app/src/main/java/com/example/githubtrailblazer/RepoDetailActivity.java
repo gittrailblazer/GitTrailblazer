@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,9 +21,11 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.githubtrailblazer.connector.CommitDetailsData;
 import com.example.githubtrailblazer.connector.Connector;
 import com.example.githubtrailblazer.components.ProjectComment.Comment;
 import com.example.githubtrailblazer.data.RepoCardData;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -34,6 +37,7 @@ public class RepoDetailActivity extends AppCompatActivity {
     private LinearLayout container;
 
     private RepoDetailViewModel viewModel;
+    private String repoOwner, repoName;
 
     private RepoCardData data;
     private int colorUnselected;
@@ -43,10 +47,13 @@ public class RepoDetailActivity extends AppCompatActivity {
     private int colorDownvoteSelected;
     private int colorForkSelected;
 
+    private ImageView userAvatar;
+
     private TextView usernameTextView;
     private TextView reponameTextView;
     private TextView descriptionTextView;
     private TextView languageTextView;
+    private TextView repoReadMe;
 
     private TextView upvoteTextView;
     private TextView commentTextView;
@@ -80,14 +87,48 @@ public class RepoDetailActivity extends AppCompatActivity {
         colorForkSelected = ContextCompat.getColor(this, R.color.projectFork);
 
         // Assign UI elements
+        userAvatar = findViewById(R.id.repodetail_user_avatar);
         usernameTextView = findViewById(R.id.repodetail_user_id);
         reponameTextView = findViewById(R.id.repodetail_name_txt);
         descriptionTextView = findViewById(R.id.repodetail_description_txt);
         languageTextView = findViewById(R.id.repodetail_lang_txt);
+        repoReadMe = findViewById(R.id.repodetail_readme);
 
-        reponameTextView.setText(data.name);
+        Log.d("URL: ", data.profilePicUrl);
+        if(data.profilePicUrl == null || data.profilePicUrl.equals("")) {
+
+        } else {
+            Picasso.get().load(data.profilePicUrl).into(userAvatar);
+        }
+
+        if(data.name == null || data.name.equals("")) {
+            data.name = "randomName/randomRepo";
+        }
+        String[] parts = data.name.split("/");
+        repoOwner = parts[0];
+        repoName = parts[1];
+        usernameTextView.setText(repoOwner);
+        reponameTextView.setText(repoName);
+
         descriptionTextView.setText(data.description);
         languageTextView.setText(data.language);
+
+        new Connector.Query(Connector.QueryType.COMMIT_DETAILS)
+                .exec(new Connector.ISuccessCallback() {
+                    @Override
+                    public void handle(Object result) {
+                        CommitDetailsData data = (CommitDetailsData) result;
+                        if(data != null) {
+                            repoReadMe.setText(data.readMe);
+                        }
+
+                    }
+                }, new Connector.IErrorCallback() {
+                    @Override
+                    public void error(String message) {
+
+                    }
+                });
 
         upvoteTextView = findViewById(R.id.repodetail_upvotes_txt);
         commentTextView = findViewById(R.id.repodetail_comment_txt);

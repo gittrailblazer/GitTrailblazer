@@ -23,6 +23,7 @@ public class CommitDetailsData {
     public String commitDate;
     public String messageHeadline;
     public String message;
+    public String readMe;
 
     public ArrayList<Commit> allRepoCommits = new ArrayList<>();
     public ArrayList<Contributor> allRepoContributors = new ArrayList<>();
@@ -45,6 +46,13 @@ public class CommitDetailsData {
                         CommitDetailsQuery.Data data = response.getData();
                         if (data != null) {
                             id = data.repository().ref().target();
+
+                            // get README
+                            Object readMeObj = data.repository().object();
+                            CommitDetailsQuery.AsBlob readMeBlob = (CommitDetailsQuery.AsBlob) readMeObj;
+                            readMe = readMeBlob.text();
+
+                            // get list of commits
                             CommitDetailsQuery.AsCommit commit = (CommitDetailsQuery.AsCommit) id;
                             List<CommitDetailsQuery.Edge> edges = ((CommitDetailsQuery.AsCommit) id).history().edges();
 
