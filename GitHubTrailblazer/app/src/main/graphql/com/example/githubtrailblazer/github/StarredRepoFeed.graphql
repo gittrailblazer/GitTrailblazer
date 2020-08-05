@@ -1,0 +1,37 @@
+# Adapted from https://github.com/mayankrastogi/github-graphql-search
+query ghStarredRepoFeed {
+    viewer {
+        starredRepositories(first: 10, ownedByViewer: false) {
+            pageInfo {
+                hasNextPage
+                endCursor
+            }
+            nodes {
+                ... on Repository {
+                    owner
+                    {
+                        avatarUrl
+                    }
+                    nameWithOwner
+                    description
+                    forkCount
+                    stargazers
+                    {
+                        totalCount
+                    }
+                    viewerHasStarred
+                    primaryLanguage
+                    {
+                        name
+                    }
+                    url
+                    id
+                    forks(affiliations: [OWNER])
+                    {
+                        totalCount
+                    }
+                }
+            }
+        }
+    }
+}

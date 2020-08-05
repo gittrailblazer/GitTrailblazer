@@ -22,6 +22,9 @@ import com.google.firebase.auth.*;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class InitialActivity extends AppCompatActivity {
     private static String gitlabPersonalAccessToken;
     // define UI variables
@@ -45,6 +48,16 @@ public class InitialActivity extends AppCompatActivity {
         // instantiate Firebase authentication variables
         mAuth = FirebaseAuth.getInstance();
         provider = OAuthProvider.newBuilder("github.com");
+        // request additional GitHub scopes
+        List<String> scopes =
+                new ArrayList<String>() {
+                    {
+                        add("user:email");
+                        add("public_repo");
+                    }
+                };
+        provider.setScopes(scopes);
+
 
         // TODO: Get this from Firebase
         gitlabPersonalAccessToken = "LpuWHYx7gQjidpynpyxF";
@@ -155,7 +168,7 @@ public class InitialActivity extends AppCompatActivity {
                                     User user = new User(data.id, data.username, true);
                                     FirebaseFirestore.getInstance().collection("Users").add(user);
                                     // send new users to questionnaire activity
-                                    Intent intent = new Intent(InitialActivity.this, QuestionaireActivity.class);
+                                    Intent intent = new Intent(InitialActivity.this, QuestionnaireActivity.class);
                                     finish();
                                     startActivity(intent);
                                 } else if (task.isSuccessful() && task.getResult().size() == 1) {

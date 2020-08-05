@@ -4,19 +4,20 @@ import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import com.example.githubtrailblazer.connector.Connector;
 import com.example.githubtrailblazer.connector.IssueFeedData;
-import com.example.githubtrailblazer.data.IssueCardData;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-
-public class IssuesViewModel extends ViewModel {
+/**
+ * IssueFeedViewModel class
+ */
+public class IssueFeedViewModel extends ViewModel {
     private IQueryResponseCB queryResponseCallback;
     private ITagAddedCB tagAddedCallback;
     private HashMap<String, Boolean> tagExistanceMap = new HashMap<>();
     SortOption sortOption = SortOption.NEWEST;
-    FilterOption filterOption = FilterOption.EXPLORE;
+//    FilterOption filterOption = FilterOption.EXPLORE;
 
     /**
      * The query response sort options
@@ -63,7 +64,7 @@ public class IssuesViewModel extends ViewModel {
      * Execute a new query
      * @return this instance
      */
-    IssuesViewModel execQuery() {
+    IssueFeedViewModel execQuery() {
         performQuery(true);
         return this;
     }
@@ -72,7 +73,7 @@ public class IssuesViewModel extends ViewModel {
      * Execute a new query
      * @return this instance
      */
-    IssuesViewModel loadMore() {
+    IssueFeedViewModel loadMore() {
         performQuery(false);
         return this;
     }
@@ -146,7 +147,7 @@ public class IssuesViewModel extends ViewModel {
      * Add new tags
      * @param tags - the tags
      */
-    IssuesViewModel addTags(String[] tags) {
+    IssueFeedViewModel addTags(String[] tags) {
         for (String tag : tags) {
             tagExistanceMap.put(tag, true);
             tagAddedCallback.exec(tag);
@@ -179,18 +180,18 @@ public class IssuesViewModel extends ViewModel {
      * @param filterOption - the filter by option
      * @return if a change occurred
      */
-    boolean setFilter(FilterOption filterOption) {
-        boolean isChanged = (filterOption != this.filterOption);
-        if (isChanged) this.filterOption = filterOption;
-        return isChanged;
-    }
+//    boolean setFilter(FilterOption filterOption) {
+//        boolean isChanged = (filterOption != this.filterOption);
+//        if (isChanged) this.filterOption = filterOption;
+//        return isChanged;
+//    }
 
     /**
      * Set on query response callback
      * @param callback - the callback
      * @return this instance
      */
-    IssuesViewModel setOnQueryResponseCB(IQueryResponseCB callback) {
+    IssueFeedViewModel setOnQueryResponseCB(IQueryResponseCB callback) {
         queryResponseCallback = callback;
         return this;
     }
@@ -200,7 +201,7 @@ public class IssuesViewModel extends ViewModel {
      * @param callback - the callback
      * @return this instance
      */
-    IssuesViewModel setOnTagAddedCB(ITagAddedCB callback) {
+    IssueFeedViewModel setOnTagAddedCB(ITagAddedCB callback) {
         tagAddedCallback = callback;
         return this;
     }

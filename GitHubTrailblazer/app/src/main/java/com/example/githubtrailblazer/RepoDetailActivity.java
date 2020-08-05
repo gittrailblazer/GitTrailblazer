@@ -21,6 +21,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.githubtrailblazer.connector.Connector;
+import com.example.githubtrailblazer.components.ProjectComment.Comment;
 import com.example.githubtrailblazer.data.RepoCardData;
 
 import java.util.ArrayList;
@@ -66,12 +67,9 @@ public class RepoDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repodetail);
 
-
         // Get the data passed from RepoCard
         Intent intent = getIntent();
         data = (RepoCardData) intent.getSerializableExtra("data");
-
-
 
         // init colors
         colorUnselected = ContextCompat.getColor(this, R.color.secondary6);
@@ -168,6 +166,9 @@ public class RepoDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // When being tapped do nothing right now
+                Intent intent = new Intent(RepoDetailActivity.this, CommentActivity.class);
+                intent.putExtra("url", data.url);
+                startActivity(intent);
             }
         });
         starBtn.setOnClickListener(new View.OnClickListener() {
@@ -256,11 +257,9 @@ public class RepoDetailActivity extends AppCompatActivity {
         ArrayList<Commit> commitList = new ArrayList<>();
 
         // TODO: Get contribution data (all commits) from GitHub/GitLab and display it
-
+        commitList = Commit.generateCommitData(commitList, 3);
         // generate mock data
         //Commit.generateCommitMockData(commitList);
-        commitList = Commit.generateCommitData(commitList, 3);
-        
 
         // define the design for contributions popup window
         historyDialog.setContentView(R.layout.repo_commit_popup);

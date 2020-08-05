@@ -41,10 +41,10 @@ import static android.content.ContentValues.TAG;
 
 
 /**
- * FeedFragment class
+ * RepoFeedFragment class
  */
-public class ReposFragment extends Fragment {
-    private ReposViewModel viewModel = new ReposViewModel();
+public class RepoFeedFragment extends Fragment {
+    private RepoFeedViewModel viewModel = new RepoFeedViewModel();
     private final String delimiterPattern = "\\s|,";
 
     // feed-specific refs
@@ -69,7 +69,7 @@ public class ReposFragment extends Fragment {
 
         // setup fragment
         Context context = getActivity();
-        View view = inflater.inflate(R.layout.fragment_feed, container, false);
+        View view = inflater.inflate(R.layout.fragment_repositories, container, false);
         tagContainer = view.findViewById(R.id.feed__tags);
 
         // setup search bar
@@ -116,8 +116,8 @@ public class ReposFragment extends Fragment {
             .setOptions(new ToggleOptionData[]{
                 new ToggleOptionData("Explore", RepoFeedData.FilterOption.EXPLORE, R.drawable.binoculars_solid_optionstoggle_light, R.drawable.binoculars_solid_optionstoggle_dark),
                 new ToggleOptionData("Starred", RepoFeedData.FilterOption.STARRED, R.drawable.star_solid_optiontoggle_light, R.drawable.star_solid_optiontoggle_dark),
-                new ToggleOptionData("Following", RepoFeedData.FilterOption.FOLLOWING, R.drawable.user_solid_optionstoggle_light, R.drawable.user_solid_optionstoggle_dark),
-                new ToggleOptionData("Contributed", RepoFeedData.FilterOption.CONTRIBUTED, R.drawable.user_friends_solid_optionstoggle_light, R.drawable.user_friends_solid_optionstoggle_dark)
+//                new ToggleOptionData("Following", RepoFeedData.FilterOption.FOLLOWING, R.drawable.user_solid_optionstoggle_light, R.drawable.user_solid_optionstoggle_dark),
+//                new ToggleOptionData("Contributed", RepoFeedData.FilterOption.CONTRIBUTED, R.drawable.user_friends_solid_optionstoggle_light, R.drawable.user_friends_solid_optionstoggle_dark)
             })
             .setOnOptionSelected(new Toggle.IOnOptionSelectedCB<RepoFeedData.FilterOption>() {
                 @Override
@@ -132,6 +132,7 @@ public class ReposFragment extends Fragment {
 
         // inflate bell
         LinearLayout bellContainer = getActivity().findViewById(R.id.bell_container);
+        bellContainer.removeAllViews();
         inflater.inflate(R.layout.bell_layout, bellContainer, true);
         DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
         TextView bell_counter = getActivity().findViewById(R.id.bell_count);
@@ -174,7 +175,7 @@ public class ReposFragment extends Fragment {
         // bind to view model
         viewModel
             // bind to tag added events
-            .setOnTagAddedCB(new ReposViewModel.ITagAddedCB() {
+            .setOnTagAddedCB(new RepoFeedViewModel.ITagAddedCB() {
                 @Override
                 public void exec(String tag) {
                     // create & add tag
@@ -196,7 +197,7 @@ public class ReposFragment extends Fragment {
                 }
             })
             // bind to query execution
-            .setOnQueryResponseCB(new ReposViewModel.IQueryResponseCB() {
+            .setOnQueryResponseCB(new RepoFeedViewModel.IQueryResponseCB() {
                 @Override
                 public void exec(RepoFeedData data) {
                     feedAdapter.finishLoading(getActivity(), data.repositories, data.hasNextPage);
