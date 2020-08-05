@@ -300,7 +300,7 @@ public class RepoFeedFragment extends Fragment {
             }
 
         };
-        recyclerView.setAdapter(feedAdapter);
+        recyclerView.setAdapter(mAdapter);
     }
 
     @Override
