@@ -94,13 +94,17 @@ public class RepoDetailActivity extends AppCompatActivity {
         languageTextView = findViewById(R.id.repodetail_lang_txt);
         repoReadMe = findViewById(R.id.repodetail_readme);
 
-        Log.d("URL: ", data.profilePicUrl);
+
+        // TODO: Display production data from GitLab
+        // if user clicks on a GitLab or mock repo
         if(data.profilePicUrl == null || data.profilePicUrl.equals("")) {
+            // load default avatar
 
         } else {
+            // load GitHub avatar
             Picasso.get().load(data.profilePicUrl).into(userAvatar);
         }
-
+        // assign mock name to non-GitHub repos
         if(data.name == null || data.name.equals("")) {
             data.name = "randomName/randomRepo";
         }
@@ -109,7 +113,6 @@ public class RepoDetailActivity extends AppCompatActivity {
         repoName = parts[1];
         usernameTextView.setText(repoOwner);
         reponameTextView.setText(repoName);
-
         descriptionTextView.setText(data.description);
         languageTextView.setText(data.language);
 
@@ -121,7 +124,6 @@ public class RepoDetailActivity extends AppCompatActivity {
                         if(data != null) {
                             repoReadMe.setText(data.readMe);
                         }
-
                     }
                 }, new Connector.IErrorCallback() {
                     @Override
