@@ -11,6 +11,6 @@ class Controller implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
+        model.openInBrowser(v.getContext());
     }
 }

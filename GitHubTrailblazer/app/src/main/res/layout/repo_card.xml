@@ -77,7 +77,6 @@
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.25"
                 android:gravity="center">
             <ImageButton
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -99,52 +98,59 @@
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.25"
-                android:gravity="center">
-            <ImageButton
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/comment_alt_solid"
-                    android:id="@+id/projectCard__btnComment" android:background="@android:color/transparent"
-                    android:textColor="@color/secondary1" android:padding="5dp"/>
-            <TextView
-                    android:id="@+id/projectCard__comments" android:text="@string/app_project_comments_default"
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:textColor="@color/secondary1"
-                    android:textSize="@dimen/text_sm"/>
-        </LinearLayout>
-        <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.25"
-                android:gravity="center">
-            <ImageButton
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/star_solid"
-                    android:id="@+id/projectCard__btnStar" android:background="@android:color/transparent"
-                    android:padding="5dp"/>
-            <TextView
-                    android:id="@+id/projectCard__stars" android:text="@string/app_project_stars_default"
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:textColor="@color/secondary1"
-                    android:textSize="@dimen/text_sm"/>
-        </LinearLayout>
-        <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.25"
-                android:gravity="center">
-            <ImageButton
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/sitemap_solid"
-                    android:id="@+id/projectCard__btnFork" android:background="@android:color/transparent"
-                    android:padding="5dp"/>
-            <TextView
-                    android:id="@+id/projectCard__forks" android:text="@string/app_project_forks_default"
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:textColor="@color/secondary1"
-                    android:textSize="@dimen/text_sm"/>
+                android:gravity="center"
+                android:layout_weight="1">
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:gravity="center">
+                <ImageButton
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/comment_alt_solid"
+                        android:id="@+id/projectCard__btnComment" android:background="@android:color/transparent"
+                        android:textColor="@color/secondary1" android:padding="5dp"/>
+                <TextView
+                        android:id="@+id/projectCard__comments" android:text="@string/app_project_comments_default"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:textColor="@color/secondary1"
+                        android:textSize="@dimen/text_sm"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:gravity="center">
+                <ImageButton
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/star_solid"
+                        android:id="@+id/projectCard__btnStar" android:background="@android:color/transparent"
+                        android:padding="5dp"/>
+                <TextView
+                        android:id="@+id/projectCard__stars" android:text="@string/app_project_stars_default"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:textColor="@color/secondary1"
+                        android:textSize="@dimen/text_sm"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:gravity="center">
+                <ImageButton
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/sitemap_solid"
+                        android:id="@+id/projectCard__btnFork" android:background="@android:color/transparent"
+                        android:padding="5dp"/>
+                <TextView
+                        android:id="@+id/projectCard__forks" android:text="@string/app_project_forks_default"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:textColor="@color/secondary1"
+                        android:textSize="@dimen/text_sm"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </com.example.githubtrailblazer.components.repocard.RepoCard>

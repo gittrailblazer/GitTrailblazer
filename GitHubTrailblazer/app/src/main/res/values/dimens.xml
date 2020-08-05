@@ -39,6 +39,9 @@
     <dimen name="app_repocard_iconGlobe_w">15.5dp</dimen>
     <dimen name="app_repocard_iconGlobe_h">16dp</dimen>
 
+    <dimen name="app_issue_iconClock_w">15dp</dimen>
+    <dimen name="app_issue_iconClock_h">15dp</dimen>
+
     <dimen name="app_optionstoggle_iconStar_w">18dp</dimen>
     <dimen name="app_optionstoggle_iconStar_h">16dp</dimen>
     <dimen name="app_optionstoggle_iconSitemap_w">20dp</dimen>
@@ -51,6 +54,10 @@
     <dimen name="app_optionstoggle_iconUser_h">16dp</dimen>
     <dimen name="app_optionstoggle_iconUserFriends_w">20dp</dimen>
     <dimen name="app_optionstoggle_iconUserFriends_h">16dp</dimen>
+    <dimen name="app_optionstoggle_iconClock_w">16dp</dimen>
+    <dimen name="app_optionstoggle_iconClock_h">16dp</dimen>
+    <dimen name="app_optionstoggle_iconUsers_w">20dp</dimen>
+    <dimen name="app_optionstoggle_iconUsers_h">16dp</dimen>
 
     <dimen name="text_lg">18sp</dimen>
     <dimen name="text_md">16sp</dimen>

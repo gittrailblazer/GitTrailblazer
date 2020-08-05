@@ -21,19 +21,12 @@ import java.util.HashMap;
 public class Model {
     private final RepoCardData data;
     private RepoCard repoCard;
-    private static HashMap<String, String> ghColors;
 
     public Model(RepoCardData data) {
         this.data = data;
     }
 
     Model bindView(RepoCard repoCard) {
-        // setup singleton language color map if not defined
-        if (ghColors == null) {
-            Type mapType = new TypeToken<HashMap<String, String>>() {
-            }.getType();
-            ghColors = (HashMap<String, String>) Helpers.fromRawJSON(repoCard.getContext(), R.raw.github_lang_colors, mapType);
-        }
         this.repoCard = repoCard;
         repoCard.update(this);
         return this;
@@ -154,11 +147,6 @@ public class Model {
         return data.description == null || data.description.isEmpty() ? null : data.description;
     }
 
-    Integer getLanguageColor() {
-        String hex = data.language == null ? null : ghColors.get(data.language);
-        return hex == null ? R.color.primary1 : Color.parseColor(hex);
-    }
-
     String getRatings() {
         return Helpers.formatCount(data.rating);
     }
@@ -191,15 +179,14 @@ public class Model {
         return data.isForked;
     }
 
-    Model openInBrowser() {
-        Context context = repoCard.getContext();
+    Model openInBrowser(Context context) {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(data.url));
         context.startActivity(i);
         return this;
     }
 
-    Model share() {
+    Model share(Context context) {
         // repo details to be shared
         String details = "Repo Name: " + data.name +
                 "\n\nRepo Language: " + data.language +
@@ -212,12 +199,11 @@ public class Model {
         sendIntent.putExtra(Intent.EXTRA_TEXT, details);
         sendIntent.setType("text/plain");
         Intent shareIntent = Intent.createChooser(sendIntent, null);
-        repoCard.getContext().startActivity(shareIntent);
+        context.startActivity(shareIntent);
         return this;
     }
 
-    Model showDetails() {
-        Context context = repoCard.getContext();
+    Model showDetails(Context context) {
         Intent intent = new Intent(context, RepoDetailActivity.class);
         intent.putExtra("data", data);
         context.startActivity(intent);

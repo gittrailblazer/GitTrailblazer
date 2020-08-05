@@ -12,14 +12,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import com.example.githubtrailblazer.Helpers;
 import com.example.githubtrailblazer.R;
 import com.example.githubtrailblazer.components.searchbar.SearchBar;
 import com.example.githubtrailblazer.components.toggle.Toggle;
 import com.example.githubtrailblazer.connector.IssueFeedData;
 import com.example.githubtrailblazer.data.IssueCardData;
 import com.example.githubtrailblazer.data.ToggleOptionData;
-import com.example.githubtrailblazer.ui.FeedAdapter;
+import com.example.githubtrailblazer.components.FeedAdapter;
 
 /**
  * IssueFeedFragment
@@ -78,13 +77,12 @@ public class IssueFeedFragment extends Fragment {
         // setup feed sort
         ((Toggle)view.findViewById(R.id.feed__sort))
                 .setOptions(new ToggleOptionData[] {
-                        new ToggleOptionData("Newest", IssueFeedViewModel.SortOption.NEWEST, R.drawable.calendar_solid_optionstoggle_light, R.drawable.calendar_solid_optionstoggle_dark),
-                        new ToggleOptionData("Latest", IssueFeedViewModel.SortOption.MOST_STARS, R.drawable.star_solid_optiontoggle_light, R.drawable.star_solid_optiontoggle_dark),
-                        new ToggleOptionData("Most Reactions", IssueFeedViewModel.SortOption.MOST_FORKS, R.drawable.sitemap_solid_optionstoggle_light, R.drawable.sitemap_solid_optionstoggle_dark)
+                        new ToggleOptionData("Newest", IssueFeedData.SortOption.NEWEST, R.drawable.calendar_solid_optionstoggle_light, R.drawable.calendar_solid_optionstoggle_dark),
+                        new ToggleOptionData("Most Popular", IssueFeedData.SortOption.MOST_POPULAR, R.drawable.users_solid_options_toggle_light, R.drawable.users_solid_options_toggle_dark)
                 })
-                .setOnOptionSelected(new Toggle.IOnOptionSelectedCB<IssueFeedViewModel.SortOption>() {
+                .setOnOptionSelected(new Toggle.IOnOptionSelectedCB<IssueFeedData.SortOption>() {
                     @Override
-                    public void handle(IssueFeedViewModel.SortOption value) {
+                    public void handle(IssueFeedData.SortOption value) {
                         if (viewModel.setSort(value)) {
                             feedAdapter.loadNew(getActivity());
                             viewModel.execQuery();
@@ -198,14 +196,8 @@ public class IssueFeedFragment extends Fragment {
         });
         swipeToRefresh.setColorSchemeColors(context.getColor(R.color.primary1));
 
-
-        // use mock data on first load
-        // TODO: when nothing is searched, recommend repos based on their profile
-        final IssueCardData[] mock = (IssueCardData[]) Helpers.fromRawJSON(context, R.raw.issue_feed_mock, IssueCardData[].class);
-        feedAdapter = new FeedAdapter(mock);
-
-
         // setup repo feed
+        feedAdapter = new FeedAdapter(new IssueCardData[]{});
         RecyclerView feed = view.findViewById(R.id.feed__list);
         feed.setAdapter(feedAdapter);
         feed.setLayoutManager(new LinearLayoutManager(context));
@@ -229,6 +221,10 @@ public class IssueFeedFragment extends Fragment {
                 }
             }
         });
+
+        // init repo feed
+        feedAdapter.loadNew(getActivity());
+        viewModel.execQuery();
 
         return view;
     }

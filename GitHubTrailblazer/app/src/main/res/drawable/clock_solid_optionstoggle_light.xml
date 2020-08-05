@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="@dimen/app_optionstoggle_iconClock_w"
+    android:height="@dimen/app_optionstoggle_iconClock_h"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+    <path
+        android:name="path"
+        android:pathData="M 256 8 C 119 8 8 119 8 256 C 8 393 119 504 256 504 C 393 504 504 393 504 256 C 504 119 393 8 256 8 Z M 348.49 321 L 328.49 346 C 326.736 348.193 324.434 349.886 321.819 350.909 C 319.203 351.931 316.363 352.247 313.587 351.824 C 310.81 351.401 308.193 350.254 306 348.5 L 239 298.78 C 234.319 295.032 230.54 290.279 227.943 284.873 C 225.347 279.468 223.999 273.547 224 267.55 L 224 112 C 224 107.758 225.687 103.686 228.686 100.686 C 231.686 97.687 235.758 96 240 96 L 272 96 C 276.242 96 280.314 97.687 283.314 100.686 C 286.313 103.686 288 107.758 288 112 L 288 256 L 346 298.5 C 348.194 300.255 349.888 302.558 350.91 305.176 C 351.931 307.793 352.246 310.635 351.821 313.412 C 351.396 316.19 350.247 318.807 348.49 321 Z"
+        android:fillColor="@color/secondary5"
+        android:strokeWidth="1"/>
+</vector>
