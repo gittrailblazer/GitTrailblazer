@@ -25,6 +25,7 @@ query ghStarredRepoFeed {
                         name
                     }
                     url
+                    id
                     forks(affiliations: [OWNER])
                     {
                         totalCount
