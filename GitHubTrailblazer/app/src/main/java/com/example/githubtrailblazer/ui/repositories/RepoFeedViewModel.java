@@ -71,9 +71,9 @@ public class RepoFeedViewModel extends ViewModel {
     RepoFeedViewModel loadMore() {
         String query = getEnteredTagQuery();
         if (query.length() == 0)
-            performRandomQuery(true);
+            performRandomQuery(false);
         else
-            performQuery(query,true);
+            performQuery(query,false);
         return this;
     }
 
