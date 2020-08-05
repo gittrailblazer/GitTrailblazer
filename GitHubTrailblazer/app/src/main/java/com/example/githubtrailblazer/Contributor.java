@@ -72,9 +72,9 @@ public class Contributor {
     /**
      * Generate real contributor data (all data obtained from commit query)
      */
-    public static ArrayList<Contributor> generateContributorData(ArrayList<Contributor> contributors, int safeListSize) {
+    public static ArrayList<Contributor> generateContributorData(ArrayList<Contributor> contributors, int safeListSize, String repoName, String repoOwner) {
         boolean finished = false;
-        new Connector.Query(Connector.QueryType.COMMIT_DETAILS)
+        new Connector.Query(Connector.QueryType.COMMIT_DETAILS, repoName, repoOwner)
                 .exec(new Connector.ISuccessCallback() {
                     @Override
                     public void handle(Object result) {
