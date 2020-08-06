@@ -21,17 +21,24 @@ import java.util.HashMap;
  */
 public class Helpers {
     private static SimpleDateFormat utcformat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
     private static HashMap<String, String> langColorMap;
+
+    // count constants
     public static int MILLION = (int) Math.pow(10, 6);
     public static int THOUSAND = (int) Math.pow(10, 3);
 
+    // time constants
     private static final long SECOND_MS = 1000L;
     private static final long MINUTE_MS = 60L * SECOND_MS;
     private static final long HOUR_MS = 60L * MINUTE_MS;
     private static final long DAY_MS = 24L * HOUR_MS;
     private static final long YEAR_MS = 365L * DAY_MS;
 
+    /**
+     * Concert UTC date time string to milliseconds
+     * @param utc - the UTC date time string
+     * @return the milliseconds representation
+     */
     public static Long utcToMs(String utc) {
         try {
             return utcformat.parse(utc).getTime();
@@ -41,6 +48,11 @@ public class Helpers {
         }
     }
 
+    /**
+     * Format elapsed time
+     * @param elapsed - the time to be formatted, in milliseconds
+     * @return the formatted elapsed time
+     */
     public static String formatElapsedTime(Long elapsed) {
         // get current time
         String utcNow = Instant.now().toString().substring(0, 19) + "Z";
@@ -58,6 +70,11 @@ public class Helpers {
         return Math.round(timeDistance / YEAR_MS) + "y";
     }
 
+    /**
+     * Format counts
+     * @param count - the count to be formatted
+     * @return the formatted count
+     */
     public static String formatCount(Integer count) {
         if (count == null) return "0";
         DecimalFormat df = new DecimalFormat("#.#");
@@ -67,6 +84,12 @@ public class Helpers {
         return count.toString();
     }
 
+    /**
+     * Retrieves the GitHub color corresponding to a programming language
+     * @param context - the context
+     * @param language - the language
+     * @return the color
+     */
     public static int getLanguageColor(Context context, String language) {
         // setup singleton language color map if not defined
         if (langColorMap == null) {

@@ -45,6 +45,10 @@ public class IssueCard extends LinearLayout {
         init(context);
     }
 
+    /**
+     * Setup static fields
+     * @param context - the context
+     */
     private void init(Context context) {
         // init static color data
         if (colorUnselected == null) colorUnselected = ContextCompat.getColor(context, R.color.secondary3);
@@ -55,12 +59,22 @@ public class IssueCard extends LinearLayout {
         if (colorForkSelected == null) colorForkSelected = ContextCompat.getColor(context, R.color.projectFork);
     }
 
+    /**
+     * Bind the model
+     * @param model - the model
+     * @return this instance
+     */
     public IssueCard bindModel(Model model) {
         controller = new Controller(model.bindView(this));
         setOnClickListener(controller);
         return this;
     }
 
+    /**
+     * Update view
+     * @param model - the model
+     * @return this instance
+     */
     IssueCard update(Model model) {
         // update title
         String title = model.getTitle();

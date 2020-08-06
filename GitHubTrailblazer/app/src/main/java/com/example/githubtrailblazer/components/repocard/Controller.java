@@ -6,6 +6,9 @@ import android.view.View;
 import androidx.appcompat.widget.PopupMenu;
 import com.example.githubtrailblazer.R;
 
+/**
+ * Controller class
+ */
 class Controller implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
     private final Model model;
 
@@ -13,6 +16,10 @@ class Controller implements View.OnClickListener, PopupMenu.OnMenuItemClickListe
         this.model = model;
     }
 
+    /**
+     * RepoCard UI element clicked
+     * @param v - the element clicked
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -36,6 +43,11 @@ class Controller implements View.OnClickListener, PopupMenu.OnMenuItemClickListe
         }
     }
 
+    /**
+     * Action menu item clicked
+     * @param item - the menu item
+     * @return if event was handled
+     */
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {

@@ -138,6 +138,10 @@ public class RepoFeedViewModel extends ViewModel {
         }
     }
 
+    /**
+     * Get the entered tag query
+     * @return the query
+     */
     private String getEnteredTagQuery() {
         // build tag(s) portion of query
         StringBuilder sb = new StringBuilder();
@@ -153,6 +157,10 @@ public class RepoFeedViewModel extends ViewModel {
         return sb.toString();
     }
 
+    /**
+     * Create a randomized query based off of preferred topics
+     * @return the randomized query
+     */
     private String randomizeQuery() {
         StringBuilder sb = new StringBuilder();
 
