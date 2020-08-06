@@ -314,22 +314,20 @@ public class Model {
 
     /**
      * Open repository in browser
-     * @param context - the context
      * @return this instance
      */
-    Model openInBrowser(Context context) {
+    Model openInBrowser() {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(data.url));
-        context.startActivity(i);
+        repoCard.getContext().startActivity(i);
         return this;
     }
 
     /**
      * Share the repository
-     * @param context - the context
      * @return this instance
      */
-    Model share(Context context) {
+    Model share() {
         // repo details to be shared
         String details = "Repo Name: " + data.name +
                 "\n\nRepo Language: " + data.language +
@@ -342,7 +340,7 @@ public class Model {
         sendIntent.putExtra(Intent.EXTRA_TEXT, details);
         sendIntent.setType("text/plain");
         Intent shareIntent = Intent.createChooser(sendIntent, null);
-        context.startActivity(shareIntent);
+        repoCard.getContext().startActivity(shareIntent);
         return this;
     }
 

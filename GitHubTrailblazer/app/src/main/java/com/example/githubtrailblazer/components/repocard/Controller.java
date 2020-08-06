@@ -53,11 +53,11 @@ class Controller implements View.OnClickListener, PopupMenu.OnMenuItemClickListe
         switch (item.getItemId()) {
             case R.id.actions_item_share:
                 // share repo details via Android Sharesheet when 'Share' item is selected
-                model.share(item.getActionView().getContext());
+                model.share();
                 return true;
             case R.id.actions_item_openInGithub:
                 // open repo in GitHub when 'Open in GitHub' item is selected
-                model.openInBrowser(item.getActionView().getContext());
+                model.openInBrowser();
                 return true;
 //            case R.id.actions_item_stopSeeingThis:
 //                // TODO: remove repo from feed when 'Stop seeing this' item is selected
