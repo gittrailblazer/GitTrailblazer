@@ -77,8 +77,16 @@ public class CommentActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    docRef = FirebaseFirestore.getInstance().collection("RepoComments").document();
-                    docRef.update("RepoUrl", RepoUrl);
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("RepoUrl", RepoUrl);
+                    data.put("Votes", 0);
+                    data.put("Comments", new ArrayList<String>());
+                    FirebaseFirestore.getInstance().collection("RepoComments").add(data).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                            docRef = task.getResult();
+                        }
+                    });
                 }
 
                 // use doc from firebase to update ListView
@@ -131,7 +139,14 @@ public class CommentActivity extends AppCompatActivity {
                 }
             }
         }
-
+        for(Character c: addcomment.getText().toString().toCharArray())
+        {
+            if(c == '&')
+            {
+                Toast.makeText(CommentActivity.this, "& is an illegal character in comments for now", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
         Comment newComment = new Comment(displayName, addcomment.getText().toString(), new Date());
         comments.add(newComment);
         comments_str.add(newComment.comment_str());

@@ -2,6 +2,8 @@ package com.example.githubtrailblazer.connector;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
@@ -9,6 +11,10 @@ import com.example.githubtrailblazer.data.RepoCardData;
 import com.example.githubtrailblazer.github.GhRepoFeedQuery;
 import com.example.githubtrailblazer.github.GhStarredRepoFeedQuery;
 import com.example.githubtrailblazer.gitlab.GlRepoFeedQuery;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -201,6 +207,19 @@ public class RepoFeedData {
                                         GhRepoFeedQuery.Forks _f = repository.forks();
                                         repoCardData.isForked = (_f == null) ? false : _f.totalCount() > 0;
                                         ghRepositories[i] = repoCardData;
+
+                                        FirebaseFirestore.getInstance().collection("RepoComments").whereEqualTo("RepoUrl", repoCardData.url).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if(task.isSuccessful() && task.getResult().size() != 0) {
+                                                    repoCardData.rating = Math.toIntExact((long) task.getResult().getDocuments().get(0).get("Votes"));
+                                                }
+                                                else
+                                                {
+                                                    repoCardData.rating = 0;
+                                                }
+                                            }
+                                        });
                                     }
                                 } else {
                                     ghRepositories = new RepoCardData[]{};

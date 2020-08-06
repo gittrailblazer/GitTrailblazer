@@ -6,17 +6,27 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.example.githubtrailblazer.Helpers;
 import com.example.githubtrailblazer.R;
 import com.example.githubtrailblazer.RepoDetailActivity;
 import com.example.githubtrailblazer.connector.Connector;
 import com.example.githubtrailblazer.data.Rating;
 import com.example.githubtrailblazer.data.RepoCardData;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Model {
     private final RepoCardData data;
@@ -48,6 +58,8 @@ public class Model {
                     data.rating -= 1;
                     break;
             }
+
+            UpdateFireStoreVotes(data.rating);
             repoCard.update(this);
         }
         return this;
@@ -69,9 +81,35 @@ public class Model {
                     data.rating += 1;
                     break;
             }
+
+            UpdateFireStoreVotes(data.rating);
             repoCard.update(this);
         }
         return this;
+    }
+
+    private void UpdateFireStoreVotes(int new_val)
+    {
+        FirebaseFirestore.getInstance().collection("RepoComments").whereEqualTo("RepoUrl", data.url).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful() && !task.getResult().isEmpty())
+                {
+                    DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                    DocumentReference docRef = FirebaseFirestore.getInstance().collection("RepoComments").document(doc.getId());
+                    docRef.update("Votes", new_val);
+                }
+                else
+                {
+                    Map<String, Object> doc = new HashMap<>();
+                    doc.put("RepoUrl", data.url);
+                    doc.put("Votes", new_val);
+                    doc.put("Comments", new ArrayList<String>());
+                    FirebaseFirestore.getInstance().collection("RepoComments").add(doc);
+                }
+
+            }
+        });
     }
 
     Model star() {
