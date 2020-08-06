@@ -28,6 +28,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Model class
+ */
 public class Model {
     private final RepoCardData data;
     private RepoCard repoCard;
@@ -36,12 +39,21 @@ public class Model {
         this.data = data;
     }
 
+    /**
+     * Bind view to this model
+     * @param repoCard - the view
+     * @return this model
+     */
     Model bindView(RepoCard repoCard) {
         this.repoCard = repoCard;
         repoCard.update(this);
         return this;
     }
 
+    /**
+     * Upvote the repository
+     * @return this model
+     */
     Model upvote() {
         if (data != null) {
             switch (data.valRated) {
@@ -65,6 +77,10 @@ public class Model {
         return this;
     }
 
+    /**
+     * Downvote the repository
+     * @return this model
+     */
     Model downvote() {
         if (data != null) {
             switch (data.valRated) {
@@ -88,6 +104,10 @@ public class Model {
         return this;
     }
 
+    /**
+     * Update stored repository upvotes
+     * @return this model
+     */
     private void UpdateFireStoreVotes(int new_val)
     {
         FirebaseFirestore.getInstance().collection("RepoComments").whereEqualTo("RepoUrl", data.url).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -112,6 +132,10 @@ public class Model {
         });
     }
 
+    /**
+     * Star the repository
+     * @return this model
+     */
     Model star() {
         if (data != null) {
             if (!data.isStarred) {
@@ -158,6 +182,10 @@ public class Model {
         return this;
     }
 
+    /**
+     * Fork the repository
+     * @return this model
+     */
     Model fork() {
         Context context = repoCard.getContext();
         Intent i = new Intent(Intent.ACTION_VIEW);
@@ -171,63 +199,124 @@ public class Model {
         return this;
     }
 
+    /**
+     * Trigger repository actions
+     * @return this model
+     */
     Model showActions() {
         repoCard.showActions();
         return this;
     }
 
+    /**
+     * Get repository owner profile pic url
+     * @return the url
+     */
     String getProfilePicUrl() {
         return data.profilePicUrl == null || data.profilePicUrl.isEmpty() ? null : data.profilePicUrl;
     }
 
+    /**
+     * Get repository service
+     * @return the service provider
+     */
     String getService() {
         return data.service + ":";
     }
 
+    /**
+     * Get repository name
+     * @return the name
+     */
     String getName() {
         return data.name;
     }
 
+    /**
+     * Get repository language
+     * @return the language
+     */
     String getLanguage() {
         return data.language == null || data.language.isEmpty() ? null : data.language;
     }
 
+    /**
+     * Get repository description
+     * @return the description
+     */
     String getDescription() {
         return data.description == null || data.description.isEmpty() ? null : data.description;
     }
 
+    /**
+     * Get repository formatted rating count
+     * @return the rating count
+     */
     String getRatings() {
         return Helpers.formatCount(data.rating);
     }
 
+    /**
+     * Get repository formatted rating count
+     * @return the comment count
+     */
     String getComments() {
         return Helpers.formatCount(data.comments);
     }
 
+    /**
+     * Get repository formatted star count
+     * @return the star count
+     */
     String getStars() {
         return Helpers.formatCount(data.stars);
     }
 
+    /**
+     * Get repository formatted fork count
+     * @return the fork count
+     */
     String getForks() {
         return Helpers.formatCount(data.forks);
     }
 
+    /**
+     * Get user's rating of repository
+     * @return the rating
+     */
     Rating getRating() {
         return Rating.from(data.valRated);
     }
 
+    /**
+     * Get if user has commented on repository
+     * @return if user has commented
+     */
     Boolean isCommented() {
         return data.isCommented;
     }
 
+    /**
+     * Get if user has starred repository
+     * @return if user has starred
+     */
     Boolean isStarred() {
         return data.isStarred;
     }
 
+    /**
+     * Get if user has forked repository
+     * @return if user has forked
+     */
     Boolean isForked() {
         return data.isForked;
     }
 
+    /**
+     * Open repository in browser
+     * @param context - the context
+     * @return this instance
+     */
     Model openInBrowser(Context context) {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(data.url));
@@ -235,6 +324,11 @@ public class Model {
         return this;
     }
 
+    /**
+     * Share the repository
+     * @param context - the context
+     * @return this instance
+     */
     Model share(Context context) {
         // repo details to be shared
         String details = "Repo Name: " + data.name +
@@ -252,6 +346,11 @@ public class Model {
         return this;
     }
 
+    /**
+     * Navigate to repository details
+     * @param context - the context
+     * @return this instance
+     */
     Model showDetails(Context context) {
         Intent intent = new Intent(context, RepoDetailActivity.class);
         intent.putExtra("data", data);

@@ -30,6 +30,10 @@ public class Comment {
         }
     }
 
+    /**
+     * Get comment string
+     * @return the comment string
+     */
     public String comment_str()
     {
         return userName + '&' + comment + '&' + comment_date.toString();

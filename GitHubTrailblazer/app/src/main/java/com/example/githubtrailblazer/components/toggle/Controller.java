@@ -21,7 +21,6 @@ public class Controller implements View.OnClickListener, PopupMenu.OnMenuItemCli
      */
     @Override
     public void onClick(View v) {
-        Log.e("DEBUG", "onClick");
         model.showOptions();
     }
 

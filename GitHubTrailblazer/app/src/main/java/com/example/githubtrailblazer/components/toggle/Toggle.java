@@ -101,7 +101,6 @@ public class Toggle<T> extends Button {
         for (int i = 0; i < options.length; ++i) {
             ToggleOptionData option = options[i];
             if (option.id != selected.id) {
-                Log.e("DEBUG", "added: " + selected.id);
                 menu.add(0, option.id, i, option.displayStr);
                 menu.findItem(option.id).setIcon(option.iconLstResId);
             }

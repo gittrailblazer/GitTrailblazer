@@ -23,6 +23,9 @@ import com.example.githubtrailblazer.data.Rating;
 import com.example.githubtrailblazer.data.RepoCardData;
 import com.squareup.picasso.Picasso;
 
+/**
+ * RepoCard class
+ */
 public class RepoCard extends LinearLayout {
     private Controller controller;
 
