@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -117,7 +118,19 @@ public class CommentActivity extends AppCompatActivity {
 
     private void addComment(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String displayName = user.getDisplayName();
+        String displayName = "";
+        if (user != null) {
+            // User is Login
+             displayName = user.getDisplayName();
+
+            // If the above were null, iterate the provider data
+            // and set with the first non null data
+            for (UserInfo userInfo : user.getProviderData()) {
+                if (displayName == null && userInfo.getDisplayName() != null) {
+                    displayName = userInfo.getDisplayName();
+                }
+            }
+        }
 
         Comment newComment = new Comment(displayName, addcomment.getText().toString(), new Date());
         comments.add(newComment);
