@@ -1,14 +1,21 @@
 package com.example.githubtrailblazer;
-
+/**
+ * FlagMaster class for defining feature flags to be used
+ * e.g., ghFlag = true; glFlag = false  ==> only use GitHub API data
+ * Follows the (lazy-loading) Singleton pattern.
+ */
 public class FlagMaster {
     private boolean ghFlag;
     private boolean glFlag;
     private boolean isInitialized = false;
+
+    // Implementing the Singleton pattern with a private initializer.
     private static volatile FlagMaster instance = null;
 
     private FlagMaster() {
     }
 
+    // function adapted from https://en.wikipedia.org/wiki/Singleton_pattern#cite_ref-6
     public static FlagMaster getInstance() {
         if (instance == null) {
             synchronized (FlagMaster.class) {
@@ -41,30 +48,4 @@ public class FlagMaster {
         this.glFlag = gl;
         isInitialized = true;
     }
-
-    /*private boolean ghFlag;
-    private boolean glFlag;
-
-    public FlagMaster(boolean gh, boolean gl) {
-        ghFlag = gh;
-        glFlag = gl;
-    }
-
-    public boolean getGhFlag() {
-        return ghFlag;
-    }
-
-    public void setGhFlag(boolean ghFlag) {
-        this.ghFlag = ghFlag;
-    }
-
-    public boolean getGlFlag() {
-        return glFlag;
-    }
-
-    public void setGlFlag(boolean glFlag) {
-        this.glFlag = glFlag;
-    }
-
-     */
 }
