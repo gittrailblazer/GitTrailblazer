@@ -92,78 +92,77 @@ public class RepoFeedData {
         // no GitLab repository info
         glRepositories = new RepoCardData[]{};
 
-        if(FlagMaster.getInstance().getGHFlag()) {
-            try {
-                // GitHub query
-                if(FlagMaster.getInstance().getGLFlag()) {
-                    Connector.getInstance().getGHClient().query(GhStarredRepoFeedQuery.builder().build())
-                            .enqueue(new ApolloCall.Callback<GhStarredRepoFeedQuery.Data>() {
-                                @Override
-                                public void onResponse(@NotNull Response<GhStarredRepoFeedQuery.Data> response) {
-                                    GhStarredRepoFeedQuery.Data data = response.getData();
-                                    if (data != null) {
-                                        GhStarredRepoFeedQuery.Viewer _v = data.viewer();
-                                        GhStarredRepoFeedQuery.StarredRepositories _sr = _v.starredRepositories();
-                                        GhStarredRepoFeedQuery.PageInfo pageInfo = _sr.pageInfo();
-                                        ghHasNextPage = pageInfo.hasNextPage();
-                                        ghEndCursor = pageInfo.endCursor();
+        try {
+            // GitHub query
+            if(FlagMaster.getInstance().getGHFlag()) {
+                Connector.getInstance().getGHClient().query(GhStarredRepoFeedQuery.builder().build())
+                        .enqueue(new ApolloCall.Callback<GhStarredRepoFeedQuery.Data>() {
+                            @Override
+                            public void onResponse(@NotNull Response<GhStarredRepoFeedQuery.Data> response) {
+                                GhStarredRepoFeedQuery.Data data = response.getData();
+                                if (data != null) {
+                                    GhStarredRepoFeedQuery.Viewer _v = data.viewer();
+                                    GhStarredRepoFeedQuery.StarredRepositories _sr = _v.starredRepositories();
+                                    GhStarredRepoFeedQuery.PageInfo pageInfo = _sr.pageInfo();
+                                    ghHasNextPage = pageInfo.hasNextPage();
+                                    ghEndCursor = pageInfo.endCursor();
 
-                                        List<GhStarredRepoFeedQuery.Node> nodes = _sr.nodes();
-                                        if (nodes != null) {
-                                            ghRepositories = new RepoCardData[nodes.size()];
-                                            for (int i = 0; i < ghRepositories.length; ++i) {
-                                                RepoCardData repoCardData = new RepoCardData();
-                                                repoCardData.service = Connector.Service.GITHUB.shortName();
-                                                GhStarredRepoFeedQuery.Node repository = nodes.get(i);
-                                                repoCardData.url = repository.url().toString();
-                                                repoCardData.id = repository.id();
-                                                repoCardData.name = repository.nameWithOwner();
-                                                GhStarredRepoFeedQuery.PrimaryLanguage _pl = repository.primaryLanguage();
-                                                repoCardData.language = (_pl == null) ? null : _pl.name();
-                                                repoCardData.description = repository.description();
-                                                GhStarredRepoFeedQuery.Owner _o = repository.owner();
-                                                repoCardData.profilePicUrl = (_o == null) ? null : _o.avatarUrl().toString();
-                                                repoCardData.rating = 0;             // TODO: implement ratings
-                                                repoCardData.valRated = 0;           // TODO: implement ratings
-                                                repoCardData.comments = 0;           // TODO: implement comments
-                                                repoCardData.isCommented = false;    // TODO: implement comments
-                                                GhStarredRepoFeedQuery.Stargazers _sg = repository.stargazers();
-                                                repoCardData.stars = (_sg == null) ? null : _sg.totalCount();
-                                                repoCardData.isStarred = repository.viewerHasStarred();
-                                                repoCardData.forks = repository.forkCount();
-                                                GhStarredRepoFeedQuery.Forks _f = repository.forks();
-                                                repoCardData.isForked = (_f == null) ? false : _f.totalCount() > 0;
-                                                ghRepositories[i] = repoCardData;
-                                            }
-                                        } else {
-                                            ghRepositories = new RepoCardData[]{};
+                                    List<GhStarredRepoFeedQuery.Node> nodes = _sr.nodes();
+                                    if (nodes != null) {
+                                        ghRepositories = new RepoCardData[nodes.size()];
+                                        for (int i = 0; i < ghRepositories.length; ++i) {
+                                            RepoCardData repoCardData = new RepoCardData();
+                                            repoCardData.service = Connector.Service.GITHUB.shortName();
+                                            GhStarredRepoFeedQuery.Node repository = nodes.get(i);
+                                            repoCardData.url = repository.url().toString();
+                                            repoCardData.id = repository.id();
+                                            repoCardData.name = repository.nameWithOwner();
+                                            GhStarredRepoFeedQuery.PrimaryLanguage _pl = repository.primaryLanguage();
+                                            repoCardData.language = (_pl == null) ? null : _pl.name();
+                                            repoCardData.description = repository.description();
+                                            GhStarredRepoFeedQuery.Owner _o = repository.owner();
+                                            repoCardData.profilePicUrl = (_o == null) ? null : _o.avatarUrl().toString();
+                                            repoCardData.rating = 0;             // TODO: implement ratings
+                                            repoCardData.valRated = 0;           // TODO: implement ratings
+                                            repoCardData.comments = 0;           // TODO: implement comments
+                                            repoCardData.isCommented = false;    // TODO: implement comments
+                                            GhStarredRepoFeedQuery.Stargazers _sg = repository.stargazers();
+                                            repoCardData.stars = (_sg == null) ? null : _sg.totalCount();
+                                            repoCardData.isStarred = repository.viewerHasStarred();
+                                            repoCardData.forks = repository.forkCount();
+                                            GhStarredRepoFeedQuery.Forks _f = repository.forks();
+                                            repoCardData.isForked = (_f == null) ? false : _f.totalCount() > 0;
+                                            ghRepositories[i] = repoCardData;
                                         }
-
-                                        // combine data and execute callback
-                                        combineData();
-                                    } else if (errorCallback != null) {
-                                        errorCallback.error("Failed query: data is NULL");
+                                    } else {
+                                        ghRepositories = new RepoCardData[]{};
                                     }
-                                }
 
-                                @Override
-                                public void onFailure(@NotNull ApolloException e) {
-                                    Log.e("ERROR", "error: " + e.toString());
-                                    if (errorCallback != null)
-                                        errorCallback.error("Failed query: " + e.getMessage());
+                                    // combine data and execute callback
+                                    combineData();
+                                } else if (errorCallback != null) {
+                                    errorCallback.error("Failed query: data is NULL");
                                 }
-                            });
-                }
+                            }
 
-                // GitLab query
-                if(FlagMaster.getInstance().getGLFlag()) {
-                    // TODO: implement starring for GitLab
-                }
-            } catch (Exception e) {
-                errorCallback.error("Connector exception: " + e.getMessage());
+                            @Override
+                            public void onFailure(@NotNull ApolloException e) {
+                                Log.e("ERROR", "error: " + e.toString());
+                                if (errorCallback != null)
+                                    errorCallback.error("Failed query: " + e.getMessage());
+                            }
+                        });
             }
 
+            // GitLab query
+            if(FlagMaster.getInstance().getGLFlag()) {
+                // TODO: implement getStarred for GitLab
+            }
+        } catch (Exception e) {
+            errorCallback.error("Connector exception: " + e.getMessage());
         }
+
+
 
     }
 
