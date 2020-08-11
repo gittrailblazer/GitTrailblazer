@@ -124,9 +124,12 @@ public class InitialActivity extends AppCompatActivity {
         mEmailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(InitialActivity.this, "Not currently supported.", Toast.LENGTH_SHORT).show();
+                /*
                 Intent intent = new Intent(InitialActivity.this, LoginActivity.class);
                 finish();
                 startActivity(intent);
+                */
             }
         });
 
@@ -134,9 +137,12 @@ public class InitialActivity extends AppCompatActivity {
         mCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(InitialActivity.this, "Not currently supported.", Toast.LENGTH_SHORT).show();
+                /*
                 Intent intent = new Intent(InitialActivity.this, RegisterActivity.class);
                 finish();
                 startActivity(intent);
+                */
             }
         });
     }
