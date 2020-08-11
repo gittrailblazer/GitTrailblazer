@@ -1,7 +1,7 @@
 # Adapted from https://github.com/mayankrastogi/github-graphql-search
-query ghStarredRepoFeed {
+query ghStarredRepoFeed($cursor: String) {
     viewer {
-        starredRepositories(first: 10, ownedByViewer: false) {
+        starredRepositories(first: 10, ownedByViewer: false, after: $cursor) {
             pageInfo {
                 hasNextPage
                 endCursor

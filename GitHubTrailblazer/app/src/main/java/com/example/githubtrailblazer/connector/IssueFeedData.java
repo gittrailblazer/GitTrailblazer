@@ -18,10 +18,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class IssueFeedData {
+public class IssueFeedData extends PaginationData {
     // Properties accessible in success callback
-    public Boolean hasNextPage;
-    public String endCursor;
     public IssueCardData[] issues;
 
     // properties used during construction
@@ -63,6 +61,8 @@ public class IssueFeedData {
         this.errorCallback = errorCallback;
 
         // parse args
+        PaginationData paginationData = (PaginationData)queryParams.next();
+        paginationData = (paginationData == null) ? this : paginationData;
         SortOption sortOption = (SortOption) queryParams.next();
         String searchString = (String) queryParams.next();
         boolean showFriendlyFeed = (boolean) queryParams.next();
@@ -99,61 +99,61 @@ public class IssueFeedData {
         try {
             if (showFriendlyFeed) {
                 // GitHub query
-                if(FlagMaster.getInstance().getGHFlag()) {
+                if (FlagMaster.getInstance().getGHFlag()) {
                     Connector.getInstance().getGHClient()
-                            .query(GhFriendlyIssueFeedQuery.builder()
-                                    .searchString(ghSearchString)
-                                    .requestedIssuesPerRepo(REQUESTED_ISSUES_PER_FRIENDLY_REPO)
-                                    .build())
-                            .enqueue(new ApolloCall.Callback<GhFriendlyIssueFeedQuery.Data>() {
-                                @Override
-                                public void onResponse(@NotNull Response<GhFriendlyIssueFeedQuery.Data> response) {
-                                    GhFriendlyIssueFeedQuery.Data data = response.getData();
-                                    if (data != null) {
+                        .query(GhFriendlyIssueFeedQuery.builder()
+                                .searchString(ghSearchString)
+                                .requestedIssuesPerRepo(REQUESTED_ISSUES_PER_FRIENDLY_REPO)
+                                .cursor(paginationData.getPagination(Connector.Service.GITHUB).endCursor)
+                                .build())
+                        .enqueue(new ApolloCall.Callback<GhFriendlyIssueFeedQuery.Data>() {
+                            @Override
+                            public void onResponse(@NotNull Response<GhFriendlyIssueFeedQuery.Data> response) {
+                                GhFriendlyIssueFeedQuery.Data data = response.getData();
+                                if (data != null) {
 
-                                        GhFriendlyIssueFeedQuery.Search search = data.search();
-                                        GhFriendlyIssueFeedQuery.PageInfo pageInfo = search.pageInfo();
-                                        hasNextPage = pageInfo.hasNextPage();
-                                        endCursor = pageInfo.endCursor();
+                                    GhFriendlyIssueFeedQuery.Search search = data.search();
+                                    GhFriendlyIssueFeedQuery.PageInfo pageInfo = search.pageInfo();
+                                    setPagination(Connector.Service.GITHUB, new Pagination(pageInfo.hasNextPage(), pageInfo.endCursor()));
 
-                                        List<GhFriendlyIssueFeedQuery.Node> friendlyRepos = search.nodes();
-                                        if (friendlyRepos != null) {
-                                            // TODO: Use an ArrayList for issues, then we don't have to do any of this sketchy math.
-                                            int numIssueCardsExpected = EXPECTED_ISSUES_PER_FRIENDLY_REPO * friendlyRepos.size();
-                                            issues = new IssueCardData[numIssueCardsExpected];
+                                    List<GhFriendlyIssueFeedQuery.Node> friendlyRepos = search.nodes();
+                                    if (friendlyRepos != null) {
+                                        // TODO: Use an ArrayList for issues, then we don't have to do any of this sketchy math.
+                                        int numIssueCardsExpected = EXPECTED_ISSUES_PER_FRIENDLY_REPO * friendlyRepos.size();
+                                        issues = new IssueCardData[numIssueCardsExpected];
 
-                                            int issueIndex = 0;
-                                            for (GhFriendlyIssueFeedQuery.Node friendlyRepo : friendlyRepos) {
-                                                GhFriendlyIssueFeedQuery.AsRepository fRepo = (GhFriendlyIssueFeedQuery.AsRepository) friendlyRepo;
-                                                List<GhFriendlyIssueFeedQuery.Node1> friendlyIssues = fRepo.issues().nodes();
-                                                if (friendlyIssues != null) {
-                                                    for (GhFriendlyIssueFeedQuery.Node1 friendlyIssue : friendlyIssues) {
-                                                        IssueCardData issueCardData = new IssueCardData();
-                                                        issueCardData.service = Connector.Service.GITHUB.shortName();
+                                        int issueIndex = 0;
+                                        for (GhFriendlyIssueFeedQuery.Node friendlyRepo : friendlyRepos) {
+                                            GhFriendlyIssueFeedQuery.AsRepository fRepo = (GhFriendlyIssueFeedQuery.AsRepository) friendlyRepo;
+                                            List<GhFriendlyIssueFeedQuery.Node1> friendlyIssues = fRepo.issues().nodes();
+                                            if (friendlyIssues != null) {
+                                                for (GhFriendlyIssueFeedQuery.Node1 friendlyIssue : friendlyIssues) {
+                                                    IssueCardData issueCardData = new IssueCardData();
+                                                    issueCardData.service = Connector.Service.GITHUB.shortName();
 
-                                                        issueCardData.id = friendlyIssue.id();
-                                                        issueCardData.number = friendlyIssue.number();
-                                                        issueCardData.title = friendlyIssue.title();
-                                                        issueCardData.url = friendlyIssue.url().toString();
-                                                        issueCardData.description = friendlyIssue.bodyText();
-                                                        issueCardData.createdAt = Helpers.utcToMs(friendlyIssue.createdAt().toString());
+                                                    issueCardData.id = friendlyIssue.id();
+                                                    issueCardData.number = friendlyIssue.number();
+                                                    issueCardData.title = friendlyIssue.title();
+                                                    issueCardData.url = friendlyIssue.url().toString();
+                                                    issueCardData.description = friendlyIssue.bodyText();
+                                                    issueCardData.createdAt = Helpers.utcToMs(friendlyIssue.createdAt().toString());
 
-                                                        issueCardData.repoData = new IssueCardData.RepoData();
-                                                        issueCardData.repoData.name = fRepo.nameWithOwner();
-                                                        GhFriendlyIssueFeedQuery.PrimaryLanguage _pl = fRepo.primaryLanguage();
-                                                        issueCardData.repoData.language = (_pl == null) ? null : _pl.name();
-                                                        issueCardData.repoData.forks = fRepo.forkCount();
-                                                        GhFriendlyIssueFeedQuery.Stargazers _sg = fRepo.stargazers();
-                                                        issueCardData.repoData.stars = (_sg == null) ? 0 : _sg.totalCount();
-                                                        issueCardData.repoData.isStarred = fRepo.viewerHasStarred();
-                                                        issueCardData.repoData.forks = fRepo.forkCount();
-                                                        GhFriendlyIssueFeedQuery.Forks _f = fRepo.forks();
-                                                        issueCardData.repoData.isForked = (_f == null) ? false : _f.totalCount() > 0;
-                                                        issues[issueIndex] = issueCardData;
+                                                    issueCardData.repoData = new IssueCardData.RepoData();
+                                                    issueCardData.repoData.name = fRepo.nameWithOwner();
+                                                    GhFriendlyIssueFeedQuery.PrimaryLanguage _pl = fRepo.primaryLanguage();
+                                                    issueCardData.repoData.language = (_pl == null) ? null : _pl.name();
+                                                    issueCardData.repoData.forks = fRepo.forkCount();
+                                                    GhFriendlyIssueFeedQuery.Stargazers _sg = fRepo.stargazers();
+                                                    issueCardData.repoData.stars = (_sg == null) ? 0 : _sg.totalCount();
+                                                    issueCardData.repoData.isStarred = fRepo.viewerHasStarred();
+                                                    issueCardData.repoData.forks = fRepo.forkCount();
+                                                    GhFriendlyIssueFeedQuery.Forks _f = fRepo.forks();
+                                                    issueCardData.repoData.isForked = (_f == null) ? false : _f.totalCount() > 0;
+                                                    issues[issueIndex] = issueCardData;
 
-                                                        // only increment if we have space
-                                                        if ((issueIndex + 1) < numIssueCardsExpected)
-                                                            issueIndex++;
+                                                    // only increment if we have space
+                                                    if ((issueIndex + 1) < numIssueCardsExpected)
+                                                        issueIndex++;
                                                     }
                                                 }
                                             }
@@ -177,71 +177,72 @@ public class IssueFeedData {
                             });
                 }
                 // GitLab query
-                if(FlagMaster.getInstance().getGLFlag()) {
+                if (FlagMaster.getInstance().getGLFlag()) {
                     // TODO: implement query for GitLab issues
                 }
-
             } else {
                 // GitHub query
-                if(FlagMaster.getInstance().getGHFlag()) {
-                    Connector.getInstance().getGHClient().query(GhIssueFeedQuery.builder().searchString(ghSearchString).build())
-                            .enqueue(new ApolloCall.Callback<GhIssueFeedQuery.Data>() {
-                                @Override
-                                public void onResponse(@NotNull Response<GhIssueFeedQuery.Data> response) {
-                                    GhIssueFeedQuery.Data data = response.getData();
-                                    if (data != null) {
-                                        GhIssueFeedQuery.Search search = data.search();
-                                        GhIssueFeedQuery.PageInfo pageInfo = search.pageInfo();
-                                        hasNextPage = pageInfo.hasNextPage();
-                                        endCursor = pageInfo.endCursor();
+                if (FlagMaster.getInstance().getGHFlag()) {
+                    Connector.getInstance().getGHClient().query(GhIssueFeedQuery.builder()
+                        .searchString(ghSearchString)
+                        .cursor(paginationData.getPagination(Connector.Service.GITHUB).endCursor)
+                        .build())
+                        .enqueue(new ApolloCall.Callback<GhIssueFeedQuery.Data>() {
+                            @Override
+                            public void onResponse(@NotNull Response<GhIssueFeedQuery.Data> response) {
+                                GhIssueFeedQuery.Data data = response.getData();
+                                if (data != null) {
+                                    GhIssueFeedQuery.Search search = data.search();
+                                    GhIssueFeedQuery.PageInfo pageInfo = search.pageInfo();
+                                    setPagination(Connector.Service.GITHUB, new Pagination(pageInfo.hasNextPage(), pageInfo.endCursor()));
 
-                                        List<GhIssueFeedQuery.Node> nodes = search.nodes();
-                                        if (nodes != null) {
-                                            issues = new IssueCardData[nodes.size()];
-                                            for (int i = 0; i < issues.length; ++i) {
-                                                IssueCardData issueCardData = new IssueCardData();
-                                                issueCardData.service = Connector.Service.GITHUB.shortName();
-                                                GhIssueFeedQuery.AsIssue issue = (GhIssueFeedQuery.AsIssue) nodes.get(i);
-                                                issueCardData.id = issue.id();
-                                                issueCardData.number = issue.number();
-                                                issueCardData.title = issue.title();
-                                                issueCardData.url = issue.url().toString();
-                                                issueCardData.description = issue.bodyText();
-                                                issueCardData.createdAt = Helpers.utcToMs(issue.createdAt().toString());
-                                                issueCardData.repoData = new IssueCardData.RepoData();
-                                                GhIssueFeedQuery.Repository repository = issue.repository();
-                                                issueCardData.repoData.name = repository.nameWithOwner();
-                                                GhIssueFeedQuery.PrimaryLanguage _pl = repository.primaryLanguage();
-                                                issueCardData.repoData.language = (_pl == null) ? null : _pl.name();
-                                                issueCardData.repoData.forks = repository.forkCount();
-                                                GhIssueFeedQuery.Stargazers _sg = repository.stargazers();
-                                                issueCardData.repoData.stars = (_sg == null) ? 0 : _sg.totalCount();
-                                                issueCardData.repoData.isStarred = repository.viewerHasStarred();
-                                                issueCardData.repoData.forks = repository.forkCount();
-                                                GhIssueFeedQuery.Forks _f = repository.forks();
-                                                issueCardData.repoData.isForked = (_f == null) ? false : _f.totalCount() > 0;
-                                                issues[i] = issueCardData;
-                                            }
-                                        } else {
-                                            issues = new IssueCardData[]{};
+                                    List<GhIssueFeedQuery.Node> nodes = search.nodes();
+                                    if (nodes != null) {
+                                        issues = new IssueCardData[nodes.size()];
+                                        for (int i = 0; i < issues.length; ++i) {
+                                            IssueCardData issueCardData = new IssueCardData();
+                                            issueCardData.service = Connector.Service.GITHUB.shortName();
+                                            GhIssueFeedQuery.AsIssue issue = (GhIssueFeedQuery.AsIssue) nodes.get(i);
+                                            issueCardData.id = issue.id();
+                                            issueCardData.number = issue.number();
+                                            issueCardData.title = issue.title();
+                                            issueCardData.url = issue.url().toString();
+                                            issueCardData.description = issue.bodyText();
+                                            issueCardData.createdAt = Helpers.utcToMs(issue.createdAt().toString());
+                                            issueCardData.repoData = new IssueCardData.RepoData();
+                                            GhIssueFeedQuery.Repository repository = issue.repository();
+                                            issueCardData.repoData.name = repository.nameWithOwner();
+                                            GhIssueFeedQuery.PrimaryLanguage _pl = repository.primaryLanguage();
+                                            issueCardData.repoData.language = (_pl == null) ? null : _pl.name();
+                                            issueCardData.repoData.forks = repository.forkCount();
+                                            GhIssueFeedQuery.Stargazers _sg = repository.stargazers();
+                                            issueCardData.repoData.stars = (_sg == null) ? 0 : _sg.totalCount();
+                                            issueCardData.repoData.isStarred = repository.viewerHasStarred();
+                                            issueCardData.repoData.forks = repository.forkCount();
+                                            GhIssueFeedQuery.Forks _f = repository.forks();
+                                            issueCardData.repoData.isForked = (_f == null) ? false : _f.totalCount() > 0;
+                                            issues[i] = issueCardData;
                                         }
-
-                                        if (successCallback != null) successCallback.handle(_instance);
-                                    } else if (errorCallback != null) {
-                                        errorCallback.error("Failed query: data is NULL");
+                                    } else {
+                                        issues = new IssueCardData[]{};
                                     }
-                                }
 
-                                @Override
-                                public void onFailure(@NotNull ApolloException e) {
-                                    if (errorCallback != null)
-                                        errorCallback.error("Failed query: " + e.getMessage());
+                                    if (successCallback != null) successCallback.handle(_instance);
+                                } else if (errorCallback != null) {
+                                    errorCallback.error("Failed query: data is NULL");
                                 }
-                            });
+                            }
+
+                            @Override
+                            public void onFailure(@NotNull ApolloException e) {
+                                if (errorCallback != null)
+                                    errorCallback.error("Failed query: " + e.getMessage());
+                            }
+                        });
                 }
 
                 // GitLab query
-                if(FlagMaster.getInstance().getGLFlag()) {
+                if (FlagMaster.getInstance().getGLFlag()) {
                     // TODO: implement query for GitLab issues
                 }
             }
@@ -249,5 +250,4 @@ public class IssueFeedData {
             if (errorCallback != null) errorCallback.error(e.getMessage());
         }
     }
-
 }

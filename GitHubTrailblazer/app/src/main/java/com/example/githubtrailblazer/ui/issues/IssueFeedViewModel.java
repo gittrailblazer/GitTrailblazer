@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.githubtrailblazer.connector.Connector;
 import com.example.githubtrailblazer.connector.IssueFeedData;
+import com.example.githubtrailblazer.connector.PaginationData;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,7 +19,8 @@ public class IssueFeedViewModel extends ViewModel {
     private IQueryResponseCB queryResponseCallback;
     private ITagAddedCB tagAddedCallback;
     private HashMap<String, Boolean> tagExistanceMap = new HashMap<>();
-    IssueFeedData.SortOption sortOption = IssueFeedData.SortOption.NEWEST;
+    private PaginationData paginationData;
+    private IssueFeedData.SortOption sortOption = IssueFeedData.SortOption.NEWEST;
 //    FilterOption filterOption = FilterOption.EXPLORE;
 
     /**
@@ -79,8 +81,6 @@ public class IssueFeedViewModel extends ViewModel {
      * Perform feed query
      */
     private void performQuery(boolean isNewQuery) {
-
-        // TODO: use isNewQuery to do pagination
         StringBuilder sb = new StringBuilder();
         boolean isEmpty = true;
 
@@ -105,11 +105,12 @@ public class IssueFeedViewModel extends ViewModel {
         }
 
         // perform the query
-        new Connector.Query(Connector.QueryType.ISSUE_FEED, sortOption, sb.toString(), ShowFriendlyFeed)
+        new Connector.Query(Connector.QueryType.ISSUE_FEED, isNewQuery ? null : paginationData, sortOption, sb.toString(), ShowFriendlyFeed)
                 .exec(new Connector.ISuccessCallback() {
                     @Override
                     public void handle(Object result) {
                         IssueFeedData data = (IssueFeedData) result;
+                        paginationData = data;
                         queryResponseCallback.exec(data);
                     }
                 }, new Connector.IErrorCallback() {

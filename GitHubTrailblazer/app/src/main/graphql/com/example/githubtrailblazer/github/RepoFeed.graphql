@@ -1,6 +1,6 @@
 # Adapted from https://github.com/mayankrastogi/github-graphql-search
-query ghRepoFeed($searchString: String!) {
-    search(type: REPOSITORY, query: $searchString, first: 10) {
+query ghRepoFeed($searchString: String!, $cursor: String) {
+    search(type: REPOSITORY, query: $searchString, first: 10, after: $cursor) {
         # If we want to do go page-by-page then this becomes useful.
         pageInfo {
             hasNextPage
@@ -30,7 +30,6 @@ query ghRepoFeed($searchString: String!) {
                 {
                     totalCount
                 }
-
             }
         }
     }
