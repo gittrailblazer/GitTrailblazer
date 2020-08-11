@@ -17,10 +17,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class IssueFeedData {
+public class IssueFeedData extends PaginationData {
     // Properties accessible in success callback
-    public Boolean hasNextPage;
-    public String endCursor;
     public IssueCardData[] issues;
 
     // properties used during construction
@@ -62,6 +60,8 @@ public class IssueFeedData {
         this.errorCallback = errorCallback;
 
         // parse args
+        PaginationData paginationData = (PaginationData)queryParams.next();
+        paginationData = (paginationData == null) ? this : paginationData;
         SortOption sortOption = (SortOption) queryParams.next();
         String searchString = (String) queryParams.next();
         boolean showFriendlyFeed = (boolean) queryParams.next();
@@ -101,6 +101,7 @@ public class IssueFeedData {
                         .query(GhFriendlyIssueFeedQuery.builder()
                                 .searchString(ghSearchString)
                                 .requestedIssuesPerRepo(REQUESTED_ISSUES_PER_FRIENDLY_REPO)
+                                .cursor(paginationData.getPagination(Connector.Service.GITHUB).endCursor)
                                 .build())
                         .enqueue(new ApolloCall.Callback<GhFriendlyIssueFeedQuery.Data>() {
                             @Override
@@ -110,8 +111,7 @@ public class IssueFeedData {
 
                                     GhFriendlyIssueFeedQuery.Search search = data.search();
                                     GhFriendlyIssueFeedQuery.PageInfo pageInfo = search.pageInfo();
-                                    hasNextPage = pageInfo.hasNextPage();
-                                    endCursor = pageInfo.endCursor();
+                                    setPagination(Connector.Service.GITHUB, new Pagination(pageInfo.hasNextPage(), pageInfo.endCursor()));
 
                                     List<GhFriendlyIssueFeedQuery.Node> friendlyRepos = search.nodes();
                                     if (friendlyRepos != null) {
@@ -173,7 +173,10 @@ public class IssueFeedData {
                             }
                         });
             } else {
-                Connector.getInstance().getGHClient().query(GhIssueFeedQuery.builder().searchString(ghSearchString).build())
+                Connector.getInstance().getGHClient().query(GhIssueFeedQuery.builder()
+                        .searchString(ghSearchString)
+                        .cursor(paginationData.getPagination(Connector.Service.GITHUB).endCursor)
+                        .build())
                         .enqueue(new ApolloCall.Callback<GhIssueFeedQuery.Data>() {
                             @Override
                             public void onResponse(@NotNull Response<GhIssueFeedQuery.Data> response) {
@@ -181,8 +184,7 @@ public class IssueFeedData {
                                 if (data != null) {
                                     GhIssueFeedQuery.Search search = data.search();
                                     GhIssueFeedQuery.PageInfo pageInfo = search.pageInfo();
-                                    hasNextPage = pageInfo.hasNextPage();
-                                    endCursor = pageInfo.endCursor();
+                                    setPagination(Connector.Service.GITHUB, new Pagination(pageInfo.hasNextPage(), pageInfo.endCursor()));
 
                                     List<GhIssueFeedQuery.Node> nodes = search.nodes();
                                     if (nodes != null) {

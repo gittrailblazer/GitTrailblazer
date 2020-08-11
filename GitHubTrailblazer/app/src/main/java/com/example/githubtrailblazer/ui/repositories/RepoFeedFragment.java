@@ -210,7 +210,7 @@ public class RepoFeedFragment extends Fragment {
             .setOnQueryResponseCB(new RepoFeedViewModel.IQueryResponseCB() {
                 @Override
                 public void exec(RepoFeedData data) {
-                    feedAdapter.finishLoading(getActivity(), data.repositories, data.hasNextPage);
+                    feedAdapter.finishLoading(getActivity(), data.repositories, data.hasNextPage());
                 }
             });
 

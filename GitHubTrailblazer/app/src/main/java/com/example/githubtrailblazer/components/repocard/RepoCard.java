@@ -76,6 +76,10 @@ public class RepoCard extends LinearLayout {
         findViewById(R.id.projectCard__btnFork).setOnClickListener(controller);
         findViewById(R.id.projectCard__btnActions).setOnClickListener(controller);
         setOnClickListener(controller);
+
+        // cancel any previous picasso requests
+        Picasso.get().cancelRequest((ImageView)findViewById(R.id.projectCard__profilePic));
+        ((ImageView)findViewById(R.id.projectCard__profilePic)).setImageResource(R.drawable.default_profile);
         return this;
     }
 

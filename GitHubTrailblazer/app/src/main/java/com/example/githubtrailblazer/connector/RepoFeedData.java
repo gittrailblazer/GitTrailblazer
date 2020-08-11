@@ -20,16 +20,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class RepoFeedData {
+public class RepoFeedData extends PaginationData {
     // Properties accessible in success callback
-    public Boolean hasNextPage;
     public RepoCardData[] repositories;
 
     // properties used during construction
-    private Boolean ghHasNextPage = false;
-    private Boolean glHasNextPage = false;
-    private String ghEndCursor;
-    private String glEndCursor;
     private RepoCardData[] ghRepositories;
     private RepoCardData[] glRepositories;
     private final Connector.ISuccessCallback successCallback;
@@ -71,6 +66,7 @@ public class RepoFeedData {
         this.errorCallback = errorCallback;
 
         // parse args
+        final PaginationData paginationData = (PaginationData)queryParams.next();
         final SortOption sortOption = (SortOption)queryParams.next();
         final FilterOption filterOption = (FilterOption)queryParams.next();
         final String searchString = (String)queryParams.next();
@@ -78,20 +74,21 @@ public class RepoFeedData {
         // perform different grapqhl queries based off of repo filter
         switch (filterOption) {
             case EXPLORE:
-                getExplore(sortOption, searchString);
+                getExplore(sortOption, searchString, paginationData == null ? this : paginationData);
                 break;
             case STARRED:
-                getStarred(sortOption, searchString);
+                getStarred(sortOption, searchString, paginationData == null ? this : paginationData);
                 break;
         }
     }
 
-    private void getStarred(SortOption sortOption, String searchString) {
+    private void getStarred(SortOption sortOption, String searchString, PaginationData paginationData) {
         // no GitLab repository info
         glRepositories = new RepoCardData[]{};
-
         try {
-            Connector.getInstance().getGHClient().query(GhStarredRepoFeedQuery.builder().build())
+            Connector.getInstance().getGHClient().query(GhStarredRepoFeedQuery.builder()
+                    .cursor(paginationData.getPagination(Connector.Service.GITHUB).endCursor)
+                    .build())
                     .enqueue(new ApolloCall.Callback<GhStarredRepoFeedQuery.Data>() {
                         @Override
                         public void onResponse(@NotNull Response<GhStarredRepoFeedQuery.Data> response) {
@@ -100,8 +97,7 @@ public class RepoFeedData {
                                 GhStarredRepoFeedQuery.Viewer _v = data.viewer();
                                 GhStarredRepoFeedQuery.StarredRepositories _sr = _v.starredRepositories();
                                 GhStarredRepoFeedQuery.PageInfo pageInfo = _sr.pageInfo();
-                                ghHasNextPage = pageInfo.hasNextPage();
-                                ghEndCursor = pageInfo.endCursor();
+                                setPagination(Connector.Service.GITHUB, new Pagination(pageInfo.hasNextPage(), pageInfo.endCursor()));
 
                                 List<GhStarredRepoFeedQuery.Node> nodes = _sr.nodes();
                                 if (nodes != null) {
@@ -153,7 +149,7 @@ public class RepoFeedData {
         }
     }
 
-    private void getExplore(SortOption sortOption, String searchString) {
+    private void getExplore(SortOption sortOption, String searchString, PaginationData paginationData) {
         // determine sort string for GitHub
         String ghSortString = "";
         switch (sortOption) {
@@ -170,7 +166,10 @@ public class RepoFeedData {
         final String ghSearchString = searchString + (searchString.isEmpty() ? "" : " ") + ghSortString;
         // GitHub query
         try {
-            Connector.getInstance().getGHClient().query(GhRepoFeedQuery.builder().searchString(ghSearchString).build())
+            Connector.getInstance().getGHClient().query(GhRepoFeedQuery.builder()
+                    .searchString(ghSearchString)
+                    .cursor(paginationData.getPagination(Connector.Service.GITHUB).endCursor)
+                    .build())
                     .enqueue(new ApolloCall.Callback<GhRepoFeedQuery.Data>() {
                         @Override
                         public void onResponse(@NotNull Response<GhRepoFeedQuery.Data> response) {
@@ -178,8 +177,7 @@ public class RepoFeedData {
                             if (data != null) {
                                 GhRepoFeedQuery.Search search = data.search();
                                 GhRepoFeedQuery.PageInfo pageInfo = search.pageInfo();
-                                ghHasNextPage = pageInfo.hasNextPage();
-                                ghEndCursor = pageInfo.endCursor();
+                                setPagination(Connector.Service.GITHUB, new Pagination(pageInfo.hasNextPage(), pageInfo.endCursor()));
 
                                 List<GhRepoFeedQuery.Node> nodes = search.nodes();
                                 if (nodes != null) {
@@ -241,7 +239,10 @@ public class RepoFeedData {
                     });
 
             // GitLab query
-            Connector.getInstance().getGLClient().query(GlRepoFeedQuery.builder().searchString(searchString).build())
+            Connector.getInstance().getGLClient().query(GlRepoFeedQuery.builder()
+                    .searchString(searchString)
+                    .cursor(paginationData.getPagination(Connector.Service.GITLAB).endCursor)
+                    .build())
                     .enqueue(new ApolloCall.Callback<GlRepoFeedQuery.Data>() {
                         @Override
                         public void onResponse(@NotNull Response<GlRepoFeedQuery.Data> response) {
@@ -250,8 +251,7 @@ public class RepoFeedData {
                                 GlRepoFeedQuery.Projects projects = data.projects();
                                 assert projects != null;
                                 GlRepoFeedQuery.PageInfo pageInfo = projects.pageInfo();
-                                glHasNextPage = pageInfo.hasNextPage();
-                                glEndCursor = pageInfo.endCursor();
+                                setPagination(Connector.Service.GITLAB, new Pagination(pageInfo.hasNextPage(), pageInfo.endCursor()));
 
                                 List<GlRepoFeedQuery.Node> nodes = projects.nodes();
                                 if (nodes != null) {
@@ -311,7 +311,6 @@ public class RepoFeedData {
         for (int i = 0; i < glRepositories.length; ++i) {
             repositories[ghRepositories.length + i] = glRepositories[i];
         }
-        hasNextPage = ghHasNextPage || glHasNextPage;
 
         if (successCallback != null) successCallback.handle(this);
     }

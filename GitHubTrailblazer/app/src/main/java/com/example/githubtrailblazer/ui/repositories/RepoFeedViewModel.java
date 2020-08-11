@@ -4,6 +4,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import com.example.githubtrailblazer.connector.Connector;
+import com.example.githubtrailblazer.connector.PaginationData;
 import com.example.githubtrailblazer.connector.RepoFeedData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,8 +27,10 @@ public class RepoFeedViewModel extends ViewModel {
     private IQueryResponseCB queryResponseCallback;
     private ITagAddedCB tagAddedCallback;
     private HashMap<String, Boolean> tagExistanceMap = new HashMap<>();
-    RepoFeedData.SortOption sortOption = RepoFeedData.SortOption.NEWEST;
-    RepoFeedData.FilterOption filterOption = RepoFeedData.FilterOption.EXPLORE;
+    private PaginationData paginationData;
+    private String randomQuery;
+    private RepoFeedData.SortOption sortOption = RepoFeedData.SortOption.NEWEST;
+    private RepoFeedData.FilterOption filterOption = RepoFeedData.FilterOption.EXPLORE;
 
     /**
      * Query response callback interface
@@ -81,13 +84,13 @@ public class RepoFeedViewModel extends ViewModel {
      * Perform feed query
      */
     private void performQuery(String query, boolean isNewQuery) {
-        // TODO: use isNewQuery to do pagination
         // perform the query
-        new Connector.Query(Connector.QueryType.REPO_FEED, sortOption, filterOption, query)
+        new Connector.Query(Connector.QueryType.REPO_FEED, isNewQuery ? null : paginationData, sortOption, filterOption, query)
             .exec(new Connector.ISuccessCallback() {
                 @Override
                 public void handle(Object result) {
                     RepoFeedData data = (RepoFeedData) result;
+                    paginationData = data;
                     queryResponseCallback.exec(data);
                 }
             }, new Connector.IErrorCallback() {
@@ -130,11 +133,11 @@ public class RepoFeedViewModel extends ViewModel {
                                 preferredTopics.add("clxx");
                                 preferredTopics.add("cl-20xx");
                             }
-                            performQuery(randomizeQuery(), isNewQuery);
+                            performQuery(isNewQuery ? randomizeQuery() : randomQuery, isNewQuery);
                         }
                     });
         } else {
-            performQuery(randomizeQuery(), isNewQuery);
+            performQuery(isNewQuery ? randomizeQuery() : randomQuery, isNewQuery);
         }
     }
 
@@ -181,7 +184,9 @@ public class RepoFeedViewModel extends ViewModel {
 
         Log.e("DEBUG", "random query: " + sb.toString());
 
-        return sb.toString();
+        randomQuery = sb.toString();
+
+        return randomQuery;
     }
 
     /**

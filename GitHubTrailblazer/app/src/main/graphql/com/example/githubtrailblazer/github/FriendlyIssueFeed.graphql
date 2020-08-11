@@ -1,5 +1,5 @@
-query ghFriendlyIssueFeed($searchString: String!, $requestedIssuesPerRepo: Int!) {
-    search(type: REPOSITORY, query: $searchString, first: 10) {
+query ghFriendlyIssueFeed($searchString: String!, $requestedIssuesPerRepo: Int!, $cursor: String) {
+    search(type: REPOSITORY, query: $searchString, first: 10, after: $cursor) {
         pageInfo {
             hasNextPage
             endCursor

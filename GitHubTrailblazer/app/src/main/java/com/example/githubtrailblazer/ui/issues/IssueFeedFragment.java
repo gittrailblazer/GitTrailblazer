@@ -179,7 +179,7 @@ public class IssueFeedFragment extends Fragment {
                 .setOnQueryResponseCB(new IssueFeedViewModel.IQueryResponseCB() {
                     @Override
                     public void exec(IssueFeedData data) {
-                        feedAdapter.finishLoading(getActivity(), data.issues, data.hasNextPage);
+                        feedAdapter.finishLoading(getActivity(), data.issues, data.hasNextPage());
                     }
                 });
 
