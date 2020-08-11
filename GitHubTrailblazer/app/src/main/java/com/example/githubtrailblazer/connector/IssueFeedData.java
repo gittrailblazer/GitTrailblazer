@@ -6,6 +6,7 @@ import android.util.Log;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
+import com.example.githubtrailblazer.FlagMaster;
 import com.example.githubtrailblazer.Helpers;
 import com.example.githubtrailblazer.data.IssueCardData;
 import com.example.githubtrailblazer.github.GhFriendlyIssueFeedQuery;
@@ -97,7 +98,9 @@ public class IssueFeedData extends PaginationData {
 
         try {
             if (showFriendlyFeed) {
-                Connector.getInstance().getGHClient()
+                // GitHub query
+                if (FlagMaster.getInstance().getGHFlag()) {
+                    Connector.getInstance().getGHClient()
                         .query(GhFriendlyIssueFeedQuery.builder()
                                 .searchString(ghSearchString)
                                 .requestedIssuesPerRepo(REQUESTED_ISSUES_PER_FRIENDLY_REPO)
@@ -151,29 +154,36 @@ public class IssueFeedData extends PaginationData {
                                                     // only increment if we have space
                                                     if ((issueIndex + 1) < numIssueCardsExpected)
                                                         issueIndex++;
+                                                    }
                                                 }
                                             }
+
+                                            Log.d("ISSUE CARDS GOTTEN", String.valueOf(issueIndex + 1));
+                                        } else {
+                                            issues = new IssueCardData[]{};
                                         }
 
-                                        Log.d("ISSUE CARDS GOTTEN", String.valueOf(issueIndex + 1));
-                                    } else {
-                                        issues = new IssueCardData[]{};
+                                        if (successCallback != null) successCallback.handle(_instance);
+                                    } else if (errorCallback != null) {
+                                        errorCallback.error("Failed query: data is NULL");
                                     }
-
-                                    if (successCallback != null) successCallback.handle(_instance);
-                                } else if (errorCallback != null) {
-                                    errorCallback.error("Failed query: data is NULL");
                                 }
-                            }
 
-                            @Override
-                            public void onFailure(@NotNull ApolloException e) {
-                                if (errorCallback != null)
-                                    errorCallback.error("Failed query: " + e.getMessage());
-                            }
-                        });
+                                @Override
+                                public void onFailure(@NotNull ApolloException e) {
+                                    if (errorCallback != null)
+                                        errorCallback.error("Failed query: " + e.getMessage());
+                                }
+                            });
+                }
+                // GitLab query
+                if (FlagMaster.getInstance().getGLFlag()) {
+                    // TODO: implement query for GitLab issues
+                }
             } else {
-                Connector.getInstance().getGHClient().query(GhIssueFeedQuery.builder()
+                // GitHub query
+                if (FlagMaster.getInstance().getGHFlag()) {
+                    Connector.getInstance().getGHClient().query(GhIssueFeedQuery.builder()
                         .searchString(ghSearchString)
                         .cursor(paginationData.getPagination(Connector.Service.GITHUB).endCursor)
                         .build())
@@ -229,10 +239,15 @@ public class IssueFeedData extends PaginationData {
                                     errorCallback.error("Failed query: " + e.getMessage());
                             }
                         });
+                }
+
+                // GitLab query
+                if (FlagMaster.getInstance().getGLFlag()) {
+                    // TODO: implement query for GitLab issues
+                }
             }
         } catch (Exception e) {
             if (errorCallback != null) errorCallback.error(e.getMessage());
         }
     }
-
 }

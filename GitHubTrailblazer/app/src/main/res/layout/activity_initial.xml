@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_50sdp"
         android:layout_marginLeft="@dimen/_25sdp"
         android:text="Git"
         android:textStyle="bold"
@@ -68,7 +68,8 @@
         android:textSize="@dimen/_16ssp"
         android:text="Sign in with Email"
         android:textAlignment="center"
-        android:textColor="@color/colorPrimaryDark" />
+        android:textColor="@color/colorPrimaryDark"
+        android:visibility="visible"/>
 
     <TextView
         android:id="@+id/text_view_create_account"
@@ -81,6 +82,7 @@
         android:textStyle="bold"
         android:textSize="@dimen/_16ssp"
         android:textColor="@android:color/white"
-        android:clickable="true" />
+        android:clickable="true"
+        android:visibility="visible"/>
 </RelativeLayout>
 

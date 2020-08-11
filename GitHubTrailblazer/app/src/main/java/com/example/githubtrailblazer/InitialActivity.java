@@ -26,7 +26,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InitialActivity extends AppCompatActivity {
+    private static String gitHubPersonalAccessToken;
     private static String gitlabPersonalAccessToken;
+
+    // flags for turning different providers on or off
+    private boolean ghFlag = true;
+    private boolean glFlag = false;
+
     // define UI variables
     private Button mGitHubBtn, mEmailBtn;
     private TextView mCreateAccount;
@@ -73,9 +79,12 @@ public class InitialActivity extends AppCompatActivity {
                             .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
+                                    // initialize flag master with desired platforms we support
+                                    FlagMaster.getInstance().initialize(ghFlag, glFlag);
+
                                     // initialize connector with oauth access token
-                                    String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
-                                    Connector.getInstance().initialize(accessToken, gitlabPersonalAccessToken);
+                                    gitHubPersonalAccessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
+                                    Connector.getInstance().initialize(gitHubPersonalAccessToken, gitlabPersonalAccessToken);
 
                                     addGithubUserAndRedirect();
                                 }
@@ -91,9 +100,12 @@ public class InitialActivity extends AppCompatActivity {
                             .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
+                                    // initialize flag master with desired platforms we support
+                                    FlagMaster.getInstance().initialize(ghFlag, glFlag);
+
                                     // initialize connector with oauth access token
-                                    String accessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
-                                    Connector.getInstance().initialize(accessToken, gitlabPersonalAccessToken);
+                                    gitHubPersonalAccessToken = ((OAuthCredential) authResult.getCredential()).getAccessToken();
+                                    Connector.getInstance().initialize(gitHubPersonalAccessToken, gitlabPersonalAccessToken);
 
                                     addGithubUserAndRedirect();
                                 }
@@ -112,9 +124,12 @@ public class InitialActivity extends AppCompatActivity {
         mEmailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(InitialActivity.this, "Not currently supported.", Toast.LENGTH_SHORT).show();
+                /*
                 Intent intent = new Intent(InitialActivity.this, LoginActivity.class);
                 finish();
                 startActivity(intent);
+                */
             }
         });
 
@@ -122,9 +137,12 @@ public class InitialActivity extends AppCompatActivity {
         mCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(InitialActivity.this, "Not currently supported.", Toast.LENGTH_SHORT).show();
+                /*
                 Intent intent = new Intent(InitialActivity.this, RegisterActivity.class);
                 finish();
                 startActivity(intent);
+                */
             }
         });
     }

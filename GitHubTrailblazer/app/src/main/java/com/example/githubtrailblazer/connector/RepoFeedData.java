@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
+import com.example.githubtrailblazer.FlagMaster;
 import com.example.githubtrailblazer.data.RepoCardData;
 import com.example.githubtrailblazer.github.GhRepoFeedQuery;
 import com.example.githubtrailblazer.github.GhStarredRepoFeedQuery;
@@ -29,6 +30,7 @@ public class RepoFeedData extends PaginationData {
     private RepoCardData[] glRepositories;
     private final Connector.ISuccessCallback successCallback;
     private final Connector.IErrorCallback errorCallback;
+
 
     /**
      * The query response sort options
@@ -86,7 +88,8 @@ public class RepoFeedData extends PaginationData {
         // no GitLab repository info
         glRepositories = new RepoCardData[]{};
         try {
-            Connector.getInstance().getGHClient().query(GhStarredRepoFeedQuery.builder()
+            if (FlagMaster.getInstance().getGHFlag()) {
+                Connector.getInstance().getGHClient().query(GhStarredRepoFeedQuery.builder()
                     .cursor(paginationData.getPagination(Connector.Service.GITHUB).endCursor)
                     .build())
                     .enqueue(new ApolloCall.Callback<GhStarredRepoFeedQuery.Data>() {
@@ -144,9 +147,18 @@ public class RepoFeedData extends PaginationData {
                                 errorCallback.error("Failed query: " + e.getMessage());
                         }
                     });
+            }
+
+            // GitLab query
+            if(FlagMaster.getInstance().getGLFlag()) {
+                // TODO: implement getStarred for GitLab
+            }
         } catch (Exception e) {
             errorCallback.error("Connector exception: " + e.getMessage());
         }
+
+
+
     }
 
     private void getExplore(SortOption sortOption, String searchString, PaginationData paginationData) {
@@ -163,10 +175,13 @@ public class RepoFeedData extends PaginationData {
                 ghSortString = "sort:forks";
                 break;
         }
+
         final String ghSearchString = searchString + (searchString.isEmpty() ? "" : " ") + ghSortString;
-        // GitHub query
+
         try {
-            Connector.getInstance().getGHClient().query(GhRepoFeedQuery.builder()
+            // GitHub query
+            if (FlagMaster.getInstance().getGHFlag()) {
+                Connector.getInstance().getGHClient().query(GhRepoFeedQuery.builder()
                     .searchString(ghSearchString)
                     .cursor(paginationData.getPagination(Connector.Service.GITHUB).endCursor)
                     .build())
@@ -237,9 +252,11 @@ public class RepoFeedData extends PaginationData {
                                 errorCallback.error("Failed query: " + e.getMessage());
                         }
                     });
+            }
 
             // GitLab query
-            Connector.getInstance().getGLClient().query(GlRepoFeedQuery.builder()
+            if (FlagMaster.getInstance().getGLFlag()) {
+                Connector.getInstance().getGLClient().query(GlRepoFeedQuery.builder()
                     .searchString(searchString)
                     .cursor(paginationData.getPagination(Connector.Service.GITLAB).endCursor)
                     .build())
@@ -292,6 +309,7 @@ public class RepoFeedData extends PaginationData {
                                 errorCallback.error("Failed query: " + e.getMessage());
                         }
                     });
+            }
         } catch (Exception e) {
             errorCallback.error("Connector exception: " + e.getMessage());
         }
@@ -299,20 +317,43 @@ public class RepoFeedData extends PaginationData {
 
     private void combineData() {
         // do nothing if we haven't received the data yet
-        if (ghRepositories == null || glRepositories == null) return;
+        if(FlagMaster.getInstance().getGHFlag()) {
+            if(ghRepositories == null) return;
+        }
+        if(FlagMaster.getInstance().getGLFlag()) {
+            if(glRepositories == null) return;
+        }
 
         // TODO: intelligently combine + order + hide repos of the data sources here based off of repository information
         //       (for now we're going to display GitHub repos before GitLab repos, we're not hiding any repos, etc.)
 
-        repositories = new RepoCardData[ghRepositories.length + glRepositories.length];
-        for (int i = 0; i < ghRepositories.length; ++i) {
-            repositories[i] = ghRepositories[i];
-        }
-        for (int i = 0; i < glRepositories.length; ++i) {
-            repositories[ghRepositories.length + i] = glRepositories[i];
-        }
+        // get sizes of repo arrays
+        int ghRepoSize = repoCardDataSize(ghRepositories);
+        int glRepoSize = repoCardDataSize(glRepositories);
+
+        // initialize repos array to proper size
+        repositories = new RepoCardData[ghRepoSize + glRepoSize];
+
+        // populate repos array with GitHub and GitLab data (if exists)
+        populateRepos(ghRepoSize, glRepoSize);
 
         if (successCallback != null) successCallback.handle(this);
     }
 
+    public int repoCardDataSize(RepoCardData[] repoCardData) {
+        if(repoCardData != null) {
+            return repoCardData.length;
+        } else {
+            return 0;
+        }
+    }
+
+    public void populateRepos(int ghRepoSize, int glRepoSize) {
+        for (int i = 0; i < ghRepoSize; ++i) {
+            repositories[i] = ghRepositories[i];
+        }
+        for (int i = 0; i < glRepoSize; ++i) {
+            repositories[ghRepoSize + i] = glRepositories[i];
+        }
+    }
 }

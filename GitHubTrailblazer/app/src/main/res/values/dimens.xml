@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="app_project_iconSquare">15dp</dimen>
+    <dimen name="app_project_iconSquare">@dimen/_13sdp</dimen>
     <dimen name="app_project_iconComment_w">14dp</dimen>
     <dimen name="app_project_iconComment_h">14dp</dimen>
     <dimen name="app_project_iconSitemap_w">15dp</dimen>
@@ -26,10 +26,10 @@
     <dimen name="app_sideNav_margin_md">9dp</dimen>
     <dimen name="app_sideNav_margin_lg">12dp</dimen>
     <dimen name="app_sideNav_margin_xl">15dp</dimen>
-    <dimen name="app_repodetail_icon">20dp</dimen>
-    <dimen name="app_repodetail_icon_space">3dp</dimen>
-    <dimen name="app_repodetail_avatar">35dp</dimen>
-    <dimen name="app_repodetail_fork">25dp</dimen>
+    <dimen name="app_repodetail_icon">@dimen/_20sdp</dimen>
+    <dimen name="app_repodetail_icon_space">@dimen/_3sdp</dimen>
+    <dimen name="app_repodetail_avatar">@dimen/_35sdp</dimen>
+    <dimen name="app_repodetail_fork">@dimen/_20sdp</dimen>
     <dimen name="app_repocard_iconGitHub_w">15.5dp</dimen>
     <dimen name="app_repocard_iconGitHub_h">16dp</dimen>
     <dimen name="app_repocard_iconShare_w">18dp</dimen>

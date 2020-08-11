@@ -192,9 +192,11 @@ public class Model {
         if (data.service.equals(Connector.Service.GITHUB.shortName())) {
             i.setData(Uri.parse(data.url + "/fork"));
         }
+        /*
         if (data.service.equals(Connector.Service.GITLAB.shortName())) {
             i.setData(Uri.parse(data.url + "/-/forks/new"));
         }
+        */
         context.startActivity(i);
         return this;
     }

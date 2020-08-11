@@ -4,6 +4,7 @@ import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 
+import com.example.githubtrailblazer.FlagMaster;
 import com.example.githubtrailblazer.github.UnStarRepoMutation;
 
 import org.jetbrains.annotations.NotNull;
@@ -27,22 +28,30 @@ public class UnStarRepo {
 
         UnStarRepoMutation starRepoMutation = UnStarRepoMutation.builder().mutationId("").repoID(repoID).build();
 
-        Connector.getInstance().getGHClient().mutate(starRepoMutation)
-                .enqueue(new ApolloCall.Callback<UnStarRepoMutation.Data>() {
-                    @Override
-                    public void onResponse(@NotNull Response<UnStarRepoMutation.Data> response) {
-                        if (response.hasErrors() && errorCallback != null) {
-                            errorCallback.error("Apollo Failed query: " + response.getErrors());
-                        } else if (successCallback != null) {
-                            successCallback.handle(_instance);
+        // GitHub query
+        if(FlagMaster.getInstance().getGHFlag()) {
+            Connector.getInstance().getGHClient().mutate(starRepoMutation)
+                    .enqueue(new ApolloCall.Callback<UnStarRepoMutation.Data>() {
+                        @Override
+                        public void onResponse(@NotNull Response<UnStarRepoMutation.Data> response) {
+                            if (response.hasErrors() && errorCallback != null) {
+                                errorCallback.error("Apollo Failed query: " + response.getErrors());
+                            } else if (successCallback != null) {
+                                successCallback.handle(_instance);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
-                        if (errorCallback != null)
-                            errorCallback.error("Apollo Failed query: " + e.getMessage());
-                    }
-                });
+                        @Override
+                        public void onFailure(@NotNull ApolloException e) {
+                            if (errorCallback != null)
+                                errorCallback.error("Apollo Failed query: " + e.getMessage());
+                        }
+                    });
+        }
+
+        // GitLab query
+        if(FlagMaster.getInstance().getGLFlag()) {
+            // TODO: implement query for unstarring GitLab repos
+        }
     }
 }

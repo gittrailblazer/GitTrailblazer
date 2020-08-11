@@ -9,28 +9,29 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="@dimen/_5sdp">
 
         <TextView
             android:id="@+id/title_suggested_topics_txt"
-            android:layout_width="300dp"
-            android:layout_height="62dp"
+            android:layout_width="@dimen/_230sdp"
+            android:layout_height="@dimen/_45sdp"
             android:layout_gravity="center"
-            android:layout_marginRight="10dp"
-            android:padding="4dp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:padding="@dimen/_2sdp"
             android:text="Suggested Topics"
             android:textColor="	#FFFFFF"
-            android:textSize="36sp"
+            android:textSize="@dimen/_28ssp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/doneButton"
-            android:layout_width="79dp"
-            android:layout_height="55dp"
+            android:layout_width="@dimen/_65sdp"
+            android:layout_height="@dimen/_45sdp"
             android:layout_gravity="center"
             android:background="@drawable/button_1"
             android:onClick="goNext"
             android:text="Done"
+            android:textSize="@dimen/_14ssp"
             android:textColor="@color/colorPrimaryDark" />
     </LinearLayout>
 
@@ -38,11 +39,11 @@
         android:id="@+id/table_suggested_topics"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:padding="@dimen/_7sdp">
 
         <TableRow
             android:gravity="center"
-            android:padding="5dp">
+            android:padding="@dimen/_5sdp">
 
             <ToggleButton
                 android:id="@+id/toggleButton1"
@@ -76,24 +77,24 @@
 
         <EditText
             android:id="@+id/editTextTextTopic"
-            android:layout_width="300dp"
-            android:layout_height="67dp"
-            android:layout_marginRight="10dp"
-            android:ems="10"
+            android:layout_width="@dimen/_220sdp"
+            android:layout_height="@dimen/_65sdp"
+            android:layout_marginRight="@dimen/_5sdp"
             android:hint="Topic"
+            android:textSize="@dimen/_20ssp"
             android:inputType="text"
             android:textColor="#FFFFFF" />
 
         <Button
             android:id="@+id/topicAddButton"
-            android:layout_width="82dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/_65sdp"
+            android:layout_height="@dimen/_45sdp"
             android:layout_gravity="center"
-            android:layout_margin="00dp"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="@dimen/_10sdp"
             android:background="@drawable/button_1"
             android:onClick="addCustomTopic"
             android:text="Add"
+            android:textSize="@dimen/_14ssp"
             android:textColor="@color/colorPrimaryDark" />
     </LinearLayout>
 </LinearLayout>

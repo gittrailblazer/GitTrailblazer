@@ -3,6 +3,7 @@ package com.example.githubtrailblazer.connector;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
+import com.example.githubtrailblazer.FlagMaster;
 import com.example.githubtrailblazer.github.UserDetailsQuery;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,27 +26,37 @@ public class UserDetailsData {
                            Connector.ISuccessCallback successCallback,
                            Connector.IErrorCallback errorCallback) throws Exception {
         final UserDetailsData _instance = this;
-        Connector.getInstance().getGHClient().query(UserDetailsQuery.builder().build())
-            .enqueue(new ApolloCall.Callback<UserDetailsQuery.Data>() {
-                @Override
-                public void onResponse(@NotNull Response<UserDetailsQuery.Data> response) {
-                    UserDetailsQuery.Data data = response.getData();
-                    if (data != null) {
-                        id = data.viewer().id();
-                        name = data.viewer().name();
-                        username = data.viewer().login();
-                        avatarUrl = data.viewer().avatarUrl().toString();
-                        if (successCallback != null) successCallback.handle(_instance);
-                    } else if (errorCallback != null) {
-                        errorCallback.error("Failed query: data is NULL");
-                    }
-                }
 
-                @Override
-                public void onFailure(@NotNull ApolloException e) {
-                    if (errorCallback != null) errorCallback.error("Failed query: " + e.getMessage());
-                }
-            });
+        // GitHub query
+        if(FlagMaster.getInstance().getGHFlag()) {
+            Connector.getInstance().getGHClient().query(UserDetailsQuery.builder().build())
+                    .enqueue(new ApolloCall.Callback<UserDetailsQuery.Data>() {
+                        @Override
+                        public void onResponse(@NotNull Response<UserDetailsQuery.Data> response) {
+                            UserDetailsQuery.Data data = response.getData();
+                            if (data != null) {
+                                id = data.viewer().id();
+                                name = data.viewer().name();
+                                username = data.viewer().login();
+                                avatarUrl = data.viewer().avatarUrl().toString();
+                                if (successCallback != null) successCallback.handle(_instance);
+                            } else if (errorCallback != null) {
+                                errorCallback.error("Failed query: data is NULL");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NotNull ApolloException e) {
+                            if (errorCallback != null) errorCallback.error("Failed query: " + e.getMessage());
+                        }
+                    });
+        }
+
+        // GitLab query
+        if(FlagMaster.getInstance().getGLFlag()) {
+            // TODO: implement user details query for GitLab repos
+        }
+
     }
 
 //==================================================================================================

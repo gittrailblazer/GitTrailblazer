@@ -30,7 +30,7 @@
                     android:layout_marginHorizontal="20dp"
                     android:layout_weight="1"
                     android:background="#00FFFFFF"
-                    android:minHeight="56dp"
+                    android:minHeight="@dimen/_50sdp"
                     android:scaleX="1.5"
                     android:scaleY="1.5"
                     android:tint="#FFFFFF"
@@ -73,9 +73,9 @@
                                     android:id="@+id/repodetail_user_avatar"
                                     android:layout_width="@dimen/app_repodetail_avatar"
                                     android:layout_height="@dimen/app_repodetail_avatar"
-                                    android:layout_marginStart="13dp"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_marginBottom="5dp"
+                                    android:layout_marginStart="@dimen/_8sdp"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:layout_marginBottom="@dimen/_5sdp"
                                     app:layout_constraintBottom_toBottomOf="@+id/repodetail_user_id"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="@+id/repodetail_user_id"
@@ -85,10 +85,11 @@
                                     android:id="@+id/repodetail_user_id"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginTop="14dp"
-                                    android:layout_marginBottom="9dp"
+                                    android:layout_marginStart="@dimen/_5sdp"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:layout_marginBottom="@dimen/_9sdp"
                                     android:text="@string/repo_detail_user_name_default"
+                                    android:textSize="@dimen/_12ssp"
                                     android:textColor="@android:color/secondary_text_light"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintStart_toEndOf="@+id/repodetail_user_avatar"
@@ -99,8 +100,8 @@
                                     android:id="@+id/repodetail_fork_btn"
                                     android:layout_width="@dimen/app_repodetail_fork"
                                     android:layout_height="@dimen/app_repodetail_fork"
-                                    android:layout_marginTop="10dp"
-                                    android:layout_marginEnd="20dp"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:layout_marginEnd="@dimen/_15sdp"
                                     android:background="@color/secondary5"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
@@ -110,11 +111,11 @@
                                     android:id="@+id/repodetail_fork_txt"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_marginEnd="20dp"
+                                    android:layout_marginTop="@dimen/_3sdp"
+                                    android:layout_marginEnd="@dimen/_15sdp"
                                     android:text="500"
                                     android:textColor="@color/secondary3"
-                                    android:textSize="12sp"
+                                    android:textSize="@dimen/_10ssp"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintTop_toBottomOf="@+id/repodetail_fork_btn" />
 
@@ -129,12 +130,12 @@
                                     android:id="@+id/repodetail_name_txt"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="13dp"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_marginBottom="5dp"
+                                    android:layout_marginStart="@dimen/_11sdp"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:layout_marginBottom="@dimen/_2sdp"
                                     android:text="@string/repo_detail_project_default"
                                     android:textColor="@android:color/primary_text_light_nodisable"
-                                    android:textSize="18sp"
+                                    android:textSize="@dimen/_15ssp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
@@ -148,10 +149,11 @@
                                     android:id="@+id/repodetail_description_txt"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="13dp"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_marginBottom="5dp"
+                                    android:layout_marginStart="@dimen/_11sdp"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:layout_marginBottom="@dimen/_8sdp"
                                     android:text="@string/repo_detail_description_default"
+                                    android:textSize="@dimen/_12ssp"
                                     android:textColor="@android:color/secondary_text_light"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
@@ -166,7 +168,7 @@
                                     android:id="@+id/repodetail_link_img"
                                     android:layout_width="@dimen/app_project_iconSquare"
                                     android:layout_height="@dimen/app_project_iconSquare"
-                                    android:layout_marginStart="13dp"
+                                    android:layout_marginStart="@dimen/_11sdp"
                                     app:layout_constraintBottom_toBottomOf="@+id/repodetail_link_txt"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="@+id/repodetail_link_txt"
@@ -176,8 +178,9 @@
                                     android:id="@+id/repodetail_link_txt"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="5dp"
+                                    android:layout_marginStart="@dimen/_5sdp"
                                     android:text="@string/app_project_link_default"
+                                    android:textSize="@dimen/_11ssp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintStart_toEndOf="@+id/repodetail_link_img"
                                     app:layout_constraintTop_toTopOf="parent" />
@@ -192,7 +195,7 @@
                                     android:id="@+id/repodetail_contributors_img"
                                     android:layout_width="@dimen/app_project_iconSquare"
                                     android:layout_height="@dimen/app_project_iconSquare"
-                                    android:layout_marginStart="13dp"
+                                    android:layout_marginStart="@dimen/_11sdp"
                                     app:layout_constraintBottom_toBottomOf="@+id/repodetail_contributors_txt"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="@+id/repodetail_contributors_txt"
@@ -203,8 +206,9 @@
                                     android:id="@+id/repodetail_contributors_txt"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="5dp"
-                                    android:text="Project contributors"
+                                    android:layout_marginStart="@dimen/_5sdp"
+                                    android:text="Recent contributors"
+                                    android:textSize="@dimen/_11ssp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintStart_toEndOf="@+id/repodetail_contributors_img"
                                     app:layout_constraintTop_toTopOf="parent"
@@ -220,7 +224,7 @@
                                     android:id="@+id/repodetail_contributions_img"
                                     android:layout_width="@dimen/app_project_iconSquare"
                                     android:layout_height="@dimen/app_project_iconSquare"
-                                    android:layout_marginStart="13dp"
+                                    android:layout_marginStart="@dimen/_11sdp"
                                     app:layout_constraintBottom_toBottomOf="@+id/repodetail_contributions_txt"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="@+id/repodetail_contributions_txt"
@@ -231,8 +235,9 @@
                                     android:id="@+id/repodetail_contributions_txt"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="5dp"
-                                    android:text="Project contributions"
+                                    android:layout_marginStart="@dimen/_5sdp"
+                                    android:text="Recent commits"
+                                    android:textSize="@dimen/_11ssp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintStart_toEndOf="@+id/repodetail_contributions_img"
                                     app:layout_constraintTop_toTopOf="parent"
@@ -248,7 +253,7 @@
                                     android:id="@+id/repodetail_lang_img"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginEnd="5dp"
+                                    android:layout_marginEnd="@dimen/_5sdp"
                                     app:layout_constraintBottom_toBottomOf="@+id/repodetail_lang_txt"
                                     app:layout_constraintEnd_toStartOf="@+id/repodetail_lang_txt"
                                     app:layout_constraintTop_toTopOf="@+id/repodetail_lang_txt"
@@ -257,47 +262,15 @@
                                 <TextView
                                     android:id="@+id/repodetail_lang_txt"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="19dp"
-                                    android:layout_marginEnd="13dp"
-                                    android:text="@string/app_project_lang_default"
-                                    android:textColor="@android:color/secondary_text_light"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <us.feras.mdv.MarkdownView
-                                    android:id="@+id/repodetail_readme"
-                                    android:layout_width="380dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="13dp"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:text="README.md                                                                                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ...  "
-                                    android:textColor="@android:color/secondary_text_light"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                                <!--<us.feras.mdv.MarkdownView
-                                    android:layout_width="@dimen/_300sdp"
-                                    android:layout_height="@dimen/_150sdp"
-                                    android:id="@+id/markdownView_readMe"
-                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:layout_height="@dimen/_15sdp"
+                                    android:layout_marginEnd="@dimen/_10sdp"
                                     android:layout_marginBottom="@dimen/_5sdp"
-                                    android:text="README.md                                                                                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ...  "
+                                    android:text="@string/app_project_lang_default"
+                                    android:textSize="@dimen/_11ssp"
                                     android:textColor="@android:color/secondary_text_light"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"/>-->
-
-
+                                    app:layout_constraintTop_toTopOf="parent" />
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <LinearLayout
@@ -307,7 +280,7 @@
                                 android:orientation="horizontal">
 
                                 <Space
-                                    android:layout_width="13dp"
+                                    android:layout_width="@dimen/_13sdp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0" />
 
@@ -337,6 +310,7 @@
                                         android:layout_gravity="center"
                                         android:layout_weight="0"
                                         android:text="3.3k"
+                                        android:textSize="@dimen/_11ssp"
                                         android:textColor="@android:color/secondary_text_light"
                                         android:textStyle="bold" />
 
@@ -354,12 +328,12 @@
                                     android:layout_weight="0" />
 
                                 <Space
-                                    android:layout_width="90dp"
+                                    android:layout_width="@dimen/_60sdp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0" />
 
                                 <LinearLayout
-                                    android:layout_width="50dp"
+                                    android:layout_width="@dimen/_45sdp"
                                     android:layout_height="match_parent"
                                     android:layout_weight="0"
                                     android:orientation="horizontal">
@@ -379,6 +353,7 @@
                                         android:layout_gravity="center_horizontal"
                                         android:layout_weight="0"
                                         android:text="500"
+                                        android:textSize="@dimen/_11ssp"
                                         android:textColor="@android:color/secondary_text_light"
                                         android:textStyle="bold" />
                                 </LinearLayout>
@@ -389,7 +364,7 @@
                                     android:layout_weight="0" />
 
                                 <Space
-                                    android:layout_width="90dp"
+                                    android:layout_width="@dimen/_60sdp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0" />
 
@@ -414,6 +389,7 @@
                                         android:layout_gravity="center_horizontal"
                                         android:layout_weight="0"
                                         android:text="500"
+                                        android:textSize="@dimen/_11ssp"
                                         android:textColor="@android:color/secondary_text_light"
                                         android:textStyle="bold" />
                                 </LinearLayout>
@@ -422,22 +398,51 @@
                                     android:layout_width="@dimen/app_repodetail_icon_space"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0" />
-
                             </LinearLayout>
 
-                            <Space
+                            <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="10dp"
-                                android:background="@color/secondary5" />
+                                android:layout_height="match_parent">
+
+                                <us.feras.mdv.MarkdownView
+                                    android:id="@+id/repodetail_readme"
+                                    android:layout_width="@dimen/_275sdp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/_1sdp"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:layout_marginBottom="@dimen/_10sdp"
+                                    android:text="README.md                                                                                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ...  "
+                                    android:textColor="@android:color/secondary_text_light"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <!--<us.feras.mdv.MarkdownView
+                                    android:layout_width="@dimen/_300sdp"
+                                    android:layout_height="@dimen/_150sdp"
+                                    android:id="@+id/markdownView_readMe"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:layout_marginBottom="@dimen/_5sdp"
+                                    android:text="README.md                                                                                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor, augue a pellentesque molestie, orci ipsum vulputate tellus, eget lobortis velit turpis ac ...  "
+                                    android:textColor="@android:color/secondary_text_light"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"/>-->
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
                         </LinearLayout>
-
                     </LinearLayout>
                 </androidx.core.widget.NestedScrollView>
 
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         </LinearLayout>
+
+
 
     </androidx.drawerlayout.widget.DrawerLayout>
 
