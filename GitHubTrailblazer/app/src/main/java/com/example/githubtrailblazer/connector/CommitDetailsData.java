@@ -7,6 +7,7 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.example.githubtrailblazer.Commit;
 import com.example.githubtrailblazer.Contributor;
+import com.example.githubtrailblazer.FlagMaster;
 import com.example.githubtrailblazer.github.CommitDetailsQuery;
 import com.example.githubtrailblazer.github.UserDetailsQuery;
 
@@ -40,97 +41,56 @@ public class CommitDetailsData {
         final CommitDetailsData _instance = this;
         final String repoName = (String) queryParams.next();
         final String repoOwner = (String) queryParams.next();
-        Connector.getInstance().getGHClient().query(CommitDetailsQuery.builder().repoName(repoName).repoOwner(repoOwner).build())
-                .enqueue(new ApolloCall.Callback<CommitDetailsQuery.Data>() {
-                    @Override
-                    public void onResponse(@NotNull Response<CommitDetailsQuery.Data> response) {
-                        CommitDetailsQuery.Data data = response.getData();
-                        if (data != null) {
-                            CommitDetailsQuery.Repository dataRepo = data.repository();
-                            if(dataRepo != null) {
-                                if(dataRepo.ref() != null) {
-                                    id = data.repository().ref().target();
+        // GitHub query
+        if(FlagMaster.getInstance().getGHFlag()) {
+            Connector.getInstance().getGHClient().query(CommitDetailsQuery.builder().repoName(repoName).repoOwner(repoOwner).build())
+                    .enqueue(new ApolloCall.Callback<CommitDetailsQuery.Data>() {
+                        @Override
+                        public void onResponse(@NotNull Response<CommitDetailsQuery.Data> response) {
+                            CommitDetailsQuery.Data data = response.getData();
+                            if (data != null) {
+                                CommitDetailsQuery.Repository dataRepo = data.repository();
+                                if(dataRepo != null) {
+                                    if(dataRepo.ref() != null) {
+                                        id = data.repository().ref().target();
+                                    }
                                 }
-                            }
 
-                            // get list of commits
-                            if(id != null) {
-                                CommitDetailsQuery.AsCommit commit = (CommitDetailsQuery.AsCommit) id;
-                                List<CommitDetailsQuery.Edge> edges = ((CommitDetailsQuery.AsCommit) id).history().edges();
+                                // get list of commits
+                                if(id != null) {
+                                    CommitDetailsQuery.AsCommit commit = (CommitDetailsQuery.AsCommit) id;
+                                    List<CommitDetailsQuery.Edge> edges = ((CommitDetailsQuery.AsCommit) id).history().edges();
 
-                                // for all commits in this repo, generate commits
-                                for(int i = 0; i < edges.size(); i++) {
-                                    CommitDetailsQuery.Node currCommit = edges.get(i).node();
-                                    authorName = currCommit.author().name();
-                                    authorAvatarURL = currCommit.author().avatarUrl().toString();
-                                    commitDate = currCommit.author().date().toString();
-                                    messageHeadline = currCommit.messageHeadline();
-                                    message = currCommit.message();
+                                    // for all commits in this repo, generate commits
+                                    for(int i = 0; i < edges.size(); i++) {
+                                        CommitDetailsQuery.Node currCommit = edges.get(i).node();
+                                        authorName = currCommit.author().name();
+                                        authorAvatarURL = currCommit.author().avatarUrl().toString();
+                                        commitDate = currCommit.author().date().toString();
+                                        messageHeadline = currCommit.messageHeadline();
+                                        message = currCommit.message();
 
-                                    Commit currCommitObj = new Commit(authorName, authorAvatarURL, commitDate, messageHeadline);
-                                    allRepoCommits.add(currCommitObj);
+                                        Commit currCommitObj = new Commit(authorName, authorAvatarURL, commitDate, messageHeadline);
+                                        allRepoCommits.add(currCommitObj);
+                                    }
                                 }
+
+
+                                if (successCallback != null) successCallback.handle(_instance);
+                            } else if (errorCallback != null) {
+                                errorCallback.error("Failed query: data is NULL");
                             }
-
-
-                            if (successCallback != null) successCallback.handle(_instance);
-                        } else if (errorCallback != null) {
-                            errorCallback.error("Failed query: data is NULL");
                         }
-                    }
 
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
-                        if (errorCallback != null) errorCallback.error("Failed query: " + e.getMessage());
-                    }
-                });
+                        @Override
+                        public void onFailure(@NotNull ApolloException e) {
+                            if (errorCallback != null) errorCallback.error("Failed query: " + e.getMessage());
+                        }
+                    });
+        }
+
+        if(FlagMaster.getInstance().getGLFlag()) {
+            // TODO: get commit details from GitLab repos
+        }
     }
-
-
-    /*public CommitDetailsData(@NotNull Connector.QueryParams queryParams,
-                           Connector.ISuccessCallback successCallback,
-                           Connector.IErrorCallback errorCallback) throws Exception {
-        final CommitDetailsData _instance = this;
-        Connector.getInstance().getGHClient().query(CommitDetailsQuery.builder().build())
-                .enqueue(new ApolloCall.Callback<CommitDetailsQuery.Data>() {
-                    @Override
-                    public void onResponse(@NotNull Response<CommitDetailsQuery.Data> response) {
-                        CommitDetailsQuery.Data data = response.getData();
-                        if (data != null) {
-                            id = data.repository().ref().target();
-
-                            // get README
-                            Object readMeObj = data.repository().object();
-                            CommitDetailsQuery.AsBlob readMeBlob = (CommitDetailsQuery.AsBlob) readMeObj;
-                            readMe = readMeBlob.text();
-
-                            // get list of commits
-                            CommitDetailsQuery.AsCommit commit = (CommitDetailsQuery.AsCommit) id;
-                            List<CommitDetailsQuery.Edge> edges = ((CommitDetailsQuery.AsCommit) id).history().edges();
-
-                            // for all commits in this repo, generate commits
-                            for(int i = 0; i < edges.size(); i++) {
-                                CommitDetailsQuery.Node currCommit = edges.get(i).node();
-                                authorName = currCommit.author().name();
-                                authorAvatarURL = currCommit.author().avatarUrl().toString();
-                                commitDate = currCommit.author().date().toString();
-                                messageHeadline = currCommit.messageHeadline();
-                                message = currCommit.message();
-
-                                Commit currCommitObj = new Commit(authorName, authorAvatarURL, commitDate, messageHeadline);
-                                allRepoCommits.add(currCommitObj);
-                            }
-
-                            if (successCallback != null) successCallback.handle(_instance);
-                        } else if (errorCallback != null) {
-                            errorCallback.error("Failed query: data is NULL");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
-                        if (errorCallback != null) errorCallback.error("Failed query: " + e.getMessage());
-                    }
-                });
-    } */
 }

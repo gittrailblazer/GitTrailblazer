@@ -1,10 +1,12 @@
 package com.example.githubtrailblazer.connector;
 
 import com.apollographql.apollo.ApolloClient;
+import com.example.githubtrailblazer.FlagMaster;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -54,6 +56,8 @@ public class Connector {
         }
         throw new Exception("Trying to access uninitialized GH client!");
     }
+
+
 
     public ApolloClient getGLClient() throws Exception {
         if (isInitialized) {
@@ -145,47 +149,61 @@ public class Connector {
     /**
      * Initialize the connector
      *
-     * @param githubAccessToken         - github oauth access token
+     * @param githubOauthAccessToken         - github oauth access token
      * @param gitlabPersonalAccessToken - gitlab personal access token
      */
-    public void initialize(String githubAccessToken, String gitlabPersonalAccessToken) {
-        // This is a singleton HTTP client.
-        // We use this to handle our requests.
-        OkHttpClient ghOkHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(chain -> {
-                    Request original = chain.request();
-                    Request.Builder builder = original.newBuilder().method(original.method(), original.body());
-                    builder.header("Authorization", "Bearer " + githubAccessToken);
-                    builder.header("content-type", "application/json");
-                    return chain.proceed(builder.build());
-                })
-                .build();
+    public void initialize(String githubOauthAccessToken, String gitlabPersonalAccessToken) {
+        // if GitHub feature flag is true
+        if(FlagMaster.getInstance().getGHFlag()) {
+            // create GitHub HTTP client
+            OkHttpClient ghOkHttpClient = buildOkHttpClient(githubOauthAccessToken);
 
-        // create new client instance
-        ghclient = ApolloClient.builder()
-                .serverUrl(GH_ENDPOINT_URL)
-                .okHttpClient(ghOkHttpClient)
-                .build();
+            // create new GitHub client instance
+            ghclient = buildApolloClient(GH_ENDPOINT_URL, ghOkHttpClient);
+        }
 
+        // if GitLab feature flag is true
+        if(FlagMaster.getInstance().getGLFlag()) {
+            // create GitLab HTTP client
+            OkHttpClient glOkHttpClient = buildOkHttpClient(gitlabPersonalAccessToken);
 
-        OkHttpClient glOkHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(chain -> {
-                    Request original = chain.request();
-                    Request.Builder builder = original.newBuilder().method(original.method(), original.body());
-                    builder.header("Authorization", "Bearer " + gitlabPersonalAccessToken);
-                    builder.header("content-type", "application/json");
-                    return chain.proceed(builder.build());
-                })
-                .build();
-
-        // create new client instance
-        glclient = ApolloClient.builder()
-                .serverUrl(GL_ENDPOINT_URL)
-                .okHttpClient(glOkHttpClient)
-                .build();
-
+            // create new GitLab client instance
+            glclient = buildApolloClient(GL_ENDPOINT_URL, glOkHttpClient);
+        }
         // flip isInitialized flag
         isInitialized = true;
+    }
+
+    /**
+     * Builds singleton HTTP client to handle a provider's requests
+     *
+     * @param accessToken access token of provider
+     * @return singleton HTTP client for a provider
+     */
+    public OkHttpClient buildOkHttpClient(String accessToken) {
+        return new OkHttpClient.Builder()
+                .addInterceptor(chain -> {
+                    Request original = chain.request();
+                    Request.Builder builder = original.newBuilder().method(original.method(), original.body());
+                    builder.header("Authorization", "Bearer " + accessToken);
+                    builder.header("content-type", "application/json");
+                    return chain.proceed(builder.build());
+                })
+                .build();
+    }
+
+    /**
+     * Builds Apollo client instance of given provider
+     *
+     * @param endpointURL endpoint URL of given provider
+     * @param okHttpClient HTTP client of given provider
+     * @return Apollo client instance of given provider
+     */
+    public ApolloClient buildApolloClient(String endpointURL, OkHttpClient okHttpClient) {
+        return ApolloClient.builder()
+                .serverUrl(endpointURL)
+                .okHttpClient(okHttpClient)
+                .build();
     }
 
     /**

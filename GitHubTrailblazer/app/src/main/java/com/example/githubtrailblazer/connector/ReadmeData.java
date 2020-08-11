@@ -5,6 +5,7 @@ import android.util.Log;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
+import com.example.githubtrailblazer.FlagMaster;
 import com.example.githubtrailblazer.github.GhReadmeQuery;
 
 import org.jetbrains.annotations.NotNull;
@@ -29,28 +30,38 @@ public class ReadmeData {
         final ReadmeData _instance = this;
         final String owner = (String)queryParams.next();
         final String name = (String)queryParams.next();
-        Connector.getInstance().getGHClient().query(GhReadmeQuery.builder().owner(owner).name(name).build())
-                .enqueue(new ApolloCall.Callback<GhReadmeQuery.Data>() {
-                    @Override
-                    public void onResponse(@NotNull Response<GhReadmeQuery.Data> response) {
-                        GhReadmeQuery.Data data = response.getData();
-                        if (data != null) {
-                            GhReadmeQuery.Repository repository = (GhReadmeQuery.Repository)data.repository();
-                            if (repository != null) {
-                                GhReadmeQuery.AsBlob object = (GhReadmeQuery.AsBlob)repository.object();
-                                if (object != null) readme = object.text();
-                            }
-                            if (successCallback != null) successCallback.handle(_instance);
-                        } else if (errorCallback != null) {
-                            errorCallback.error("Failed query: data is NULL");
-                        }
-                    }
 
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
-                        if (errorCallback != null)
-                            errorCallback.error("Failed query: " + e.getMessage());
-                    }
-                });
+        // GitHub query
+        if(FlagMaster.getInstance().getGHFlag()) {
+            Connector.getInstance().getGHClient().query(GhReadmeQuery.builder().owner(owner).name(name).build())
+                    .enqueue(new ApolloCall.Callback<GhReadmeQuery.Data>() {
+                        @Override
+                        public void onResponse(@NotNull Response<GhReadmeQuery.Data> response) {
+                            GhReadmeQuery.Data data = response.getData();
+                            if (data != null) {
+                                GhReadmeQuery.Repository repository = (GhReadmeQuery.Repository)data.repository();
+                                if (repository != null) {
+                                    GhReadmeQuery.AsBlob object = (GhReadmeQuery.AsBlob)repository.object();
+                                    if (object != null) readme = object.text();
+                                }
+                                if (successCallback != null) successCallback.handle(_instance);
+                            } else if (errorCallback != null) {
+                                errorCallback.error("Failed query: data is NULL");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NotNull ApolloException e) {
+                            if (errorCallback != null)
+                                errorCallback.error("Failed query: " + e.getMessage());
+                        }
+                    });
+        }
+
+        // GitLab query
+        if(FlagMaster.getInstance().getGLFlag()) {
+            // TODO: Get readme from GitLab repos
+        }
+
     }
 }
