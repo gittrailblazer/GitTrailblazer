@@ -11,6 +11,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        // abortOnError false
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -19,7 +25,7 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId "com.example.githubtrailblazer"
+        applicationId "com.git_trailblazer.v1"
         minSdkVersion 26
         targetSdkVersion 29
         versionCode 1
@@ -84,13 +90,13 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     apollo {
         service("github") {
-            sourceFolder.set("com/example/githubtrailblazer/github")
-            rootPackageName.set("com.example.githubtrailblazer.github")
+            sourceFolder.set("com/git_trailblazer/v1/github")
+            rootPackageName.set("com.git_trailblazer.v1.github")
         }
 
         service("gitlab") {
-            sourceFolder.set("com/example/githubtrailblazer/gitlab")
-            rootPackageName.set("com.example.githubtrailblazer.gitlab")
+            sourceFolder.set("com/git_trailblazer/v1/gitlab")
+            rootPackageName.set("com.git_trailblazer.v1.gitlab")
         }
     }
 }

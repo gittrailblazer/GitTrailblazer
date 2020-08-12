@@ -1,7 +1,0 @@
-mutation UnStarRepo($repoID: ID!, $mutationId: String!) {
-    removeStar(input: {starrableId: $repoID, clientMutationId: $mutationId}) {
-        starrable {
-            id
-        }
-    }
-}

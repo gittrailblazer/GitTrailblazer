@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:868273226493:android:e013ea5294ba412dacb494",
         "android_client_info": {
-          "package_name": "com.example.githubtrailblazer"
+          "package_name": "com.git_trailblazer.v1"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "868273226493-bsppn4djud2nmnm1bjssh71l9p5sr922.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.githubtrailblazer",
+            "package_name": "com.git_trailblazer.v1",
             "certificate_hash": "3c3765b1b59b694ed431cea566099439c1e3a0e3"
           }
         },

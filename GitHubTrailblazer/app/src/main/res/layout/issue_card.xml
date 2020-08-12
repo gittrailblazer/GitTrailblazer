@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.githubtrailblazer.components.issuecard.IssueCard xmlns:android="http://schemas.android.com/apk/res/android"
+<com.git_trailblazer.v1.components.issuecard.IssueCard xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
@@ -165,4 +165,4 @@
                     android:textColor="@color/secondary1"/>
         </LinearLayout>
     </LinearLayout>
-</com.example.githubtrailblazer.components.issuecard.IssueCard>
+</com.git_trailblazer.v1.components.issuecard.IssueCard>

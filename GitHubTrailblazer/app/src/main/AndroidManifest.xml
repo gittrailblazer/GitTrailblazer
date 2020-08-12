@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.githubtrailblazer">
-
-    <uses-sdk android:targetSdkVersion="23" />
+    package="com.git_trailblazer.v1">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -14,13 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".CommentActivity"></activity>
-        <activity android:name=".DrawerActivity" />
-        <activity android:name=".QuestionnaireActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RepoDetailActivity" />
-        <activity android:name=".InitialActivity">
+        <activity android:name="com.git_trailblazer.v1.CommentActivity"></activity>
+        <activity android:name="com.git_trailblazer.v1.DrawerActivity" />
+        <activity android:name="com.git_trailblazer.v1.QuestionnaireActivity" />
+        <activity android:name="com.git_trailblazer.v1.RegisterActivity" />
+        <activity android:name="com.git_trailblazer.v1.LoginActivity" />
+        <activity android:name="com.git_trailblazer.v1.RepoDetailActivity" />
+        <activity android:name="com.git_trailblazer.v1.InitialActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,8 +1,0 @@
-query userDetails {
-    currentUser {
-        id
-        username
-        avatarUrl
-        name
-    }
-}
