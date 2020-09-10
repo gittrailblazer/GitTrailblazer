@@ -1,1 +1,8 @@
-# automatic-parakeet
+# Git Trailblazer
+Git Trailblazer is a social platform that enables users to find and explore interesting GitHub repositories and beginner-friendly issues of open source projects. Users can find all kinds of interesting information about repositories, including the repository owner, name, description, README.md file, and recent contributors/commits. Since one of the goals of Git Trailblazer is to help junior developers find beginner-friendly issues of open-source projects, Git Trailblazer also presents users with issue-related details, such as the issue number, description, and time since the issue was posted. Users can also star and fork repositories of their interest as they navigate throughout the app. Some of the other social features that are supported by Git Trailblazer include upvotes, downvotes, comments, and easily sharing repository data with friends through a variety of external applications (e.g., email or text message).
+
+Future versions of Git Trailblazer will feature repositories and issues from multiple hosting platforms (e.g., GitLab, Bitbucket, and sourcehut), smarter issue recommendations, enhanced comments and notifications, and new ways to connect with the Git Trailblazer community. Git Trailblazer is based on the idea of discovering open source projects, and we want to provide an opportunity for software developers of any skill level to contribute to the future development of the app. To learn more about how you can contribute, please visit https://www.gittrailblazer.com. 
+
+
+## Google Play Download
+To download and install the latest version of Git Trailblazer on your Android device, please visit https://play.google.com/store/apps/details?id=com.git_trailblazer.v1.
